@@ -1,7 +1,7 @@
 {
     "name": "basarevych/dynamic-table",
     "type": "library",
-    "description": "Dynamic HTML grid"
+    "description": "Dynamic HTML grid",
     "license": "MIT",
     "keywords": [
         "zf2",
