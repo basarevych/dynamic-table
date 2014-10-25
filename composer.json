@@ -1,0 +1,23 @@
+{
+    "name": "basarevych/dynamic-table",
+    "type": "library",
+    "description": "Dynamic HTML grid"
+    "license": "MIT",
+    "keywords": [
+        "zf2",
+        "jquery",
+        "grid"
+    ],
+    "homepage": "https://github.com/basarevych/dynamic-table",
+    "require": {
+        "php": ">=5.4.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-0": {
+            "DynamicTable": "php/src"
+        }
+    }
+}
