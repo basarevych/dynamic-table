@@ -1,8 +1,8 @@
 <?php
 /**
- * zf2-doctrine2-skeleton
+ * zf2-skeleton
  *
- * @link        https://github.com/basarevych/zf2-doctrine2-skeleton
+ * @link        https://github.com/basarevych/zf2-skeleton
  * @copyright   Copyright (c) 2014 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */

@@ -1,2 +1,2 @@
-zf2-doctrine2-skeleton
-======================
+ZF2 Skeleton
+============

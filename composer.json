@@ -1,12 +1,12 @@
 {
-    "name": "basarevych/zf2-doctrine2-skeleton",
-    "description": "ZF2 + Doctrine2 Skeleton",
+    "name": "basarevych/zf2-skeleton",
+    "description": "ZF2 Skeleton",
     "license": "MIT",
     "keywords": [
         "zf",
         "doctrine"
     ],
-    "homepage": "https://github.com/basarevych/zf2-doctrine2-skeleton",
+    "homepage": "https://github.com/basarevych/zf2-skeleton",
     "require": {
         "php": ">=5.4.8",
         "zendframework/zendframework": "2.3.*",
