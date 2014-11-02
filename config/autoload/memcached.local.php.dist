@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'service_manager' => [
+        'factories' => [
+            'doctrine.cache.zend.memcached' => function ($sm) {
+                return new DoctrineModule\Cache\ZendStorageCache($sm->get('memcached'));
+            }
+        ]
+    ],
+
+    'caches' => [
+        'memcached' => [
+            'adapter' => [
+                'name'     => 'memcached',
+                'options'  => [
+                    'servers' => [
+                        [
+                            '127.0.0.1', 11211      // Hostname and port
+                        ]
+                    ],
+                    'namespace' => 'Skeleton',      // Put your app name here
+                    'ttl'       => 5 * 60,          // Seconds before cached items expire
+                    'liboptions' => [
+                        'COMPRESSION'     => true,
+                        'binary_protocol' => true,
+                        'no_block'        => true,
+                        'connect_timeout' => 100
+                    ]
+                ]
+            ],
+
+            'plugins' => [
+                'exception_handler' => [
+                    'throw_exceptions' => true      // Throws if can't connect (true)
+                                                    // or continue without cache (false)
+                ]
+            ],
+        ],
+    ],
+
+    'doctrine' => [
+        'configuration' => [
+            'orm_default' => [
+                'metadata_cache'    => 'zend.memcached',
+                'query_cache'       => 'zend.memcached',
+                'result_cache'      => 'zend.memcached',
+                'hydration_cache'   => 'zend.memcached',
+            ]
+        ]
+    ],
+];

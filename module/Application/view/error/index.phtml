@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1><?= $this->translate('An error occurred') ?></h1>
+            <h3><?= $this->translate('Please try again later') ?></h3>
+        </div>
+    </div>
+
+    <?php if (!isset($this->display_exceptions) || !$this->display_exceptions) return; ?>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <?php if (!isset($this->exception) || !$this->exception instanceof Exception): ?>
+                <h3><?= $this->translate('No Exception available') ?></h3>
+            <?php else: ?>
+                <?php $e = $this->exception; while ($e): ?>
+                    <h3><?= get_class($e) ?></h3>
+                    <dl>
+                        <dt><?= $this->translate('File') ?>:</dt>
+                        <dd>
+                            <pre><?= $e->getFile() ?>:<?= $e->getLine() ?></pre>
+                        </dd>
+                        <dt><?= $this->translate('Message') ?>:</dt>
+                        <dd>
+                            <pre><?= $e->getMessage() ?></pre>
+                        </dd>
+                        <dt><?=$this->translate('Stack trace') ?>:</dt>
+                        <dd>
+                            <pre><?= $e->getTraceAsString() ?></pre>
+                        </dd>
+                    </dl>
+                <?php $e = $e->getPrevious(); endwhile ?>
+            <?php endif ?>
+        </div>
+    </div>
+</div>

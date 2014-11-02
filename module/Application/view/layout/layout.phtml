@@ -1,0 +1,38 @@
+<?= $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle($this->translate('Welcome'))
+                 ->setSeparator(' - ')
+                 ->setAutoEscape(false) ?>
+
+<?= $this->headMeta()
+         ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+         ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+         ->toString(8) ?>
+
+<?= $this->headLink([
+                'rel' => 'shortcut icon',
+                'type' => 'image/vnd.microsoft.icon',
+                'href' => $this->basePath('/img/favicon.ico')
+           ])
+         ->prependStylesheet($this->basePath('/css/style.css'))
+         ->prependStylesheet($this->basePath('/components/bootstrap/css/bootstrap-theme.min.css'))
+         ->prependStylesheet($this->basePath('/components/bootstrap/css/bootstrap.min.css'))
+         ->toString(8) ?>
+ 
+<?= $this->headScript()
+         ->prependFile($this->basePath('/components/bootstrap/js/bootstrap.min.js'))
+         ->prependFile($this->basePath('/components/jquery/jquery.min.js'))
+         ->toString(8) ?>
+
+    </head>
+    <body>
+
+<?= $this->content; ?>
+
+<?= $this->inlineScript() ?>
+
+    </body>
+</html>
