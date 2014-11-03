@@ -82,7 +82,7 @@ class Module
             [ PHP_EOL, 'Run cron job' ],
 
             'populate-db' => '',
-            [ PHP_EOL, 'Populate the database (safe to re-run anytime)' ],
+            [ PHP_EOL, 'Populate the database' ],
         );
     }
 }

@@ -14,3 +14,5 @@ mysql> \q
 > php public/index.php dbal:import database/mysql.schema.sql
 > php public/index.php populate-db
 ```
+
+**NOTE**: dbal:import (re)creates the tables. All data will be lost.

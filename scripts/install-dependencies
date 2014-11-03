@@ -12,9 +12,9 @@ if [ "$1" != "dev" -a "$1" != "prod" ]; then
     exit 1
 fi
 
-run_command php composer.phar self-update
 
 if [ "$1" == "dev" ]; then
+    run_command php composer.phar self-update
     run_command php composer.phar update
 elif [ $1 == "prod" ]; then
     run_command php composer.phar --no-dev install

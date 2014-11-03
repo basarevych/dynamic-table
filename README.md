@@ -9,12 +9,43 @@ Yet another Zend Framework 2 Skeleton Application.
 Features:
 * Doctrine integration
 * Memcached integration
+* Sample console controller
+* Translator - [docs](docs/translator.md)
 
 Installation
 ------------
 1. Fork or clone
-2. x
 
-ZF2 Services Configured
------------------------
-* Translator [docs](docs/translator.md)
+2. Install dependencies
+
+  ```shell
+  > cd ProjectRoot
+  > ./scripts/install-dependecies dev
+  ```
+
+  Replace "dev" argument with "prod" for production environment.
+
+3. Create server-local configs
+
+  ```shell
+  > cd config/autoload
+  > cp local.php.dist local.php
+  > cp memcached.local.php.dist memcached.local.php
+  ```
+  **NOTE**: If you don't use Memcached simply do not create memcached.local.php. No cache will be used.
+
+  Now edit **local.php**, choose your DB driver, set credentials. Edit
+  **memcached.local.php** also.
+
+4. Create and populate the database
+
+  Database schema (MySQL only at this time) is in **database** directory. Consult README file for specific commands.
+
+5. Run development server (do not use in production)
+
+  ```shell
+  > cd ProjectRoot
+  > ./scripts/dev-server
+  ```
+
+  This will run PHP web server on port 8000.
