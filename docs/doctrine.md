@@ -142,7 +142,7 @@ This means that I handcraft database schema for a specific DB server first. Then
 
 Caching
 -------
-When you enable **memcached.local.php** Doctrine cache is setup to use Memcached for all its internal stuff. It's up to you when enable *result* cache.
+When you enable **memcached.local.php** Doctrine cache is setup to use Memcached for all its internal stuff. It's up to you when to enable *result* cache.
 
 Consider the following example:
 
@@ -179,3 +179,13 @@ You use it as any other repository method. In controller, for example:
     $repo = $em->getRepository('Application\Entity\Sample');
     $all = $repo->findAllCached();
 ```
+
+No need to modify this code for enabled or disabled Memcached cases. If no cache is enabled this method will just work as non-cached version.
+
+UTC DateTime
+------------
+One of the problems with ORM is datetime field. Not all the DBs have means to store timezone with the datetime values. And your server (or even several servers) could be in any timezone possible.
+
+There is a simple solution for all the cases: a field that automatically converts datetime to UTC when writing to the DB and back to PHP server timezone when retrieving values.
+
+**module/Application/src/Application/Doctrine/UtcDateTime.php** implements this solution. Everything is already included in the configs so you can just set field type to "utcdatetime" instead of "datetime" in order to use it.
