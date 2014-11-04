@@ -7,7 +7,7 @@ ZF2 Skeleton
 Yet another Zend Framework 2 Skeleton Application.
 
 Features:
-* Doctrine integration
+* Doctrine integration - [docs](docs/doctrine.md)
 * Memcached integration
 * Sample console controller
 * Translator preconfigured - [docs](docs/translator.md)
@@ -26,6 +26,8 @@ Installation
   Replace "dev" argument with "prod" for production environment.
 
 3. Create server-local configs
+
+  Read the [README](config/autoload/README.md) if you don't know the difference between local/global config files.
 
   ```shell
   > cd config/autoload

@@ -48,7 +48,6 @@ class Module
         // Initialize locale
         $locale = $this->getPreferredLocale($serviceManager);
         if ($locale) {
-var_dump($locale);
             $translator->setLocale($locale);
             locale_set_default($locale);
         }
