@@ -11,7 +11,7 @@ Features:
 * Memcached integration - [docs](docs/memcached.md)
 * Sample console controller - [docs](docs/console.md)
 * Translator preconfigured - [docs](docs/translator.md)
-* Mail service - TODO
+* Mail service - [docs](docs/mail.md)
 * Error Strategy - TODO
 * Session - TODO
 * DynamicTable - TODO

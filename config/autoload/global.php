@@ -2,6 +2,10 @@
 
 return [
     'service_manager' => [
+        'invokables' => [
+            'Mail' => 'Application\Service\Mail',
+        ],
+
         'abstract_factories' => [
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
