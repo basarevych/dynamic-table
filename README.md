@@ -10,7 +10,7 @@ Features:
 * Doctrine integration
 * Memcached integration
 * Sample console controller
-* Translator - [docs](docs/translator.md)
+* Translator preconfigured - [docs](docs/translator.md)
 
 Installation
 ------------

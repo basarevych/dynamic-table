@@ -69,7 +69,8 @@ return [
         ],
     ],
     'translator' => [
-        'locale' => 'en',
+        'locales' => [ 'en' ],
+        'default' => 'en',
         'translation_file_patterns' => [
             [
                 'type'     => 'phpArray',
