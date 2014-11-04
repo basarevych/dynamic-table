@@ -72,7 +72,7 @@ In order to add a command do the following:
 
   ```php
   return [
-    'my-command [-v] <param1> <param2>' => '',
+    'my-command [-v] <param1> [<param2>]' => '',
     [ PHP_EOL,      'The long command description goes here' ],
     [ '-v',         'Enable verbose mode' ],
     [ '<param1>',   'Parameter #1 description' ],
