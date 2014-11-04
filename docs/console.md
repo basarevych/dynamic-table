@@ -3,7 +3,13 @@ ZF2 Console Controller
 
 Single console controller is included with this skeleton: **module/Application/src/Application/Controller/ConsoleController.php**
 
-It has the following commands initially:
+Run php with no arguments to see usage information:
+
+```shell
+> php public/index.php
+```
+
+Controller has the following commands initially:
 
 * cron
 
@@ -62,7 +68,19 @@ In order to add a command do the following:
   }
   ```
 
-3. Run it like this:
+3. Add command usage information to **module/Application/Module::getConsoleUsage()**:
+
+  ```php
+  return [
+    'my-command [-v] <param1> <param2>' => '',
+    [ PHP_EOL,      'The long command description goes here' ],
+    [ '-v',         'Enable verbose mode' ],
+    [ '<param1>',   'Parameter #1 description' ],
+    [ '<param2>',   'Parameter #2 description' ],
+  ];
+  ```
+
+4. Run it like this:
 
   ```shell
   > php public/index.php my-command -v foo bar
