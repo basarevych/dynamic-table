@@ -8,7 +8,7 @@ Configuration
 > cp memcached.local.php.dist memcached.local.php
 ```
 
-The file **memcached.local.php** is quite complex config but really there is no user-serviceble parts inside, except for 'namespace' and 'ttl' in 'caches/memcached/adapter'.
+The file **memcached.local.php** is quite complex config but really there are no user-serviceble parts inside, except for 'namespace' and 'ttl' in 'caches/memcached/adapter'.
 
 Features pre-configured:
 * Doctrine cache

@@ -26,19 +26,6 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-        $sl = $this->getServiceLocator();
-        $cache = $sl->has('Memcached') ? $sl->get('Memcached') : null;
-
-        if ($cache && $cache->hasItem('test')) {
-            $test = $cache->getItem('test');
-        } else {
-            $test = 'value';
-            if ($cache)
-                $cache->setItem('test', $test);
-        }
-
-        var_dump($test);
-
         return new ViewModel();
     }
 }
