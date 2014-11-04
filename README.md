@@ -9,8 +9,12 @@ Yet another Zend Framework 2 Skeleton Application.
 Features:
 * Doctrine integration - [docs](docs/doctrine.md)
 * Memcached integration - [docs](docs/memcached.md)
-* Sample console controller
+* Sample console controller - [docs](docs/console.md)
 * Translator preconfigured - [docs](docs/translator.md)
+* Mail service - TODO
+* Error Strategy - TODO
+* Session - TODO
+* DynamicTable - TODO
 
 Installation
 ------------
