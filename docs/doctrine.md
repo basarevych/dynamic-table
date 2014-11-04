@@ -3,6 +3,8 @@ ZF2 & Doctrine
 
 This is most widely used setup for ZF2 + Doctrine using doctrine/doctrine-orm-module.
 
+Entity manager is available as 'Doctrine\ORM\EntityManager' service.
+
 You start using Doctrine by setting up the driver and credentials in **config/autoload/local.php** configuration file.
 
 Directories

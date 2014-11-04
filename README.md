@@ -8,7 +8,7 @@ Yet another Zend Framework 2 Skeleton Application.
 
 Features:
 * Doctrine integration - [docs](docs/doctrine.md)
-* Memcached integration
+* Memcached integration - [docs](docs/memcached.md)
 * Sample console controller
 * Translator preconfigured - [docs](docs/translator.md)
 
