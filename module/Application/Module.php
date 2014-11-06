@@ -37,6 +37,9 @@ class Module
         $serviceManager = $e->getApplication()->getServiceManager();
         $translator     = $serviceManager->get('translator');
 
+        // Attach global strategies
+        $serviceManager->get('ErrorStrategy')->attach($eventManager);
+
         // Initialize Content-Type header (we are adding charset)
         $response = $e->getResponse();
         if ($response instanceof \Zend\Http\Response) {

@@ -12,7 +12,7 @@ Features:
 * Sample console controller - [docs](docs/console.md)
 * Translator preconfigured - [docs](docs/translator.md)
 * Mail service - [docs](docs/mail.md)
-* Error Strategy - TODO
+* Custom Error Strategy - [docs](docs/error-strategy.md)
 * Session - TODO
 * DynamicTable - TODO
 

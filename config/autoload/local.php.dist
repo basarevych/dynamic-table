@@ -16,4 +16,22 @@ return [
             ],
         ],
     ],
+
+    'mail' => [
+        'transport' => 'smtp',      // 'sendmail' (PHP internal mail) or 'smtp'
+        // 'smtp' transport options:
+        'host'      => '127.0.0.1',
+        'port'      => 25
+    ],
+
+    'exceptions' => [
+        'display'       => true,    // Display exception details?
+        'forward' => [
+            'enabled'   => false,   // Forward exception via email?
+            'codes'     => [ 500 ],
+            'from'      => "root@localhost",        // Use real one
+            'to'        => "tester@example.com",    // Who will receive report
+            'subject'   => "MyProject Exception"    // The project name
+        ]
+    ],
 ];

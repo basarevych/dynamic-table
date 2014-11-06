@@ -30,16 +30,7 @@ Consider the following example:
 
 In this example module provides translation into 'en', 'fr' and 'ru' locales using phpArray adapter. Files are in **module/ModuleName/l10n** directory (en.php, fr.php and ru.php).
 
-**NOTE**: The framework (all the validator messages) uses English text as parameter to $translate. If no translation found the parameter is printed as is. This is why en.php is always empty and looks like this:
-
-```php
-<?php
-
-return [
-];
-```
-
-All the other files should really do the translation:
+Out of the box the translator is configured to use phpArray translation:
 
 ```php
 <?php
@@ -50,8 +41,12 @@ return [
 ];
 ```
 
+There is en.php only which have all the strings used by this skeleton. You can use that file as starting point.
+
 Usage
 -----
+**NOTE**: The framework (all the validator messages) uses English text as parameter to $translate. If no translation found the parameter is printed as is.
+
 In your view script:
 ```php
 <h1><?= $this->translate('English text') ?><h1>

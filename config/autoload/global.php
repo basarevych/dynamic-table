@@ -4,6 +4,7 @@ return [
     'service_manager' => [
         'invokables' => [
             'Mail' => 'Application\Service\Mail',
+            'ErrorStrategy' => 'Application\Service\ErrorStrategy',
         ],
 
         'abstract_factories' => [
@@ -13,6 +14,12 @@ return [
 
         'aliases' => [
             'translator' => 'MvcTranslator',
+        ],
+    ],
+
+    'view_manager' => [
+        'strategies' => [
+            'ViewJsonStrategy',     // We can return JsonModel instead of ViewModel
         ],
     ],
 

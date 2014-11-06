@@ -1,0 +1,64 @@
+<?php
+
+    $this->layout('layout/error');
+
+    $message = 'Please try again later';
+    switch ($this->status) {
+        case 400:
+            $message = 'Invalid request parameters';
+            break;
+        case 401:
+            $message = 'Authentication is required';
+            break;
+        case 403:
+            $message = 'Access to requested resource is denied';
+            break;
+        case 404:
+            $message = 'Requested resource is not found';
+            break;
+        case 405:
+            $message = 'Requested method is not implemented';
+            break;
+    }
+
+?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1><?= $this->escapeHtml($this->status . " " . $this->title) ?></h1>
+            <h3><?= $this->translate($message) ?></h3>
+        </div>
+    </div>
+</div>
+
+<?php if (!$this->displayExceptions) return; ?>
+
+<?php if (!$this->exception || !$this->exception instanceof Exception): ?>
+    <h2><?= $this->translate('No additional information available') ?></h3>
+<?php return; endif ?>
+
+<div class="container" style="margin-top: 50px">
+    <?php $header = 'Exception information' ?>
+    <?php $e = $this->exception; while ($e): ?>
+        <div class="row">
+            <div class="col-lg-12">
+                <dl class="dl-horizontal">
+                    <dd>
+                        <h3><?= $this->translate($header) ?></h3>
+                        <hr style="margin: 5px 0">
+                    </dd>
+                    <dt><?= $this->translate('Class') ?></dt>
+                    <dd><?= get_class($e); ?></dd>
+                    <dt><?= $this->translate('Code') ?> / <?= $this->translate('Message') ?></dt>
+                    <dd><?= $this->escapeHtml($e->getCode() . ' / ' . $e->getMessage()) ?></dd>
+                    <dt><?= $this->translate('File') ?> / <?= $this->translate('Line') ?></dt>
+                    <dd><?= $this->escapeHtml($e->getFile() . ': ' . $e->getLine()) ?></dd>
+                    <dt><?= $this->translate('Stack trace') ?></dt>
+                    <dd><pre><?= $this->escapeHtml($e->getTraceAsString()) ?></pre></dd>
+                </dl>
+            </div>
+        </div>
+        <?php $header = 'Previous Exception information' ?>
+    <?php $e = $e->getPrevious(); endwhile; ?>
+</div>

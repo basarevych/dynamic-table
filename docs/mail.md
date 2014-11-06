@@ -8,19 +8,19 @@ Configuration
 You should have in your **config/autoload/local.php**:
 
 ```php
-    'mail' => array(
+    'mail' => [
         'transport' => 'sendmail'
-    ),
+    ],
 ```
 
 Or:
 
 ```php
-    'mail' => array(
+    'mail' => [
         'transport' => 'smtp',
         'host'      => '127.0.0.1',
         'port'      => 25
-    ),
+    ],
 ```
 
 **sendmail** transport uses PHP functions to send email, **smtp** transport talks directly to mail server.
