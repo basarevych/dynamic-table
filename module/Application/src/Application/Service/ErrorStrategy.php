@@ -1,8 +1,8 @@
 <?php
 /**
- * AngularZF
+ * zf2-skeleton
  *
- * @link        https://github.com/basarevych/AngularZF
+ * @link        https://github.com/basarevych/zf2-skeleton
  * @copyright   Copyright (c) 2014 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
@@ -74,21 +74,21 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
         if ($this->displayExceptions === null) {
             $config = $serviceLocator->get('config');
             if (!isset($config['exceptions']))
-                throw new \Exception('No "exceptions" section in the config');
+                die('No "exceptions" section in the config');
             if (!isset($config['exceptions']['display']))
-                throw new \Exception('No "display" in "exceptions" section of the config');
+                die('No "display" in "exceptions" section of the config');
             if (!isset($config['exceptions']['forward']) || !is_array($config['exceptions']['forward']))
-                throw new \Exception('No "forward" array in "exceptions" section of the config');
+                die('No "forward" array in "exceptions" section of the config');
             if (!isset($config['exceptions']['forward']['enabled']))
-                throw new \Exception('No "enabled" in "exceptions/forward" section of the config');
+                die('No "enabled" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['codes']) || !is_array($config['exceptions']['forward']['codes']))
-                throw new \Exception('No "codes" array in "exceptions/forward" section of the config');
+                die('No "codes" array in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['from']))
-                throw new \Exception('No "from" in "exceptions/forward" section of the config');
+                die('No "from" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['to']))
-                throw new \Exception('No "to" in "exceptions/forward" section of the config');
+                die('No "to" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['subject']))
-                throw new \Exception('No "subject" in "exceptions/forward" section of the config');
+                die('No "subject" in "exceptions/forward" section of the config');
 
             $this->displayExceptions = ($config['exceptions']['display'] === true);
             $this->forward = $config['exceptions']['forward'];

@@ -40,8 +40,5 @@ if ($zf2Path) {
 }
 
 if (!class_exists('Zend\Loader\AutoloaderFactory')) {
-    echo '<h1>An error occured</h1>';
-    echo '<h3>Unable to load ZF2</h3>';
-    echo 'Run `php composer.phar install` or define a ZF2_PATH environment variable.';
-    die;
+    die('Unable to load ZF2: Run `php composer.phar install` or define a ZF2_PATH environment variable.');
 }
