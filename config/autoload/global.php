@@ -3,7 +3,8 @@
 return [
     'service_manager' => [
         'invokables' => [
-            'Mail' => 'Application\Service\Mail',
+            'Session'       => 'Application\Service\Session',
+            'Mail'          => 'Application\Service\Mail',
             'ErrorStrategy' => 'Application\Service\ErrorStrategy',
         ],
 

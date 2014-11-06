@@ -19,7 +19,7 @@ use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Part as MimePart;
 
 /**
- * Mail factory
+ * Mail service
  * 
  * @category    Application
  * @package     Service

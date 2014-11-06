@@ -4,13 +4,13 @@ return [
     'service_manager' => [
         'factories' => [
             'doctrine.cache.zend.memcached' => function ($sm) {
-                return new DoctrineModule\Cache\ZendStorageCache($sm->get('memcached'));
+                return new DoctrineModule\Cache\ZendStorageCache($sm->get('Memcached'));
             }
         ]
     ],
 
     'caches' => [
-        'memcached' => [
+        'Memcached' => [
             'adapter' => [
                 'name'     => 'memcached',
                 'options'  => [

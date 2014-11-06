@@ -13,7 +13,7 @@ Features:
 * Translator preconfigured - [docs](docs/translator.md)
 * Mail service - [docs](docs/mail.md)
 * Custom Error Strategy - [docs](docs/error-strategy.md)
-* Session - TODO
+* Session - [docs](docs/session.md)
 * DynamicTable - TODO
 
 Installation
@@ -40,8 +40,7 @@ Installation
   ```
   **NOTE**: If you don't use Memcached simply do not create memcached.local.php. No cache will be used.
 
-  Now edit **local.php**, choose your DB driver, set credentials. Edit
-  **memcached.local.php** also.
+  Now edit **local.php**, choose your DB driver, credentials, set other parameters. Edit **memcached.local.php** also.
 
 4. Create and populate the database
 
