@@ -36,6 +36,7 @@ class Module
 
         $serviceManager = $e->getApplication()->getServiceManager();
         $translator     = $serviceManager->get('translator');
+        $session        = $serviceManager->get('Session');
 
         // Attach global strategies
         $serviceManager->get('ErrorStrategy')->attach($eventManager);
@@ -54,6 +55,9 @@ class Module
             $translator->setLocale($locale);
             locale_set_default($locale);
         }
+
+        // Start session
+        $session->start();
     }
 
     /**

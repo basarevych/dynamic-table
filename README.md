@@ -40,8 +40,7 @@ Installation
   ```
   **NOTE**: If you don't use Memcached simply do not create memcached.local.php. No cache will be used.
 
-  Now edit **local.php**, choose your DB driver, set credentials. Edit
-  **memcached.local.php** also.
+  Now edit **local.php**, choose your DB driver, credentials, set other parameters. Edit **memcached.local.php** also.
 
 4. Create and populate the database
 
