@@ -13,7 +13,7 @@ Features:
 * Translator preconfigured - [docs](docs/translator.md)
 * Mail service - [docs](docs/mail.md)
 * Custom Error Strategy - [docs](docs/error-strategy.md)
-* Session - TODO
+* Session - [docs](docs/session.md)
 * DynamicTable - TODO
 
 Installation
