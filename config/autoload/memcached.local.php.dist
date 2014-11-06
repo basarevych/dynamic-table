@@ -7,6 +7,14 @@ return [
                 return new DoctrineModule\Cache\ZendStorageCache($sm->get('Memcached'));
             }
         ]
+
+        'initializers' => [
+            'MvcTranslator.cache' => function ($service, $sm) {
+                if ($service instanceof Zend\Mvc\I18n\Translator) {
+                    $service->setCache($sm->get('Memcached'));
+                }
+            },
+        ],
     ],
 
     'caches' => [
