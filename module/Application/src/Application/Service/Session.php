@@ -61,6 +61,10 @@ class Session implements ServiceLocatorAwareInterface
      */
     public function start()
     {
+        $default = Container::getDefaultManager();
+        if ($default->sessionExists())
+            return;
+
         $sl = $this->getServiceLocator();
         $config = $sl->get('Config');
         if (!isset($config['session']))

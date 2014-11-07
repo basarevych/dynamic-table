@@ -70,6 +70,7 @@ class Mail implements ServiceLocatorAwareInterface
      *
      * @return mixed
      * @throws Exception    When badly configured
+     * @return Transport\TransportInterface
      */
     public function getTransport()
     {
