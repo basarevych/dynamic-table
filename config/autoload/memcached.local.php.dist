@@ -6,7 +6,7 @@ return [
             'doctrine.cache.zend.memcached' => function ($sm) {
                 return new DoctrineModule\Cache\ZendStorageCache($sm->get('Memcached'));
             }
-        ]
+        ],
 
         'initializers' => [
             'MvcTranslator.cache' => function ($service, $sm) {
