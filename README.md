@@ -4,7 +4,7 @@ WORK IN PROGRESS
 ZF2 Skeleton
 ============
 
-Yet another Zend Framework 2 Skeleton Application.
+Yet another Zend Framework 2 Skeleton Application and a little tutorial (see the docs below).
 
 Features:
 * Doctrine integration - [docs](docs/doctrine.md)
@@ -54,3 +54,10 @@ Installation
   ```
 
   This will run PHP web server on port 8000.
+
+6. Run PHP unit tests (requires *development* environment dependencies)
+
+  ```shell
+  > cd ProjectRoot
+  > ./scripts/test-backend
+  ```
