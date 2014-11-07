@@ -79,7 +79,7 @@ class Mail implements ServiceLocatorAwareInterface
 
         $options = $this->getServiceLocator()->get('Config');
         if (!isset($options['mail']))
-            throw new Exception("Set mail parameters in config file!");
+            throw new \Exception("Set mail parameters in config file!");
 
         if ($options['mail']['transport'] == 'sendmail') {
             $transport = new Transport\Sendmail();

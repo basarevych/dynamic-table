@@ -74,21 +74,21 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
         if ($this->displayExceptions === null) {
             $config = $serviceLocator->get('config');
             if (!isset($config['exceptions']))
-                die('No "exceptions" section in the config');
+                throw new \Exception('No "exceptions" section in the config');
             if (!isset($config['exceptions']['display']))
-                die('No "display" in "exceptions" section of the config');
+                throw new \Exception('No "display" in "exceptions" section of the config');
             if (!isset($config['exceptions']['forward']) || !is_array($config['exceptions']['forward']))
-                die('No "forward" array in "exceptions" section of the config');
+                throw new \Exception('No "forward" array in "exceptions" section of the config');
             if (!isset($config['exceptions']['forward']['enabled']))
-                die('No "enabled" in "exceptions/forward" section of the config');
+                throw new \Exception('No "enabled" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['codes']) || !is_array($config['exceptions']['forward']['codes']))
-                die('No "codes" array in "exceptions/forward" section of the config');
+                throw new \Exception('No "codes" array in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['from']))
-                die('No "from" in "exceptions/forward" section of the config');
+                throw new \Exception('No "from" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['to']))
-                die('No "to" in "exceptions/forward" section of the config');
+                throw new \Exception('No "to" in "exceptions/forward" section of the config');
             if (!isset($config['exceptions']['forward']['subject']))
-                die('No "subject" in "exceptions/forward" section of the config');
+                throw new \Exception('No "subject" in "exceptions/forward" section of the config');
 
             $this->displayExceptions = ($config['exceptions']['display'] === true);
             $this->forward = $config['exceptions']['forward'];

@@ -14,4 +14,10 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
 require 'init_autoloader.php';
 
 // Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+try {
+    Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+} catch (Exception $e) {
+    echo "<h1>Application failed to run</h1>";
+    echo "<h3>" . $e->getCode() . " / " . $e->getMessage() . "</h3>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+}
