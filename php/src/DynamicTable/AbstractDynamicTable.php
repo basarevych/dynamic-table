@@ -364,9 +364,9 @@ abstract class AbstractDynamicTable
         $columns = [];
         foreach ($this->columns as $id => $params) {
             $columns[$id] = [
-                'type'          => $params['type'],
-                'sortable'      => $params['sortable'],
-                'filterable'    => $params['filterable'],
+                'type'      => $params['type'],
+                'filters'   => $params['filters'],
+                'sortable'  => $params['sortable'],
             ];
         }
 
