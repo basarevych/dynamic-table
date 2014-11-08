@@ -4,8 +4,50 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "55346004576c5ef0bbbc11c4f4eb529d",
+    "hash": "b10579d87abf2633f72c691fa8cf57ce",
     "packages": [
+        {
+            "name": "basarevych/dynamic-table",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/basarevych/dynamic-table.git",
+                "reference": "e9a64ec452374e6d47819194db2866222753ec9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/e9a64ec452374e6d47819194db2866222753ec9d",
+                "reference": "e9a64ec452374e6d47819194db2866222753ec9d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "DynamicTable": "php/src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Dynamic HTML grid",
+            "homepage": "https://github.com/basarevych/dynamic-table",
+            "keywords": [
+                "grid",
+                "jquery",
+                "zf2"
+            ],
+            "support": {
+                "source": "https://github.com/basarevych/dynamic-table/tree/master",
+                "issues": "https://github.com/basarevych/dynamic-table/issues"
+            },
+            "time": "2014-10-31 14:46:56"
+        },
         {
             "name": "components/bootstrap",
             "version": "3.3.0",
@@ -2047,6 +2089,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "basarevych/dynamic-table": 20,
         "phpunit/phpunit": 0,
         "webfactory/doctrine-orm-test-infrastructure": 0
     },
