@@ -1,7 +1,20 @@
 <?php
+/**
+ * DynamicTable
+ *
+ * @link        https://github.com/basarevych/dynamic-table
+ * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @license     http://choosealicense.com/licenses/mit/ MIT
+ */
 
 namespace DynamicTable;
 
+/**
+ * Base DynamicTable class
+ *
+ * @category    DynamicTable
+ * @package     Base
+ */
 abstract class AbstractDynamicTable
 {
     /**
@@ -66,7 +79,7 @@ abstract class AbstractDynamicTable
     /**
      * Query sort column name
      *
-     * @var string
+     * @var string|null     No sorting when null
      */
     protected $sortColumn = null;
 
@@ -166,9 +179,12 @@ abstract class AbstractDynamicTable
     {
         if ($filters === null)
             $filters = [];
-        if (is_array($filters)) {
+
+        if (is_array($filters))
             $this->filters = $filters;
-        }
+        else
+            throw new \Exception('Filters should be null or array');
+
         return $this;
     }
 
@@ -180,9 +196,13 @@ abstract class AbstractDynamicTable
      */
     public function setFiltersJson($filters)
     {
-        $data = null;
-        if (is_string($filters))
-            $data = json_decode($filters, true);
+        if ($filters === null)
+            return $this->setFilters([]);
+
+        $data = json_decode($filters, true);
+        if ($data === null)
+            throw new \Exception('Could not decode JSON data');
+
         return $this->setFilters($data);
     }
 
@@ -228,6 +248,8 @@ abstract class AbstractDynamicTable
     {
         if (in_array($dir, [ self::DIR_ASC, self::DIR_DESC ]))
             $this->sortDir = $dir;
+        else
+            $this->sortDir = self::DIR_ASC;
 
         return $this;
     }
@@ -251,6 +273,9 @@ abstract class AbstractDynamicTable
     public function setPageNumber($number)
     {
         $this->pageNumber = ($number === null ? 1 : (int)$number);
+        if ($this->pageNumber < 1)
+            $this->pageNumber = 1;
+
         return $this;
     }
 
@@ -273,6 +298,9 @@ abstract class AbstractDynamicTable
     public function setPageSize($size)
     {
         $this->pageSize = ($size === null ? self::PAGE_SIZE : (int)$size);
+        if ($this->pageSize < 0)
+            $this->pageSize = self::PAGE_SIZE;
+
         return $this;
     }
 
@@ -287,8 +315,19 @@ abstract class AbstractDynamicTable
     }
 
     /**
+     * Total pages number getter
+     *
+     * @return integer
+     */
+    public function getTotalPages()
+    {
+        return $this->totalPages;
+    }
+
+    /**
      * Return table descriptions
      *
+     * @return array
      */
     public function describe()
     {
@@ -303,6 +342,31 @@ abstract class AbstractDynamicTable
 
         return [
             'columns' => $columns,
+        ];
+    }
+
+    /**
+     * Convert table data to resulting array
+     *
+     * @param mixed $rows
+     * @return array
+     */
+    public function getData($rows)
+    {
+        $mapper = $this->mapper;
+        if ($mapper) { 
+            $result = [];
+            foreach ($rows as $row)
+                $result[] = $mapper($row);
+        }
+
+        return [
+            'sort_column'   => $this->getSortColumn(),
+            'sort_dir'      => $this->getSortDir(),
+            'page_number'   => $this->getPageNumber(),
+            'page_size'     => $this->getPageSize(),
+            'total_pages'   => $this->getTotalPages(),
+            'data'          => $mapper ? $result : $rows,
         ];
     }
 
