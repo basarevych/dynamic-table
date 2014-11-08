@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace DynamicTable;
+namespace DynamicTable\Doctrine;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -19,7 +19,7 @@ use DynamicTable\AbstractDynamicTable;
  * @category    DynamicTable
  * @package     Doctrine
  */
-class DoctrineDynamicTable extends AbstractDynamicTable
+class DynamicTable extends AbstractDynamicTable
 {
     /**
      * Doctrine QueryBuilder
@@ -32,7 +32,7 @@ class DoctrineDynamicTable extends AbstractDynamicTable
      * QueryBuilder setter
      *
      * @param QueryBuilder $qb
-     * @return DoctrineDynamicTable
+     * @return DynamicTable
      */
     public function setQueryBuilder(QueryBuilder $qb)
     {
@@ -55,7 +55,7 @@ class DoctrineDynamicTable extends AbstractDynamicTable
      *
      * @param array $columns
      * @throws Exception            In case of invalid column definition
-     * @return DoctrineDynamicTable
+     * @return DynamicTable
      */
     public function setColumns(array $columns)
     {
