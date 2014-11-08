@@ -12,6 +12,7 @@ namespace DynamicTable\Doctrine;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DynamicTable\AbstractDynamicTable;
+use DynamicTable\Doctrine\Sorter;
 
 /**
  * DynamicTable for Doctrine
@@ -74,6 +75,9 @@ class DynamicTable extends AbstractDynamicTable
      */
     public function fetch()
     {
+        $sorter = new Sorter();
+        $sorter->apply($this);
+
         $query = $this->qb->getQuery();
         $paginator = new Paginator($query);
 
@@ -91,6 +95,21 @@ class DynamicTable extends AbstractDynamicTable
                       ->setMaxResults($this->pageSize);
         }
 
-        return $this->getData($paginator);
+        $mapper = $this->getMapper();
+        if (!$mapper)
+            throw new \Exception("Data 'mapper' is not set for the table");
+
+        $result = [];
+        foreach ($paginator as $row)
+            $result[] = $mapper($row);
+
+        return [
+            'sort_column'   => $this->getSortColumn(),
+            'sort_dir'      => $this->getSortDir(),
+            'page_number'   => $this->getPageNumber(),
+            'page_size'     => $this->getPageSize(),
+            'total_pages'   => $this->getTotalPages(),
+            'data'          => $result,
+        ];
     }
 }

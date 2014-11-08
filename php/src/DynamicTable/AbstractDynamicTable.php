@@ -346,31 +346,6 @@ abstract class AbstractDynamicTable
     }
 
     /**
-     * Convert table data to resulting array
-     *
-     * @param mixed $rows
-     * @return array
-     */
-    public function getData($rows)
-    {
-        $mapper = $this->mapper;
-        if ($mapper) { 
-            $result = [];
-            foreach ($rows as $row)
-                $result[] = $mapper($row);
-        }
-
-        return [
-            'sort_column'   => $this->getSortColumn(),
-            'sort_dir'      => $this->getSortDir(),
-            'page_number'   => $this->getPageNumber(),
-            'page_size'     => $this->getPageSize(),
-            'total_pages'   => $this->getTotalPages(),
-            'data'          => $mapper ? $result : $rows,
-        ];
-    }
-
-    /**
      * Fetch data and feed it to front-end
      *
      * @return array

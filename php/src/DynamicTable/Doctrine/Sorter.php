@@ -9,7 +9,7 @@
 
 namespace DynamicTable\Doctrine;
 
-use DoctrineDynamicTable;
+use DynamicTable\Doctrine\DynamicTable;
 
 /**
  * DynamicTable sorting class for Doctrine
@@ -19,4 +19,30 @@ use DoctrineDynamicTable;
  */
 class Sorter
 {
+    public function apply(DynamicTable $table)
+    {
+        $column = $table->getSortColumn();
+        $dir = $table->getSortDir();
+
+        if (!$column)
+            return;
+
+        $found = false;
+        $sqlId = null;
+        foreach ($table->getColumns() as $id => $params) {
+            if ($id == $column) {
+                $found = ($params['sortable'] === true);
+                $sqlId = $params['sql_id'];
+                break;
+            }
+        }
+
+        if (!$found) {
+            $table->setSortColumn(null);
+            return;
+        }
+
+        $qb = $table->getQueryBuilder();
+        $qb->addOrderBy($sqlId, $dir);
+    }
 }
