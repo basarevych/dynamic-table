@@ -271,7 +271,7 @@ abstract class AbstractDynamicTable
         $this->sortColumn = null;
 
         $found = false;
-        foreach ($table->getColumns() as $id => $params) {
+        foreach ($this->getColumns() as $id => $params) {
             if ($id == $column) {
                 $found = ($params['sortable'] === true);
                 break;
