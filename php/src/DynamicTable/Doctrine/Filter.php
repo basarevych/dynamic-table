@@ -32,28 +32,13 @@ class Filter
         $this->sqlOrs = [];
         $this->sqlParams = [];
 
+        $columns = $table->getColumns();
         $filters = $table->getFilters();
-        if (count($filters) == 0)
-            return;
 
         foreach ($filters as $column => $filter) {
-            $found = false;
-            foreach ($table->getColumns() as $id => $params) {
-                if ($id == $column) {
-                    foreach ($filter as $name => $value) {
-                        if (in_array($name, $params['filters']))
-                            $this->buildFilter($params['sql_id'], $name, $value);
-                        else
-                            unset($filter[$name]);
-                    }
-                    break;
-                }
-            }
-
-            if (!$found)
-                unset($filters[$column]);
+            foreach ($filter as $name => $value)
+                $this->buildFilter($columns[$column]['sql_id'], $name, $value);
         }
-        $table->setFilters($filters);
 
         if (count($this->sqlOrs) == 0)
             return;

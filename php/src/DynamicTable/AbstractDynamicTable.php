@@ -213,18 +213,20 @@ abstract class AbstractDynamicTable
             throw new \Exception('Filters should be null or array');
 
         foreach ($filters as $column => $filter) {
-            $found = false;
+            $found = [];
             foreach ($this->getColumns() as $id => $params) {
                 if ($id == $column) {
                     foreach ($filter as $name => $value) {
-                        if (!in_array($name, $params['filters']))
-                            unset($filter[$name]);
+                        if (in_array($name, $params['filters']))
+                            $found[$name] = $value;
                     }
                     break;
                 }
             }
 
-            if (!$found)
+            if (count($found) > 0)
+                $filters[$column] = $found;
+            else
                 unset($filters[$column]);
         }
 
