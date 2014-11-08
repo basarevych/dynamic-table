@@ -12,7 +12,7 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
-use DynamicTable\DoctrineDynamicTable;
+use DynamicTable\Doctrine\DynamicTable;
 
 /**
  * Index controller
@@ -43,48 +43,48 @@ class IndexController extends AbstractActionController
         $qb->select('s, s.id + 100 AS computed')
            ->from('Application\Entity\Sample', 's');
 
-        $table = new DoctrineDynamicTable();
+        $table = new DynamicTable();
         $table->setQueryBuilder($qb);
         $table->setColumns([
             'id' => [
                 'sql_id'        => 's.id',
-                'type'          => DoctrineDynamicTable::TYPE_INTEGER,
+                'type'          => DynamicTable::TYPE_INTEGER,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'string' => [
                 'sql_id'        => 's.value_string',
-                'type'          => DoctrineDynamicTable::TYPE_STRING,
+                'type'          => DynamicTable::TYPE_STRING,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'integer' => [
                 'sql_id'        => 's.value_integer',
-                'type'          => DoctrineDynamicTable::TYPE_INTEGER,
+                'type'          => DynamicTable::TYPE_INTEGER,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'float' => [
                 'sql_id'        => 's.value_float',
-                'type'          => DoctrineDynamicTable::TYPE_FLOAT,
+                'type'          => DynamicTable::TYPE_FLOAT,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'boolean' => [
                 'sql_id'        => 's.value_boolean',
-                'type'          => DoctrineDynamicTable::TYPE_BOOLEAN,
+                'type'          => DynamicTable::TYPE_BOOLEAN,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'datetime' => [
                 'sql_id'        => 's.value_datetime',
-                'type'          => DoctrineDynamicTable::TYPE_DATETIME,
+                'type'          => DynamicTable::TYPE_DATETIME,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
             'computed' => [
                 'sql_id'        => 'computed',
-                'type'          => DoctrineDynamicTable::TYPE_INTEGER,
+                'type'          => DynamicTable::TYPE_INTEGER,
                 'filterable'    => true,
                 'sortable'      => true,
             ],
