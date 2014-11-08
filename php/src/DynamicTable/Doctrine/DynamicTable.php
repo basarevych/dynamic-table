@@ -13,6 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DynamicTable\AbstractDynamicTable;
 use DynamicTable\Doctrine\Sorter;
+use DynamicTable\Doctrine\Filter;
 
 /**
  * DynamicTable for Doctrine
@@ -54,6 +55,8 @@ class DynamicTable extends AbstractDynamicTable
     /**
      * Columns setter
      *
+     * This method adds 'sql_id' parameter to the columns
+     *
      * @param array $columns
      * @throws Exception            In case of invalid column definition
      * @return DynamicTable
@@ -77,6 +80,9 @@ class DynamicTable extends AbstractDynamicTable
     {
         $sorter = new Sorter();
         $sorter->apply($this);
+
+        $filter = new Filter();
+        $filter->apply($this);
 
         $query = $this->qb->getQuery();
         $paginator = new Paginator($query);
@@ -103,12 +109,14 @@ class DynamicTable extends AbstractDynamicTable
         foreach ($paginator as $row)
             $result[] = $mapper($row);
 
+        $filters = $this->getFilters();
         return [
             'sort_column'   => $this->getSortColumn(),
             'sort_dir'      => $this->getSortDir(),
             'page_number'   => $this->getPageNumber(),
             'page_size'     => $this->getPageSize(),
             'total_pages'   => $this->getTotalPages(),
+            'filters'       => count($filters) ? $filters : new \StdClass(),
             'data'          => $result,
         ];
     }

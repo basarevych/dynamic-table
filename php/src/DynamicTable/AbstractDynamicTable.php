@@ -33,6 +33,21 @@ abstract class AbstractDynamicTable
     const TYPE_DATETIME = 'datetime';
 
     /**
+     * Available filters
+     *
+     * @const FILTER_LIKE
+     * @const FILTER_EQUAL
+     * @const FILTER_GREATER
+     * @const FILTER_LESS
+     * @const FILTER_NULL
+     */
+     const FILTER_LIKE = 'like';
+     const FILTER_EQUAL = 'equal';
+     const FILTER_GREATER = 'greater';
+     const FILTER_LESS = 'less';
+     const FILTER_NULL = 'null';
+
+    /**
      * Sorting directions
      *
      * @const DIR_ASC
@@ -51,7 +66,15 @@ abstract class AbstractDynamicTable
     /**
      * Table columns
      *
-     * [ $columnId => $columnParams ]
+     * $columns = [
+     *     $columnId => $columnParams,
+     *     // ...
+     * ];
+     * $columnParams = [
+     *     'type' => $columnType, // One of TYPE_* constants
+     *     'filters' => $columnFilters, // Array of FILTER_* constants
+     *     'sortable' => true|false,
+     * ];
      *
      * @var array
      */
@@ -70,7 +93,14 @@ abstract class AbstractDynamicTable
     /**
      * Query filters
      *
-     * [ $columnId => $filterParams ]
+     * $filters = [
+     *     $columnId => $filterParams,
+     *     // ...
+     * ];
+     * $filterParams = [
+     *     $filter => 'value', // $filter is one of FILTER_* constants
+     *     // ...
+     * ];
      *
      * @var array
      */
@@ -125,10 +155,10 @@ abstract class AbstractDynamicTable
                 throw new \Exception("Column ID should be a non-empty string");
             if (!isset($params['type']))
                 throw new \Exception("No 'type' param for ID $id");
-            if (!in_array($params['type'], self::getTypes()))
+            if (!in_array($params['type'], self::getAvailableTypes()))
                 throw new \Exception("Unknown type '" . $params['type'] . "' for ID $id");
-            if (!isset($params['filterable']))
-                throw new \Exception("No 'filterable' param for ID $id");
+            if (!isset($params['filters']))
+                throw new \Exception("No 'filters' param for ID $id");
             if (!isset($params['sortable']))
                 throw new \Exception("No 'sortable' param for ID $id");
         }
@@ -357,7 +387,7 @@ abstract class AbstractDynamicTable
      *
      * @return array
      */
-    public static function getTypes()
+    public static function getAvailableTypes()
     {
         return [
             self::TYPE_STRING,
@@ -365,6 +395,22 @@ abstract class AbstractDynamicTable
             self::TYPE_FLOAT,
             self::TYPE_BOOLEAN,
             self::TYPE_DATETIME,
+        ];
+    }
+
+    /**
+     * List filter types
+     *
+     * @return array
+     */
+    public static function getAvailableFilters()
+    {
+        return [
+            self::FILTER_LIKE,
+            self::FILTER_EQUAL,
+            self::FILTER_GREATER,
+            self::FILTER_LESS,
+            self::FILTER_NULL,
         ];
     }
 }

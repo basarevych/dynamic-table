@@ -19,6 +19,11 @@ use DynamicTable\Doctrine\DynamicTable;
  */
 class Sorter
 {
+    /**
+     * Sort the table
+     *
+     * @param DynamicTable $table
+     */
     public function apply(DynamicTable $table)
     {
         $column = $table->getSortColumn();
