@@ -209,12 +209,26 @@ abstract class AbstractDynamicTable
     {
         if ($filters === null)
             $filters = [];
-
-        if (is_array($filters))
-            $this->filters = $filters;
-        else
+        else if (!is_array($filters))
             throw new \Exception('Filters should be null or array');
 
+        foreach ($filters as $column => $filter) {
+            $found = false;
+            foreach ($this->getColumns() as $id => $params) {
+                if ($id == $column) {
+                    foreach ($filter as $name => $value) {
+                        if (!in_array($name, $params['filters']))
+                            unset($filter[$name]);
+                    }
+                    break;
+                }
+            }
+
+            if (!$found)
+                unset($filters[$column]);
+        }
+
+        $this->filters = $filters;
         return $this;
     }
 
@@ -254,7 +268,19 @@ abstract class AbstractDynamicTable
      */
     public function setSortColumn($column)
     {
-        $this->sortColumn = $column;
+        $this->sortColumn = null;
+
+        $found = false;
+        foreach ($table->getColumns() as $id => $params) {
+            if ($id == $column) {
+                $found = ($params['sortable'] === true);
+                break;
+            }
+        }
+
+        if ($found)
+            $this->sortColumn = $column;
+
         return $this;
     }
 

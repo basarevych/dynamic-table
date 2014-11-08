@@ -32,20 +32,16 @@ class Sorter
         if (!$column)
             return;
 
-        $found = false;
         $sqlId = null;
         foreach ($table->getColumns() as $id => $params) {
             if ($id == $column) {
-                $found = ($params['sortable'] === true);
                 $sqlId = $params['sql_id'];
                 break;
             }
         }
 
-        if (!$found) {
-            $table->setSortColumn(null);
-            return;
-        }
+        if (!$sqlId)
+            throw new \Exception("No 'sql_id' for $column");
 
         $qb = $table->getQueryBuilder();
         $qb->addOrderBy($sqlId, $dir);

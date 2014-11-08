@@ -33,7 +33,6 @@ class Filter
         $this->sqlParams = [];
 
         $filters = $table->getFilters();
-
         if (count($filters) == 0)
             return;
 
