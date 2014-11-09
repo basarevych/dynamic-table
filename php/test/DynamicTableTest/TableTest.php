@@ -3,16 +3,15 @@
 namespace DynamicTableTest;
 
 use PHPUnit_Framework_TestCase;
-use DynamicTable\AbstractDynamicTable;
+use DynamicTable\Table;
 
-class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
+class TableTest extends PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         parent::setUp();
 
-        $this->table = $this->getMockBuilder('DynamicTable\AbstractDynamicTable')
-                            ->getMockForAbstractClass();
+        $this->table = new Table();
     }
 
     public function testSetColumnsAcceptsValidData()
@@ -20,8 +19,8 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
         try {
             $this->table->setColumns([
                 'id' => [
-                    'type' => AbstractDynamicTable::TYPE_INTEGER,
-                    'filters' => [ AbstractDynamicTable::FILTER_LIKE ],
+                    'type' => Table::TYPE_INTEGER,
+                    'filters' => [ Table::FILTER_LIKE ],
                     'sortable' => true,
                 ]
             ]);
@@ -34,25 +33,25 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
     {
         $this->table->setColumns([
             'id' => [
-                'type' => AbstractDynamicTable::TYPE_INTEGER,
-                'filters' => [ AbstractDynamicTable::FILTER_EQUAL ],
+                'type' => Table::TYPE_INTEGER,
+                'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
             ]
         ]);
 
         $this->table->setFilters([
             'id' => [
-                AbstractDynamicTable::FILTER_EQUAL => 123,
-                AbstractDynamicTable::FILTER_LIKE => 'xxx',
+                Table::FILTER_EQUAL => 123,
+                Table::FILTER_LIKE => 'xxx',
             ],
             'missing' => [
-                AbstractDynamicTable::FILTER_EQUAL => 123,
+                Table::FILTER_EQUAL => 123,
             ]
         ]);
 
         $expected = [
             'id' => [
-                AbstractDynamicTable::FILTER_EQUAL => 123,
+                Table::FILTER_EQUAL => 123,
             ],
         ];
 
@@ -61,7 +60,7 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
 
     public function testSetFiltersJsonConvertsInput()
     {
-        $this->table = $this->getMockBuilder('DynamicTable\AbstractDynamicTable')
+        $this->table = $this->getMockBuilder('DynamicTable\Table')
                             ->setMethods([ 'setFilters' ])
                             ->getMockForAbstractClass();
         $this->table->expects($this->any())
@@ -72,8 +71,8 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
 
         $this->table->setColumns([
             'id' => [
-                'type' => AbstractDynamicTable::TYPE_INTEGER,
-                'filters' => [ AbstractDynamicTable::FILTER_EQUAL ],
+                'type' => Table::TYPE_INTEGER,
+                'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
             ]
         ]);
@@ -91,11 +90,11 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
 
         $expected = [
             'id' => [
-                AbstractDynamicTable::FILTER_EQUAL => 123,
-                AbstractDynamicTable::FILTER_LIKE => 'xxx',
+                Table::FILTER_EQUAL => 123,
+                Table::FILTER_LIKE => 'xxx',
             ],
             'missing' => [
-                AbstractDynamicTable::FILTER_EQUAL => 123,
+                Table::FILTER_EQUAL => 123,
             ]
         ];
 
@@ -106,8 +105,8 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
     {
         $this->table->setColumns([
             'id' => [
-                'type' => AbstractDynamicTable::TYPE_INTEGER,
-                'filters' => [ AbstractDynamicTable::FILTER_EQUAL ],
+                'type' => Table::TYPE_INTEGER,
+                'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
             ]
         ]);
@@ -136,8 +135,8 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
     {
        $columns = [ 
             'id' => [
-                'type' => AbstractDynamicTable::TYPE_INTEGER,
-                'filters' => [ AbstractDynamicTable::FILTER_EQUAL ],
+                'type' => Table::TYPE_INTEGER,
+                'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
             ]
         ];
@@ -147,5 +146,34 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, is_array($result) && isset($result['columns']), "Invalid structure returned");
         $this->assertEquals($columns, $result['columns'], "Invalid data returned");
+    }
+
+    public function testFetch()
+    {
+        $adapter = $this->getMockBuilder('DynamicTable\Adapter\AbstractAdapter')
+                        ->setMethods([ 'sortData', 'filterData', 'getData' ])
+                        ->getMockForAbstractClass();
+        $adapter->expects($this->any())
+            ->method('sortData')
+            ->will($this->returnValue(null));
+        $adapter->expects($this->any())
+            ->method('filterData')
+            ->will($this->returnValue(null));
+        $adapter->expects($this->any())
+            ->method('getData')
+            ->will($this->returnValue(null));
+
+        $this->table->setAdapter($adapter);
+        $data = $this->table->fetch();
+        $keys = array_keys($data);
+
+        $this->assertEquals(true, is_array($data), "Data should be array");
+        $this->assertEquals(true, in_array('sort_column', $keys), "No 'sort_column'");
+        $this->assertEquals(true, in_array('sort_dir', $keys), "No 'sort_dir'");
+        $this->assertEquals(true, in_array('page_number', $keys), "No 'page_number'");
+        $this->assertEquals(true, in_array('page_size', $keys), "No 'page_size'");
+        $this->assertEquals(true, in_array('total_pages', $keys), "No 'total_pages'");
+        $this->assertEquals(true, in_array('filters', $keys), "No 'filters'");
+        $this->assertEquals(true, in_array('data', $keys), "No 'data'");
     }
 }

@@ -9,13 +9,15 @@
 
 namespace DynamicTable;
 
+use DynamicTable\Adapter\AbstractAdapter;
+
 /**
- * Base DynamicTable class
+ * The DynamicTable class
  *
  * @category    DynamicTable
- * @package     Base
+ * @package     DynamicTable
  */
-abstract class AbstractDynamicTable
+class Table
 {
     /**
      * Available column types
@@ -66,6 +68,13 @@ abstract class AbstractDynamicTable
     const PAGE_SIZE = 15;
 
     /**
+     * Data adapter
+     *
+     * @var AbstractAdapter
+     */
+    protected $adapter;
+
+    /**
      * Table columns
      *
      * $columns = [
@@ -81,16 +90,6 @@ abstract class AbstractDynamicTable
      * @var array
      */
     protected $columns = [];
-
-    /**
-     * Table data row -> result row mapper (optional)
-     *
-     * Function should get single argument $row, which is data row
-     * and return an array which is feeded to the front-end
-     *
-     * @var \Closure
-     */
-    protected $mapper = null;
 
     /**
      * Query filters
@@ -144,11 +143,33 @@ abstract class AbstractDynamicTable
     protected $totalPages = 1;
 
     /**
+     * Adapter setter
+     *
+     * @param AbstractAdapter $adapter
+     * @return Table
+     */
+    public function setAdapter(AbstractAdapter $adapter)
+    {
+        $this->adapter = $adapter;
+        return $this;
+    }
+
+    /**
+     * Adapter getter
+     *
+     * @return AbstractAdapter
+     */
+    public function getAdapter()
+    {
+        return $this->adapter;
+    }
+
+    /**
      * Columns setter
      *
      * @param array $columns
      * @throws Exception            In case of invalid column definition
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setColumns(array $columns)
     {
@@ -180,32 +201,10 @@ abstract class AbstractDynamicTable
     }
 
     /**
-     * Mapper setter
-     *
-     * @param \Closure $mapper
-     * @return AbstractDynamicTable
-     */
-    public function setMapper(\Closure $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Mapper getter
-     *
-     * @return \Closure
-     */
-    public function getMapper()
-    {
-        return $this->mapper;
-    }
-
-    /**
      * Filters setter
      *
      * @param mixed $filters
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setFilters($filters)
     {
@@ -240,7 +239,7 @@ abstract class AbstractDynamicTable
      * JSON version of filters setter
      *
      * @param string $filters
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setFiltersJson($filters)
     {
@@ -268,7 +267,7 @@ abstract class AbstractDynamicTable
      * Sort column setter
      *
      * @param string $column
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setSortColumn($column)
     {
@@ -302,7 +301,7 @@ abstract class AbstractDynamicTable
      * Sort direction setter
      *
      * @param string $dir
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setSortDir($dir)
     {
@@ -328,7 +327,7 @@ abstract class AbstractDynamicTable
      * Page number setter
      *
      * @param integer $number
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setPageNumber($number)
     {
@@ -353,7 +352,7 @@ abstract class AbstractDynamicTable
      * Page size setter
      *
      * @param integer $size
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function setPageSize($size)
     {
@@ -388,7 +387,7 @@ abstract class AbstractDynamicTable
      * Recalculates $pageNumber and $totalPages
      *
      * @param integer $rowCount
-     * @return AbstractDynamicTable
+     * @return Table
      */
     public function calculatePageParams($rowCount)
     {
@@ -423,11 +422,29 @@ abstract class AbstractDynamicTable
     }
 
     /**
-     * Fetch data and feed it to front-end
-     *
-     * @return array
+     * Fetch data and feed id to front-end
      */
-    abstract public function fetch();
+    public function fetch()
+    {
+        $adapter = $this->getAdapter();
+        if (!$adapter)
+            throw new \Exception("Adapter property is not set");
+
+        $adapter->sortData($this);
+        $adapter->filterData($this);
+        $result = $adapter->getData($this);
+
+        $filters = $this->getFilters();
+        return [
+            'sort_column'   => $this->getSortColumn(),
+            'sort_dir'      => $this->getSortDir(),
+            'page_number'   => $this->getPageNumber(),
+            'page_size'     => $this->getPageSize(),
+            'total_pages'   => $this->getTotalPages(),
+            'filters'       => count($filters) ? $filters : new \StdClass(),
+            'data'          => $result,
+        ];
+    }
 
     /**
      * List column types

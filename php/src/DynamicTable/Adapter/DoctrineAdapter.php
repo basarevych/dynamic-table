@@ -7,27 +7,84 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace DynamicTable\Doctrine;
+namespace DynamicTable\Adapter;
 
-use DynamicTable\Doctrine\DynamicTable;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use DynamicTable\Table;
+use DynamicTable\Adapter\AbstractAdapter;
 
 /**
- * DynamicTable filtering class for Doctrine
+ * Doctrine data adapter class
  *
  * @category    DynamicTable
- * @package     Doctrine
+ * @package     Adapter
  */
-class Filter
+class DoctrineAdapter extends AbstractAdapter
 {
-    protected $sqlOrs = [];
-    protected $sqlParams = [];
+    /**
+     * Doctrine QueryBuilder
+     *
+     * @var QueryBuilder
+     */
+    protected $qb = null;
 
     /**
-     * Filter the table
+     * QueryBuilder setter
      *
-     * @param DynamicTable $table
+     * @param QueryBuilder $qb
+     * @return Table
      */
-    public function apply(DynamicTable $table)
+    public function setQueryBuilder(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+        return $this;
+    }
+
+    /**
+     * QueryBuilder getter
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->qb;
+    }
+
+    /**
+     * Sort data
+     *
+     * @param Table $table
+     */
+    public function sortData(Table $table)
+    {
+        $column = $table->getSortColumn();
+        $dir = $table->getSortDir();
+
+        if (!$column)
+            return;
+
+        $sqlId = null;
+        foreach ($table->getColumns() as $id => $params) {
+            if ($id == $column) {
+                $sqlId = $params['sql_id'];
+                break;
+            }
+        }
+
+        if (!$sqlId)
+            throw new \Exception("No 'sql_id' for column: $column");
+
+        $qb = $this->getQueryBuilder();
+        $qb->addOrderBy($sqlId, $dir);
+    }
+
+    /**
+     * Filter data
+     *
+     * @param Table $table
+     */
+    public function filterData(Table $table)
     {
         $this->sqlOrs = [];
         $this->sqlParams = [];
@@ -48,10 +105,39 @@ class Filter
         if (count($this->sqlOrs) == 0)
             return;
 
-        $qb = $table->getQueryBuilder();
+        $qb = $this->getQueryBuilder();
         $qb->andWhere(join(' OR ', $this->sqlOrs));
         foreach ($this->sqlParams as $name => $value)
             $qb->setParameter($name, $value);
+    }
+
+    /**
+     * Get data
+     *
+     * @param Table $table
+     * @return array
+     */
+    public function getData(Table $table)
+    {
+        $query = $this->getQueryBuilder()->getQuery();
+        $paginator = new Paginator($query);
+        $table->calculatePageParams(count($paginator));
+
+        if ($table->getPageSize() > 0) {
+            $paginator->getQuery()
+                      ->setFirstResult($table->getPageSize() * ($table->getPageNumber() - 1))
+                      ->setMaxResults($table->getPageSize());
+        }
+
+        $mapper = $this->getMapper();
+        if (!$mapper)
+            throw new \Exception("Data 'mapper' is not set for the table");
+
+        $result = [];
+        foreach ($paginator as $row)
+            $result[] = $mapper($row);
+
+        return $result;
     }
 
     /**
