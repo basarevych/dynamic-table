@@ -120,6 +120,19 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, $this->table->getSortColumn(), "Invalid field was not cleared");
     }
 
+    public function testCalculatePageParams()
+    {
+        $this->table->setPageNumber(999);
+        $this->table->setPageSize(12);
+
+        $this->table->calculatePageParams(134);
+        $total = $this->table->getTotalPages();
+        $number = $this->table->getPageNumber();
+
+        $this->assertEquals(ceil(134 / 12), $total, "'Total pages' is incorrect");
+        $this->assertEquals($total, $number, "'Page number' was not set to 'total pages'");
+    }
+
     public function testDescribe()
     {
        $columns = [ 
@@ -136,5 +149,4 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, is_array($result) && isset($result['columns']), "Invalid structure returned");
         $this->assertEquals($columns, $result['columns'], "Invalid data returned");
     }
-
 }

@@ -86,14 +86,7 @@ class DynamicTable extends AbstractDynamicTable
 
         $query = $this->qb->getQuery();
         $paginator = new Paginator($query);
-
-        $this->totalPages = $this->pageSize > 0
-            ? ceil(count($paginator) / $this->pageSize)
-            : 1;
-        if ($this->totalPages <= 0)
-            $this->totalPages = 1;
-        if ($this->pageNumber > $this->totalPages)
-            $this->pageNumber = $this->totalPages;
+        $this->calculatePageParams(count($paginator));
 
         if ($this->pageSize > 0) {
             $paginator->getQuery()

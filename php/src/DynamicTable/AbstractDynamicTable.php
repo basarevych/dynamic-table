@@ -383,6 +383,23 @@ abstract class AbstractDynamicTable
     }
 
     /**
+     * Recalculates $pageNumber and $totalPages
+     *
+     * @param integer $rowCount
+     * @return AbstractDynamicTable
+     */
+    public function calculatePageParams($rowCount)
+    {
+        $this->totalPages = $this->pageSize > 0
+            ? ceil($rowCount / $this->pageSize)
+            : 1;
+        if ($this->totalPages <= 0)
+            $this->totalPages = 1;
+        if ($this->pageNumber > $this->totalPages)
+            $this->pageNumber = $this->totalPages;
+    }
+
+    /**
      * Return table descriptions
      *
      * @return array
