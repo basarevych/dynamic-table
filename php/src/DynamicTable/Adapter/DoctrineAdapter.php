@@ -162,7 +162,7 @@ class DoctrineAdapter extends AbstractAdapter
 
         $paramBaseName = str_replace('.', '_', $field);
 
-        if ($type == DynamicTable::TYPE_DATETIME) {
+        if ($type == Table::TYPE_DATETIME) {
             if (is_array($value)) {
                 $value = [
                     new \DateTime('@' . $value[0]),
@@ -174,35 +174,35 @@ class DoctrineAdapter extends AbstractAdapter
         }
 
         switch ($filter) {
-            case DynamicTable::FILTER_LIKE:
+            case Table::FILTER_LIKE:
                 if (is_array($value))
                     return false;
                 $param = $paramBaseName . '_like';
                 $this->sqlOrs[] = "($field LIKE :$param)";
                 $this->sqlParams[$param] = '%' . $value . '%';
                 break;
-            case DynamicTable::FILTER_EQUAL:
+            case Table::FILTER_EQUAL:
                 if (is_array($value))
                     return false;
                 $param = $paramBaseName . '_equal';
                 $this->sqlOrs[] = "($field = :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
-            case DynamicTable::FILTER_GREATER:
+            case Table::FILTER_GREATER:
                 if (is_array($value))
                     return false;
                 $param = $paramBaseName . '_greater';
                 $this->sqlOrs[] = "($field > :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
-            case DynamicTable::FILTER_LESS:
+            case Table::FILTER_LESS:
                 if (is_array($value))
                     return false;
                 $param = $paramBaseName . '_less';
                 $this->sqlOrs[] = "($field < :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
-            case DynamicTable::FILTER_BETWEEN:
+            case Table::FILTER_BETWEEN:
                 if (!is_array($value))
                     return false;
                 $param1 = $paramBaseName . '_begin';
@@ -211,7 +211,7 @@ class DoctrineAdapter extends AbstractAdapter
                 $this->sqlParams[$param1] = $value[0];
                 $this->sqlParams[$param2] = $value[1];
                 break;
-            case DynamicTable::FILTER_NULL:
+            case Table::FILTER_NULL:
                 if (is_array($value))
                     return false;
                 $param = $value ? 'NULL' : 'NOT NULL';

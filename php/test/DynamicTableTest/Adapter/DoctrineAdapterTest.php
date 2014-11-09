@@ -125,6 +125,73 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Table::DIR_DESC, $resultDir, "Incorrect sort direction was set");
     }
 
+    public function testFilterData()
+    {
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+                   ->disableOriginalConstructor()
+                   ->setMethods([ 'andWhere', 'setParameter' ])
+                   ->getMock();
+
+        $resultWhere = null;
+        $qb->expects($this->any())
+            ->method('andWhere')
+            ->will($this->returnCallback(function ($where) use (&$resultWhere) {
+                $resultWhere = $where;
+            }));
+
+        $resultParams = [];
+        $qb->expects($this->any())
+            ->method('setParameter')
+            ->will($this->returnCallback(function ($name, $value) use (&$resultParams) {
+                $resultParams[$name] = $value;
+            }));
+
+        $this->table->setFilters([
+            'id' => [
+                Table::FILTER_EQUAL => 123
+            ],
+            'string' => [
+                Table::FILTER_LIKE => 'abc'
+            ],
+            'integer' => [
+                Table::FILTER_BETWEEN => [ 10, 20 ]
+            ],
+            'float' => [
+                Table::FILTER_GREATER => 5,
+                Table::FILTER_LESS => 8
+            ],
+            'boolean' => [
+                Table::FILTER_NULL => true
+            ]
+        ]);
+
+        $this->adapter->setQueryBuilder($qb);
+        $this->adapter->filterData($this->table);
+
+        $this->assertEquals(
+            "(s.id = :s_id_equal)"
+            ." OR (s.value_string LIKE :s_value_string_like)"
+            ." OR (s.value_integer > :s_value_integer_begin AND s.value_integer < :s_value_integer_end)"
+            ." OR (s.value_float > :s_value_float_greater)"
+            ." OR (s.value_float < :s_value_float_less)"
+            ." OR (s.value_boolean IS NULL)",
+            $resultWhere,
+            "SQL WHERE is incorrect"
+        );
+        $this->assertEquals(
+            [
+                "s_id_equal" => 123,
+                "s_value_string_like" => "%abc%",
+                "s_value_integer_begin" => 10,
+                "s_value_integer_end" => 20,
+                "s_value_float_greater" => 5,
+                "s_value_float_less" => 8
+            ],
+            $resultParams,
+            "SQL parameters are wrong"
+        );
+    }
+
     public function testGetData()
     {
         $entities = [];
@@ -146,7 +213,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
 
         $data = $this->adapter->getData($this->table);
 
-        $this->assertEquals(5, $this->table->getTotalPages(), "There should be 3 pages");
+        $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
         $this->assertEquals(2, count($data), "Only two rows should be returned");
         $this->assertEquals(3, $data[0]['integer'], "Wrong data returned");
         $this->assertEquals(4, $data[1]['integer'], "Wrong data returned");
