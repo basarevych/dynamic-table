@@ -70,7 +70,6 @@ class AbstractDynamicTableTest extends PHPUnit_Framework_TestCase
                 $result = $filters;
             }));
 
-
         $this->table->setColumns([
             'id' => [
                 'type' => AbstractDynamicTable::TYPE_INTEGER,
