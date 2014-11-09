@@ -37,7 +37,7 @@ class Filter
 
         foreach ($filters as $column => $filter) {
             foreach ($filter as $name => $value)
-                $this->buildFilter($columns[$column]['sql_id'], $name, $value);
+                $this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value);
         }
 
         if (count($this->sqlOrs) == 0)
@@ -53,12 +53,16 @@ class Filter
      * Set SQL query params for a filter
      *
      * @param string $field
+     * @param string $type
      * @param string $filter
      * @param string $value
      */
-    protected function buildFilter($field, $filter, $value)
+    protected function buildFilter($field, $type, $filter, $value)
     {
         $paramBaseName = str_replace('.', '_', $field);
+
+        if ($type == DynamicTable::TYPE_DATETIME)
+            $value = new \DateTime('@' . $value);
 
         if (strlen($value) > 0) {
             switch ($filter) {
