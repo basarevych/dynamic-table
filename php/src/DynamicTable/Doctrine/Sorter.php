@@ -41,7 +41,7 @@ class Sorter
         }
 
         if (!$sqlId)
-            throw new \Exception("No 'sql_id' for $column");
+            throw new \Exception("No 'sql_id' for column: $column");
 
         $qb = $table->getQueryBuilder();
         $qb->addOrderBy($sqlId, $dir);
