@@ -12,7 +12,9 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
-use DynamicTable\Doctrine\DynamicTable;
+use DynamicTable\Table;
+use DynamicTable\Adapter\DoctrineAdapter;
+use DynamicTable\Adapter\ArrayAdapter;
 
 /**
  * Index controller
@@ -31,7 +33,7 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * DynamicTable data retrieving action (Database version)
+     * Table data retrieving action (Database version)
      */
     public function dbDataAction()
     {
@@ -43,53 +45,9 @@ class IndexController extends AbstractActionController
         $qb->select('s, s.id + 100 AS computed')
            ->from('Application\Entity\Sample', 's');
 
-        $table = new DynamicTable();
-        $table->setQueryBuilder($qb);
-        $table->setColumns([
-            'id' => [
-                'sql_id'    => 's.id',
-                'type'      => DynamicTable::TYPE_INTEGER,
-                'filters'   => [ DynamicTable::FILTER_EQUAL ],
-                'sortable'  => true,
-            ],
-            'string' => [
-                'sql_id'    => 's.value_string',
-                'type'      => DynamicTable::TYPE_STRING,
-                'filters'   => [ DynamicTable::FILTER_LIKE, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-            'integer' => [
-                'sql_id'    => 's.value_integer',
-                'type'      => DynamicTable::TYPE_INTEGER,
-                'filters'   => [ DynamicTable::FILTER_GREATER, DynamicTable::FILTER_LESS, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-            'float' => [
-                'sql_id'    => 's.value_float',
-                'type'      => DynamicTable::TYPE_FLOAT,
-                'filters'   => [ DynamicTable::FILTER_GREATER, DynamicTable::FILTER_LESS, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-            'boolean' => [
-                'sql_id'    => 's.value_boolean',
-                'type'      => DynamicTable::TYPE_BOOLEAN,
-                'filters'   => [ DynamicTable::FILTER_EQUAL, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-            'datetime' => [
-                'sql_id'    => 's.value_datetime',
-                'type'      => DynamicTable::TYPE_DATETIME,
-                'filters'   => [ DynamicTable::FILTER_GREATER, DynamicTable::FILTER_LESS, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-            'computed' => [
-                'sql_id'    => 'computed',
-                'type'      => DynamicTable::TYPE_INTEGER,
-                'filters'   => [ DynamicTable::FILTER_GREATER, DynamicTable::FILTER_LESS, DynamicTable::FILTER_NULL ],
-                'sortable'  => true,
-            ],
-        ]);
-        $table->setMapper(function ($row) use ($translate) {
+        $adapter = new DoctrineAdapter();
+        $adapter->setQueryBuilder($qb);
+        $adapter->setMapper(function ($row) use ($translate) {
             $boolean = $row[0]->getValueBoolean();
             if ($boolean !== null)
                 $boolean = $translate($boolean ? 'TRUE_VALUE' : 'FALSE_VALUE');
@@ -107,6 +65,9 @@ class IndexController extends AbstractActionController
                 'computed'  => $row['computed'],
             ];
         });
+
+        $table = $this->createTable();
+        $table->setAdapter($adapter);
 
         $query = $this->params()->fromQuery('query');
         switch ($query) {
@@ -127,5 +88,62 @@ class IndexController extends AbstractActionController
 
         $data['success'] = true;
         return new JsonModel($data);
+    }
+
+    /**
+     * Create Table object
+     *
+     * @return Table
+     */
+    protected function createTable()
+    {
+        $table = new Table();
+
+        $table->setColumns([
+            'id' => [
+                'sql_id'    => 's.id',
+                'type'      => Table::TYPE_INTEGER,
+                'filters'   => [ Table::FILTER_EQUAL ],
+                'sortable'  => true,
+            ],
+            'string' => [
+                'sql_id'    => 's.value_string',
+                'type'      => Table::TYPE_STRING,
+                'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'integer' => [
+                'sql_id'    => 's.value_integer',
+                'type'      => Table::TYPE_INTEGER,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'float' => [
+                'sql_id'    => 's.value_float',
+                'type'      => Table::TYPE_FLOAT,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'boolean' => [
+                'sql_id'    => 's.value_boolean',
+                'type'      => Table::TYPE_BOOLEAN,
+                'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'datetime' => [
+                'sql_id'    => 's.value_datetime',
+                'type'      => Table::TYPE_DATETIME,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'computed' => [
+                'sql_id'    => 'computed',
+                'type'      => Table::TYPE_INTEGER,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+        ]);
+
+        return $table;
     }
 }
