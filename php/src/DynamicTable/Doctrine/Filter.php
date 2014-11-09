@@ -64,7 +64,7 @@ class Filter
         if ($type == DynamicTable::TYPE_DATETIME)
             $value = new \DateTime('@' . $value);
 
-        if (strlen($value) > 0) {
+        if ((is_array($value) && count($value) == 2) || strlen($value) > 0) {
             switch ($filter) {
                 case DynamicTable::FILTER_LIKE:
                     $param = $paramBaseName . '_like';
@@ -86,7 +86,14 @@ class Filter
                     $this->sqlOrs[] = "($field < :$param)";
                     $this->sqlParams[$param] = $value;
                     break;
-                 case DynamicTable::FILTER_NULL:
+                case DynamicTable::FILTER_BETWEEN:
+                    $param1 = $paramBaseName . '_begin';
+                    $param2 = $paramBaseName . '_end';
+                    $this->sqlOrs[] = "($field > :$param1 AND $field < :$param2)";
+                    $this->sqlParams[$param1] = $value[0];
+                    $this->sqlParams[$param2] = $value[1];
+                    break;
+                case DynamicTable::FILTER_NULL:
                     $param = $value ? 'NULL' : 'NOT NULL';
                     $this->sqlOrs[] = "($field IS $param)";
                     break;

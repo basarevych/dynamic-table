@@ -39,13 +39,15 @@ abstract class AbstractDynamicTable
      * @const FILTER_EQUAL
      * @const FILTER_GREATER
      * @const FILTER_LESS
+     * @const FILTER_BETWEEN
      * @const FILTER_NULL
      */
-     const FILTER_LIKE = 'like';
-     const FILTER_EQUAL = 'equal';
-     const FILTER_GREATER = 'greater';
-     const FILTER_LESS = 'less';
-     const FILTER_NULL = 'null';
+    const FILTER_LIKE = 'like';
+    const FILTER_EQUAL = 'equal';
+    const FILTER_GREATER = 'greater';
+    const FILTER_LESS = 'less';
+    const FILTER_BETWEEN = 'between';
+    const FILTER_NULL = 'null';
 
     /**
      * Sorting directions
