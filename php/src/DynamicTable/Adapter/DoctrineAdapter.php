@@ -126,12 +126,12 @@ class DoctrineAdapter extends AbstractAdapter
     }
 
     /**
-     * Get data
+     * Paginate and return result
      *
      * @param Table $table
      * @return array
      */
-    public function fetch(Table $table)
+    public function paginate(Table $table)
     {
         $query = $this->getQueryBuilder()->getQuery();
         $paginator = new Paginator($query);

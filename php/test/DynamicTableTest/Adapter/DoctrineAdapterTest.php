@@ -201,7 +201,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testFetch()
+    public function testPaginate()
     {
         $entities = [];
         for ($i = 1; $i <= 10; $i++) {
@@ -220,7 +220,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
            ->from('DynamicTableTest\Entity\Sample', 's');
         $this->adapter->setQueryBuilder($qb);
 
-        $data = $this->adapter->fetch($this->table);
+        $data = $this->adapter->paginate($this->table);
 
         $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
         $this->assertEquals(2, count($data), "Only two rows should be returned");

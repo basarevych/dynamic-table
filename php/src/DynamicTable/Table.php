@@ -406,11 +406,11 @@ class Table
     }
 
     /**
-     * Return table descriptions
+     * Return table description
      *
      * @return array
      */
-    public function getDescription()
+    public function describe()
     {
         $columns = [];
         foreach ($this->columns as $id => $params) {
@@ -429,7 +429,7 @@ class Table
     /**
      * Fetch data and feed id to front-end
      */
-    public function getData()
+    public function fetch()
     {
         $adapter = $this->getAdapter();
         if (!$adapter)
@@ -438,7 +438,7 @@ class Table
         $adapter->check($this);
         $adapter->sort($this);
         $adapter->filter($this);
-        $result = $adapter->fetch($this);
+        $result = $adapter->paginate($this);
 
         $filters = $this->getFilters();
         return [

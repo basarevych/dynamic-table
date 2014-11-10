@@ -262,7 +262,7 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(3, $result[0]['id'], "Incorrect row after NULL filtering");
     }
 
-    public function testFetch()
+    public function testPaginate()
     {
     }
 }

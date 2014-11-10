@@ -74,10 +74,10 @@ abstract class AbstractAdapter
     abstract public function filter(Table $table);
 
     /**
-     * Get data
+     * Paginate and return result
      *
      * @param Table $table
      * @return array
      */
-    abstract public function fetch(Table $table);
+    abstract public function paginate(Table $table);
 }

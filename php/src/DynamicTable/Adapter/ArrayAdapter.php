@@ -153,12 +153,12 @@ class ArrayAdapter extends AbstractAdapter
     }
 
     /**
-     * Get data
+     * Paginate and return result
      *
      * @param Table $table
      * @return array
      */
-    public function fetch(Table $table)
+    public function paginate(Table $table)
     {
         $mapper = $this->getMapper();
         if (!$mapper)
