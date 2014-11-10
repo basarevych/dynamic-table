@@ -1,5 +1,5 @@
 {
-    "name": "components/dynamic-table",
+    "name": "basarevych/dynamic-table",
     "type": "component",
     "description": "Dynamic HTML grid",
     "license": "MIT",
@@ -23,8 +23,6 @@
             ],
             "css": [
                 "css/dynamic-table.css"
-            ],
-            "files": [
             ]
         }
     },
