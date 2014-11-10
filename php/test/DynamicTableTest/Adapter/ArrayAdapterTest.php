@@ -221,9 +221,10 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($result), "One row should remain");
         $this->assertEquals(4, $result[0]['id'], "Incorrect row after GREATER filtering");
 
+        $date = new \DateTime('2010-03-25 14:00:00');
         $this->table->setFilters([
-            'float' => [
-                Table::FILTER_LESS => 0.02
+            'datetime' => [
+                Table::FILTER_LESS => $date->getTimestamp()
             ]
         ]);
 
@@ -250,7 +251,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->table->setFilters([
             'datetime' => [
                 Table::FILTER_NULL => true,
-                Table::FILTER_BETWEEN => [1, 4]
             ]
         ]);
 

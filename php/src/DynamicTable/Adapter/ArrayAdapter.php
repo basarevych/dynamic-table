@@ -121,6 +121,7 @@ class ArrayAdapter extends AbstractAdapter
         if (count($filters) == 0)
             return;
 
+        $columns = $table->getColumns();
         $result = [];
         $firstRow = true;
         foreach ($this->data as $row) {
@@ -130,7 +131,7 @@ class ArrayAdapter extends AbstractAdapter
             foreach ($filters as $id => $filterData) {
                 $successfulNames = [];
                 foreach ($filterData as $name => $value) {
-                    $test = $this->checkFilter($name, $value, $row[$id]);
+                    $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
                     if ($test !== null) {
                         if ($firstRow)
                             $successfulNames[$name] = $value;
@@ -170,32 +171,42 @@ class ArrayAdapter extends AbstractAdapter
         return $result;
     }
 
-    protected function checkFilter($filter, $test, $real)
+    protected function checkFilter($filter, $type, $test, $real)
     {
+        if ($type == Table::TYPE_DATETIME) {
+            if ($filter == Table::FILTER_BETWEEN
+                    && is_array($test) && count($test) == 2) {
+                $value = [
+                    new \DateTime('@' . $test[0]),
+                    new \DateTime('@' . $test[1]),
+                ];
+            } else if ($filter != Table::FILTER_BETWEEN
+                    && is_scalar($test)) {
+                $test = new \DateTime('@' . $test);
+            } else {
+                return null;
+            }
+        } else {
+            if ($filter == Table::FILTER_BETWEEN) {
+                if (!is_array($test) || count($test) != 2)
+                    return null;
+            } else if (!is_scalar($test)) {
+                return null;
+            }
+        }
+
         switch ($filter) {
             case Table::FILTER_LIKE:
-                if (!is_scalar($test))
-                    return null;
                 return $real !== null && strpos($real, $test) !== false;
             case Table::FILTER_EQUAL:
-                if (!is_scalar($test))
-                    return null;
                 return $real !== null && $test === $real;
             case Table::FILTER_GREATER:
                 return $real !== null && $real > $test;
-                if (!is_scalar($test))
-                    return null;
             case Table::FILTER_LESS:
-                if (!is_scalar($test))
-                    return null;
                 return $real !== null && $real < $test;
             case Table::FILTER_BETWEEN:
-                if (!is_array($test) || count($test) != 2)
-                    return null;
                 return $real !== null && $real > $test[0] && $real < $test[1];
             case Table::FILTER_NULL:
-                if (!is_scalar($test))
-                    return null;
                 return $real === null;
             default:
                 throw new \Exception("Unknown filter: $filter");

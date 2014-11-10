@@ -177,48 +177,49 @@ class DoctrineAdapter extends AbstractAdapter
         $paramBaseName = str_replace('.', '_', $field);
 
         if ($type == Table::TYPE_DATETIME) {
-            if (is_array($value)) {
+            if ($filter == Table::FILTER_BETWEEN
+                    && is_array($value) && count($value) == 2) {
                 $value = [
                     new \DateTime('@' . $value[0]),
                     new \DateTime('@' . $value[1]),
                 ];
-            } else {
+            } else if ($filter != Table::FILTER_BETWEEN
+                    && is_scalar($value)) {
                 $value = new \DateTime('@' . $value);
+            } else {
+                return false;
+            }
+        } else {
+            if ($filter == Table::FILTER_BETWEEN) {
+                if (!is_array($value) || count($value) != 2)
+                    return false;
+            } else if (!is_scalar($value)) {
+                return false;
             }
         }
 
         switch ($filter) {
             case Table::FILTER_LIKE:
-                if (is_array($value))
-                    return false;
                 $param = $paramBaseName . '_like';
                 $this->sqlOrs[] = "($field LIKE :$param)";
                 $this->sqlParams[$param] = '%' . $value . '%';
                 break;
             case Table::FILTER_EQUAL:
-                if (is_array($value))
-                    return false;
                 $param = $paramBaseName . '_equal';
                 $this->sqlOrs[] = "($field = :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
             case Table::FILTER_GREATER:
-                if (is_array($value))
-                    return false;
                 $param = $paramBaseName . '_greater';
                 $this->sqlOrs[] = "($field > :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
             case Table::FILTER_LESS:
-                if (is_array($value))
-                    return false;
                 $param = $paramBaseName . '_less';
                 $this->sqlOrs[] = "($field < :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
             case Table::FILTER_BETWEEN:
-                if (!is_array($value))
-                    return false;
                 $param1 = $paramBaseName . '_begin';
                 $param2 = $paramBaseName . '_end';
                 $this->sqlOrs[] = "($field > :$param1 AND $field < :$param2)";
@@ -226,10 +227,7 @@ class DoctrineAdapter extends AbstractAdapter
                 $this->sqlParams[$param2] = $value[1];
                 break;
             case Table::FILTER_NULL:
-                if (is_array($value))
-                    return false;
-                $param = $value ? 'NULL' : 'NOT NULL';
-                $this->sqlOrs[] = "($field IS $param)";
+                $this->sqlOrs[] = "($field IS NULL)";
                 break;
             default:
                 throw new \Exception("Unknown filter: $filter");
