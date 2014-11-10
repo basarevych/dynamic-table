@@ -92,7 +92,16 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function testSortData()
+    public function testCheck()
+    {
+        try {
+            $this->adapter->check($this->table);
+        } catch (\Exception $e) {
+            $this->fail('check() failed on valid data');
+        }
+    }
+
+    public function testSort()
     {
         $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
                    ->disableOriginalConstructor()
@@ -112,20 +121,20 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->table->setSortDir(Table::DIR_ASC);
 
         $this->adapter->setQueryBuilder($qb);
-        $this->adapter->sortData($this->table);
+        $this->adapter->sort($this->table);
 
         $this->assertEquals('s.id', $resultColumn, "Incorrect sort column was set");
         $this->assertEquals(Table::DIR_ASC, $resultDir, "Incorrect sort direction was set");
 
         $this->table->setSortDir(Table::DIR_DESC);
 
-        $this->adapter->sortData($this->table);
+        $this->adapter->sort($this->table);
 
         $this->assertEquals('s.id', $resultColumn, "Incorrect sort column was set");
         $this->assertEquals(Table::DIR_DESC, $resultDir, "Incorrect sort direction was set");
     }
 
-    public function testFilterData()
+    public function testFilter()
     {
         $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
                    ->disableOriginalConstructor()
@@ -166,7 +175,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->adapter->setQueryBuilder($qb);
-        $this->adapter->filterData($this->table);
+        $this->adapter->filter($this->table);
 
         $this->assertEquals(
             "(s.id = :s_id_equal)"
@@ -192,7 +201,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetData()
+    public function testFetch()
     {
         $entities = [];
         for ($i = 1; $i <= 10; $i++) {
@@ -211,7 +220,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
            ->from('DynamicTableTest\Entity\Sample', 's');
         $this->adapter->setQueryBuilder($qb);
 
-        $data = $this->adapter->getData($this->table);
+        $data = $this->adapter->fetch($this->table);
 
         $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
         $this->assertEquals(2, count($data), "Only two rows should be returned");

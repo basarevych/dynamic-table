@@ -52,18 +52,26 @@ abstract class AbstractAdapter
     }
 
     /**
+     * Check table and data
+     *
+     * @param Table $table
+     * @throws \Exception       Throw when error found
+     */
+    abstract public function check(Table $table);
+
+    /**
      * Sort data
      *
      * @param Table $table
      */
-    abstract public function sortData(Table $table);
+    abstract public function sort(Table $table);
 
     /**
      * Filter data
      *
      * @param Table $table
      */
-    abstract public function filterData(Table $table);
+    abstract public function filter(Table $table);
 
     /**
      * Get data
@@ -71,5 +79,5 @@ abstract class AbstractAdapter
      * @param Table $table
      * @return array
      */
-    abstract public function getData(Table $table);
+    abstract public function fetch(Table $table);
 }

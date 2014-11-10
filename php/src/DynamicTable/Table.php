@@ -184,6 +184,11 @@ class Table
                 throw new \Exception("No 'filters' param for ID $id");
             if (!isset($params['sortable']))
                 throw new \Exception("No 'sortable' param for ID $id");
+
+            foreach ($params['filters'] as $filter) {
+                if (!in_array($filter, self::getAvailableFilters()))
+                    throw new \Exception("Unknown filter: $filter");
+            }
         }
 
         $this->columns = $columns;
@@ -405,7 +410,7 @@ class Table
      *
      * @return array
      */
-    public function describe()
+    public function getDescription()
     {
         $columns = [];
         foreach ($this->columns as $id => $params) {
@@ -424,15 +429,16 @@ class Table
     /**
      * Fetch data and feed id to front-end
      */
-    public function fetch()
+    public function getData()
     {
         $adapter = $this->getAdapter();
         if (!$adapter)
             throw new \Exception("Adapter property is not set");
 
-        $adapter->sortData($this);
-        $adapter->filterData($this);
-        $result = $adapter->getData($this);
+        $adapter->check($this);
+        $adapter->sort($this);
+        $adapter->filter($this);
+        $result = $adapter->fetch($this);
 
         $filters = $this->getFilters();
         return [
@@ -474,6 +480,7 @@ class Table
             self::FILTER_EQUAL,
             self::FILTER_GREATER,
             self::FILTER_LESS,
+            self::FILTER_BETWEEN,
             self::FILTER_NULL,
         ];
     }

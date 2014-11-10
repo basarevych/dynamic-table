@@ -131,7 +131,7 @@ class TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($total, $number, "'Page number' was not set to 'total pages'");
     }
 
-    public function testDescribe()
+    public function testGetDescription()
     {
        $columns = [ 
             'id' => [
@@ -142,13 +142,13 @@ class TableTest extends PHPUnit_Framework_TestCase
         ];
 
         $this->table->setColumns($columns);
-        $result = $this->table->describe();
+        $result = $this->table->getDescription();
 
         $this->assertEquals(true, is_array($result) && isset($result['columns']), "Invalid structure returned");
         $this->assertEquals($columns, $result['columns'], "Invalid data returned");
     }
 
-    public function testFetch()
+    public function testGetData()
     {
         $adapter = $this->getMockBuilder('DynamicTable\Adapter\AbstractAdapter')
                         ->setMethods([ 'sortData', 'filterData', 'getData' ])
@@ -164,7 +164,7 @@ class TableTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         $this->table->setAdapter($adapter);
-        $data = $this->table->fetch();
+        $data = $this->table->getData();
         $keys = array_keys($data);
 
         $this->assertEquals(true, is_array($data), "Data should be array");

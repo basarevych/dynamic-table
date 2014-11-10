@@ -52,11 +52,25 @@ class DoctrineAdapter extends AbstractAdapter
     }
 
     /**
+     * Check table and data
+     *
+     * @param Table $table
+     * @throws \Exception       Throw when error found
+     */
+    public function check(Table $table)
+    {
+        foreach ($table->getColumns() as $id => $params) {
+            if (!isset($params['sql_id']))
+                throw new \Exception("No 'sql_id' param for ID $id");
+        }
+    }
+
+    /**
      * Sort data
      *
      * @param Table $table
      */
-    public function sortData(Table $table)
+    public function sort(Table $table)
     {
         $column = $table->getSortColumn();
         $dir = $table->getSortDir();
@@ -84,7 +98,7 @@ class DoctrineAdapter extends AbstractAdapter
      *
      * @param Table $table
      */
-    public function filterData(Table $table)
+    public function filter(Table $table)
     {
         $this->sqlOrs = [];
         $this->sqlParams = [];
@@ -117,7 +131,7 @@ class DoctrineAdapter extends AbstractAdapter
      * @param Table $table
      * @return array
      */
-    public function getData(Table $table)
+    public function fetch(Table $table)
     {
         $query = $this->getQueryBuilder()->getQuery();
         $paginator = new Paginator($query);
