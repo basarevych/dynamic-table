@@ -63,6 +63,19 @@ class DoctrineAdapter extends AbstractAdapter
             if (!isset($params['sql_id']))
                 throw new \Exception("No 'sql_id' param for ID $id");
         }
+
+        $columns = $table->getColumns();
+        $successfulFilters = [];
+        foreach ($table->getFilters() as $column => $filters) {
+            $successfulNames = [];
+            foreach ($filters as $name => $value) {
+                if ($this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value))
+                    $successfulNames[$name] = $value;
+            }
+            if (count($successfulNames) > 0)
+                $successfulFilters[$column] = $successfulNames;
+        }
+        $table->setFilters($successfulFilters);
     }
 
     /**
@@ -104,17 +117,11 @@ class DoctrineAdapter extends AbstractAdapter
         $this->sqlParams = [];
 
         $columns = $table->getColumns();
-        $successfulFilters = [];
         foreach ($table->getFilters() as $column => $filters) {
-            $successfulNames = [];
             foreach ($filters as $name => $value) {
-                if ($this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value))
-                    $successfulNames[$name] = $value;
+                $this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value);
             }
-            if (count($successfulNames) > 0)
-                $successfulFilters[$column] = $successfulNames;
         }
-        $table->setFilters($successfulFilters);
 
         if (count($this->sqlOrs) == 0)
             return;

@@ -57,6 +57,20 @@ class ArrayAdapter extends AbstractAdapter
      */
     public function check(Table $table)
     {
+        $columns = $table->getColumns();
+        $filters = $table->getFilters();
+        $successfulFilters = [];
+        foreach ($filters as $id => $filterData) {
+            $successfulNames = [];
+            foreach ($filterData as $name => $value) {
+                $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
+                if ($test !== null)
+                    $successfulNames[$name] = $value;
+            }
+            if (count($successfulNames) > 0)
+                $successfulFilters[$id] = $successfulNames;
+        }
+        $table->setFilters($successfulFilters);
     }
 
     /**
