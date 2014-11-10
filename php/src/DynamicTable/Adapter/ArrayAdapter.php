@@ -160,12 +160,22 @@ class ArrayAdapter extends AbstractAdapter
      */
     public function paginate(Table $table)
     {
+        $table->calculatePageParams(count($this->data));
+
+        if ($table->getPageSize() > 0) {
+            $offset = $table->getPageSize() * ($table->getPageNumber() - 1);
+            $length = $table->getPageSize();
+            $data = array_slice($this->data, $offset, $length);
+        } else {
+            $data = $this->data;
+        }
+
         $mapper = $this->getMapper();
         if (!$mapper)
-            return $this->data;
+            return $data;
 
         $result = [];
-        foreach ($this->data as $row)
+        foreach ($data as $row)
             $result[] = $mapper($row);
 
         return $result;

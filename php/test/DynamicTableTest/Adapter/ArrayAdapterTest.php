@@ -264,5 +264,28 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
 
     public function testPaginate()
     {
+        $data = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $data[] = [
+                'id' => $i,
+                'string' => "string $i",
+                'integer' => $i,
+                'float' => $i / 100,
+                'boolean' => ($i % 2 == 0),
+                'datetime' => null
+            ];
+        }
+
+        $this->adapter->setData($data);
+
+        $this->table->setPageSize(2);
+        $this->table->setPageNumber(2);
+
+        $data = $this->adapter->paginate($this->table);
+
+        $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
+        $this->assertEquals(2, count($data), "Only two rows should be returned");
+        $this->assertEquals(3, $data[0]['integer'], "Wrong data returned");
+        $this->assertEquals(4, $data[1]['integer'], "Wrong data returned");
     }
 }
