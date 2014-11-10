@@ -39,7 +39,6 @@ class IndexController extends AbstractActionController
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
-        $translate = $sl->get('viewhelpermanager')->get('translate');
 
         $qb = $em->createQueryBuilder();
         $qb->select('s, s.id + 100 AS computed')
@@ -47,10 +46,10 @@ class IndexController extends AbstractActionController
 
         $adapter = new DoctrineAdapter();
         $adapter->setQueryBuilder($qb);
-        $adapter->setMapper(function ($row) use ($translate) {
+        $adapter->setMapper(function ($row) {
             $boolean = $row[0]->getValueBoolean();
             if ($boolean !== null)
-                $boolean = $translate($boolean ? 'TRUE_VALUE' : 'FALSE_VALUE');
+                $boolean = $boolean ? 'TRUE_VALUE' : 'FALSE_VALUE';
             $datetime = $row[0]->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->format('Y-m-d H:i:s');
@@ -65,6 +64,53 @@ class IndexController extends AbstractActionController
                 'computed'  => $row['computed'],
             ];
         });
+
+        $table = $this->createTable();
+        $table->setAdapter($adapter);
+
+        $query = $this->params()->fromQuery('query');
+        switch ($query) {
+        case 'describe':
+            $data = $table->getDescription();
+            break;
+        case 'data':
+            $table->setFiltersJson($this->params()->fromQuery('filters'));
+            $table->setSortColumn($this->params()->fromQuery('sort_column'));
+            $table->setSortDir($this->params()->fromQuery('sort_dir'));
+            $table->setPageNumber($this->params()->fromQuery('page_number'));
+            $table->setPageSize($this->params()->fromQuery('page_size'));
+            $data = $table->getData();
+            break;
+        default:
+            throw new \Exception('Unknown query type: ' . $query);
+        }
+
+        $data['success'] = true;
+        return new JsonModel($data);
+    }
+
+    /**
+     * Table data retrieving action (Array version)
+     */
+    public function arrayDataAction()
+    {
+        $data = [];
+        $dt = new \DateTime("2010-05-11 13:00:00");
+        for ($i = 1; $i <= 100; $i++) {
+            $dt->add(new \DateInterval('PT10S'));
+
+            $data[] = [
+                'id' => $i,
+                'string' => "string $i",
+                'integer' => $i,
+                'float' => $i / 100,
+                'boolean' => ($i % 2 == 0),
+                'datetime' => $dt->getTimestamp(),
+            ];
+        }
+
+        $adapter = new ArrayAdapter();
+        $adapter->setData($data);
 
         $table = $this->createTable();
         $table->setAdapter($adapter);
