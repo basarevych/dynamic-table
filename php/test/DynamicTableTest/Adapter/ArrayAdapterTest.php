@@ -1,0 +1,157 @@
+<?php
+
+namespace DynamicTableTest;
+
+use PHPUnit_Framework_TestCase;
+use DynamicTable\Table;
+use DynamicTable\Adapter\ArrayAdapter;
+
+class ArrayAdapterTest extends PHPUnit_Framework_TestCase
+{
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->adapter = new ArrayAdapter();
+        $this->adapter->setMapper(function ($row) {
+            $result = $row;
+
+            if ($row['boolean'] !== null)
+                $result['boolean'] = $row['boolean'] ? 'TRUE_VALUE' : 'FALSE_VALUE';
+            if ($row['datetime'] !== null)
+                $result['datetime'] = $row['datetime']->format('Y-m-d H:i:s T');
+
+            return $result;
+        });
+
+        $this->table = new Table();
+        $this->table->setAdapter($this->adapter);
+        $this->table->setColumns([
+            'id' => [
+                'sql_id'    => 's.id',
+                'type'      => Table::TYPE_INTEGER,
+                'filters'   => [ Table::FILTER_EQUAL ],
+                'sortable'  => true,
+            ],
+            'string' => [
+                'sql_id'    => 's.value_string',
+                'type'      => Table::TYPE_STRING,
+                'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'integer' => [
+                'sql_id'    => 's.value_integer',
+                'type'      => Table::TYPE_INTEGER,
+                'filters'   => [ Table::FILTER_BETWEEN ],
+                'sortable'  => true,
+            ],
+            'float' => [
+                'sql_id'    => 's.value_float',
+                'type'      => Table::TYPE_FLOAT,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'boolean' => [
+                'sql_id'    => 's.value_boolean',
+                'type'      => Table::TYPE_BOOLEAN,
+                'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+            'datetime' => [
+                'sql_id'    => 's.value_datetime',
+                'type'      => Table::TYPE_DATETIME,
+                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'sortable'  => true,
+            ],
+        ]);
+    }
+
+    public function testCheck()
+    {
+        try {
+            $this->adapter->check($this->table);
+        } catch (\Exception $e) {
+            $this->fail('check() failed on valid data');
+        }
+    }
+
+    public function testSort()
+    {
+        $a = [
+            'id' => 1,
+            'string' => "string 1",
+            'integer' => 1,
+            'float' => 0.01,
+            'boolean' => true,
+            'datetime' => new \DateTime('2010-03-25 13:13:13'),
+        ];
+        $b = [
+            'id' => 2,
+            'string' => "string 2",
+            'integer' => 2,
+            'float' => 0.02,
+            'boolean' => false,
+            'datetime' => new \DateTime('2010-03-25 14:14:14'),
+        ];
+        $c = [
+            'id' => 3,
+            'string' => null,
+            'integer' => null,
+            'float' => null,
+            'boolean' => null,
+            'datetime' => null,
+        ];
+        $d = [
+            'id' => 4,
+            'string' => "string 4",
+            'integer' => 4,
+            'float' => 0.04,
+            'boolean' => false,
+            'datetime' => new \DateTime('2010-03-25 16:16:16'),
+        ];
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+
+        foreach (['string', 'integer', 'float', 'datetime'] as $type) {
+            $this->table->setSortColumn($type);
+            $this->table->setSortDir(Table::DIR_ASC);
+
+            $this->adapter->sort($this->table);
+            $result = $this->adapter->getData();
+            $ids = array_map(function ($a) { return $a['id']; }, array_values($result));
+            $this->assertEquals([ 3, 1, 2, 4 ], $ids, "Incorrect $type sort (ASC)");
+
+            $this->table->setSortColumn($type);
+            $this->table->setSortDir(Table::DIR_DESC);
+
+            $this->adapter->sort($this->table);
+            $result = $this->adapter->getData();
+            $ids = array_map(function ($a) { return $a['id']; }, array_values($result));
+            $this->assertEquals([ 4, 2, 1, 3 ], $ids, "Incorrect $type sort (DESC)");
+        }
+
+        $this->table->setSortColumn('boolean');
+        $this->table->setSortDir(Table::DIR_ASC);
+
+        $this->adapter->sort($this->table);
+        $result = $this->adapter->getData();
+        $ids = array_map(function ($a) { return $a['id']; }, array_values($result));
+        $this->assertEquals([ 3, 2, 4, 1 ], $ids, "Incorrect boolean sort (ASC)");
+
+        $this->table->setSortColumn('boolean');
+        $this->table->setSortDir(Table::DIR_DESC);
+
+        $this->adapter->sort($this->table);
+        $result = $this->adapter->getData();
+        $ids = array_map(function ($a) { return $a['id']; }, array_values($result));
+        $this->assertEquals([ 1, 4, 2, 3 ], $ids, "Incorrect boolean sort (DESC)");
+    }
+
+    public function testFilter()
+    {
+    }
+
+    public function testFetch()
+    {
+    }
+}
