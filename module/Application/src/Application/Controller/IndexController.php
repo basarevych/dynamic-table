@@ -52,7 +52,7 @@ class IndexController extends AbstractActionController
                 $boolean = $boolean ? 'TRUE_VALUE' : 'FALSE_VALUE';
             $datetime = $row[0]->getValueDatetime();
             if ($datetime !== null)
-                $datetime = $datetime->format('Y-m-d H:i:s');
+                $datetime = $datetime->format('Y-m-d H:i:s T');
 
             return [
                 'id'        => $row[0]->getId(),
@@ -99,26 +99,47 @@ class IndexController extends AbstractActionController
         for ($i = 1; $i <= 100; $i++) {
             $dt->add(new \DateInterval('PT10S'));
 
-            $data[] = [
-                'id' => $i,
-                'string' => "string $i",
-                'integer' => $i,
-                'float' => $i / 100,
-                'boolean' => ($i % 2 == 0),
-                'datetime' => $dt->getTimestamp(),
-            ];
+            if ($i == 3) {
+                $data[] = [
+                    'id' => $i,
+                    'string' => null,
+                    'integer' => null,
+                    'float' => null,
+                    'boolean' => null,
+                    'datetime' => null,
+                ];
+            } else {
+                $data[] = [
+                    'id' => $i,
+                    'string' => "string $i",
+                    'integer' => $i,
+                    'float' => $i / 100,
+                    'boolean' => ($i % 2 == 0),
+                    'datetime' => clone $dt,
+                ];
+            }
         }
 
         $adapter = new ArrayAdapter();
         $adapter->setData($data);
+        $adapter->setMapper(function ($row) {
+            $result = $row;
+
+            if ($row['boolean'] !== null)
+                $result['boolean'] = $row['boolean'] ? 'TRUE_VALUE' : 'FALSE_VALUE';
+            if ($row['datetime'] !== null)
+                $result['datetime'] = $row['datetime']->format('Y-m-d H:i:s T');
+
+            return $result;
+        });
 
         $table = $this->createTable();
         $table->setAdapter($adapter);
 
         $query = $this->params()->fromQuery('query');
         switch ($query) {
-        case 'discover':
-            $data = $table->describe();
+        case 'describe':
+            $data = $table->getDescription();
             break;
         case 'data':
             $table->setFiltersJson($this->params()->fromQuery('filters'));
@@ -126,7 +147,7 @@ class IndexController extends AbstractActionController
             $table->setSortDir($this->params()->fromQuery('sort_dir'));
             $table->setPageNumber($this->params()->fromQuery('page_number'));
             $table->setPageSize($this->params()->fromQuery('page_size'));
-            $data = $table->fetch();
+            $data = $table->getData();
             break;
         default:
             throw new \Exception('Unknown query type: ' . $query);
