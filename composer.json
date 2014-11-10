@@ -18,10 +18,10 @@
     },
     "extra": {
         "component": {
-            "js": [
+            "scripts": [
                 "js/src/jquery.dynamic-table.js"
             ],
-            "css": [
+            "styles": [
                 "css/dynamic-table.css"
             ]
         }
