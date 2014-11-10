@@ -71,7 +71,7 @@ class IndexController extends AbstractActionController
         $query = $this->params()->fromQuery('query');
         switch ($query) {
         case 'describe':
-            $data = $table->getDescription();
+            $data = $table->describe();
             break;
         case 'data':
             $table->setFiltersJson($this->params()->fromQuery('filters'));
@@ -79,7 +79,7 @@ class IndexController extends AbstractActionController
             $table->setSortDir($this->params()->fromQuery('sort_dir'));
             $table->setPageNumber($this->params()->fromQuery('page_number'));
             $table->setPageSize($this->params()->fromQuery('page_size'));
-            $data = $table->getData();
+            $data = $table->fetch();
             break;
         default:
             throw new \Exception('Unknown query type: ' . $query);
@@ -139,7 +139,7 @@ class IndexController extends AbstractActionController
         $query = $this->params()->fromQuery('query');
         switch ($query) {
         case 'describe':
-            $data = $table->getDescription();
+            $data = $table->describe();
             break;
         case 'data':
             $table->setFiltersJson($this->params()->fromQuery('filters'));
@@ -147,7 +147,7 @@ class IndexController extends AbstractActionController
             $table->setSortDir($this->params()->fromQuery('sort_dir'));
             $table->setPageNumber($this->params()->fromQuery('page_number'));
             $table->setPageSize($this->params()->fromQuery('page_size'));
-            $data = $table->getData();
+            $data = $table->fetch();
             break;
         default:
             throw new \Exception('Unknown query type: ' . $query);
