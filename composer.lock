@@ -12,21 +12,32 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "e9a64ec452374e6d47819194db2866222753ec9d"
+                "reference": "bb77046739fa236f780442dc956e1178f96c65df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/e9a64ec452374e6d47819194db2866222753ec9d",
-                "reference": "e9a64ec452374e6d47819194db2866222753ec9d",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/bb77046739fa236f780442dc956e1178f96c65df",
+                "reference": "bb77046739fa236f780442dc956e1178f96c65df",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.8"
+                "php": ">=5.4.8",
+                "robloach/component-installer": "*"
             },
             "require-dev": {
                 "phpunit/phpunit": "@stable"
             },
-            "type": "library",
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js/src/jquery.dynamic-table.js"
+                    ],
+                    "styles": [
+                        "css/dynamic-table.css"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "DynamicTable": "php/src"
@@ -46,7 +57,7 @@
                 "source": "https://github.com/basarevych/dynamic-table/tree/master",
                 "issues": "https://github.com/basarevych/dynamic-table/issues"
             },
-            "time": "2014-10-31 14:46:56"
+            "time": "2014-11-10 14:30:52"
         },
         {
             "name": "components/bootstrap",

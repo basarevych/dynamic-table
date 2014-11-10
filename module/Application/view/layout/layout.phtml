@@ -18,11 +18,13 @@
                 'href' => $this->basePath('/img/favicon.ico')
            ])
          ->prependStylesheet($this->basePath('/css/style.css'))
+         ->prependStylesheet($this->basePath('/components/dynamic-table/css/dynamic-table.css'))
          ->prependStylesheet($this->basePath('/components/bootstrap/css/bootstrap-theme.min.css'))
          ->prependStylesheet($this->basePath('/components/bootstrap/css/bootstrap.min.css'))
          ->toString(8) ?>
  
 <?= $this->headScript()
+         ->prependFile($this->basePath('/components/dynamic-table/js/src/jquery.dynamic-table.js'))
          ->prependFile($this->basePath('/components/bootstrap/js/bootstrap.min.js'))
          ->prependFile($this->basePath('/components/jquery/jquery.min.js'))
          ->toString(8) ?>
