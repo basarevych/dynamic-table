@@ -27,7 +27,7 @@
             "files": [
             ]
         }
-    }
+    },
     "autoload": {
         "psr-0": {
             "DynamicTable": "php/src"
