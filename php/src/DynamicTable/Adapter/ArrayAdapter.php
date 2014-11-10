@@ -20,14 +20,30 @@ use DynamicTable\Adapter\AbstractAdapter;
  */
 class ArrayAdapter extends AbstractAdapter
 {
+    /**
+     * The data
+     *
+     * @var array
+     */
     protected $data = [];
 
+    /**
+     * Data setter
+     *
+     * @param array $data
+     * @return ArrayAdapter
+     */
     public function setData($data)
     {
         $this->data = $data;
         return $this;
     }
 
+    /**
+     * Data getter
+     *
+     * @return array
+     */
     public function getData()
     {
         return $this->data;
@@ -101,6 +117,38 @@ class ArrayAdapter extends AbstractAdapter
      */
     public function filter(Table $table)
     {
+        $filters = $table->getFilters();
+        if (count($filters) == 0)
+            return;
+
+        $result = [];
+        $firstRow = true;
+        foreach ($this->data as $row) {
+            $passed = false;
+            if ($firstRow)
+                $successfulFilters = [];
+            foreach ($filters as $id => $filterData) {
+                $successfulNames = [];
+                foreach ($filterData as $name => $value) {
+                    $test = $this->checkFilter($name, $value, $row[$id]);
+                    if ($test !== null) {
+                        if ($firstRow)
+                            $successfulNames[$name] = $value;
+                        if ($test)
+                            $passed = true;
+                    }
+                }
+                if ($firstRow && count($successfulNames) > 0)
+                    $successfulFilters[$id] = $successfulNames;
+            }
+            if ($firstRow)
+                $table->setFilters($successfulFilters);
+            if ($passed)
+                $result[] = $row;
+            $firstRow = false;
+        }
+
+        $this->data = $result;
     }
 
     /**
@@ -120,5 +168,39 @@ class ArrayAdapter extends AbstractAdapter
             $result[] = $mapper($row);
 
         return $result;
+    }
+
+    protected function checkFilter($filter, $test, $real)
+    {
+        switch ($filter) {
+            case Table::FILTER_LIKE:
+                if (!is_scalar($test))
+                    return null;
+                return $real !== null && strpos($real, $test) !== false;
+            case Table::FILTER_EQUAL:
+                if (!is_scalar($test))
+                    return null;
+                return $real !== null && $test === $real;
+            case Table::FILTER_GREATER:
+                return $real !== null && $real > $test;
+                if (!is_scalar($test))
+                    return null;
+            case Table::FILTER_LESS:
+                if (!is_scalar($test))
+                    return null;
+                return $real !== null && $real < $test;
+            case Table::FILTER_BETWEEN:
+                if (!is_array($test) || count($test) != 2)
+                    return null;
+                return $real !== null && $real > $test[0] && $real < $test[1];
+            case Table::FILTER_NULL:
+                if (!is_scalar($test))
+                    return null;
+                return $real === null;
+            default:
+                throw new \Exception("Unknown filter: $filter");
+        }
+
+        return false;
     }
 }

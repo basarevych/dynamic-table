@@ -149,6 +149,117 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
 
     public function testFilter()
     {
+        $a = [
+            'id' => 1,
+            'string' => "string 1",
+            'integer' => 1,
+            'float' => 0.01,
+            'boolean' => true,
+            'datetime' => new \DateTime('2010-03-25 13:13:13'),
+        ];
+        $b = [
+            'id' => 2,
+            'string' => "string 2",
+            'integer' => 2,
+            'float' => 0.02,
+            'boolean' => false,
+            'datetime' => new \DateTime('2010-03-25 14:14:14'),
+        ];
+        $c = [
+            'id' => 3,
+            'string' => null,
+            'integer' => null,
+            'float' => null,
+            'boolean' => null,
+            'datetime' => null,
+        ];
+        $d = [
+            'id' => 4,
+            'string' => "string 4",
+            'integer' => 4,
+            'float' => 0.04,
+            'boolean' => false,
+            'datetime' => new \DateTime('2010-03-25 16:16:16'),
+        ];
+
+        $this->table->setFilters([
+            'string' => [
+                Table::FILTER_LIKE => '2'
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(2, $result[0]['id'], "Incorrect row after LIKE filtering");
+
+        $this->table->setFilters([
+            'boolean' => [
+                Table::FILTER_EQUAL => true
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(1, $result[0]['id'], "Incorrect row after EQUAL filtering");
+
+        $this->table->setFilters([
+            'float' => [
+                Table::FILTER_GREATER => 0.02
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(4, $result[0]['id'], "Incorrect row after GREATER filtering");
+
+        $this->table->setFilters([
+            'float' => [
+                Table::FILTER_LESS => 0.02
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(1, $result[0]['id'], "Incorrect row after LESS filtering");
+
+        $this->table->setFilters([
+            'integer' => [
+                Table::FILTER_BETWEEN => [1, 4]
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(2, $result[0]['id'], "Incorrect row after BETWEEN filtering");
+
+        $this->table->setFilters([
+            'datetime' => [
+                Table::FILTER_NULL => true,
+                Table::FILTER_BETWEEN => [1, 4]
+            ]
+        ]);
+
+        $this->adapter->setData([ $a, $b, $c, $d ]);
+        $this->adapter->filter($this->table);
+        $result = $this->adapter->getData();
+
+        $this->assertEquals(1, count($result), "One row should remain");
+        $this->assertEquals(3, $result[0]['id'], "Incorrect row after NULL filtering");
     }
 
     public function testFetch()
