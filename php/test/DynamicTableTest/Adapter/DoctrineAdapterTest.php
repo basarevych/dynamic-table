@@ -48,46 +48,60 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->table->setAdapter($this->adapter);
         $this->table->setColumns([
             'id' => [
+                'title'     => 'ID',
                 'sql_id'    => 's.id',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_EQUAL ],
                 'sortable'  => true,
+                'visible'   => false,
             ],
             'string' => [
+                'title'     => 'String',
                 'sql_id'    => 's.value_string',
                 'type'      => Table::TYPE_STRING,
                 'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'integer' => [
+                'title'     => 'Integer',
                 'sql_id'    => 's.value_integer',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_BETWEEN ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'float' => [
+                'title'     => 'Float',
                 'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'boolean' => [
+                'title'     => 'Boolean',
                 'sql_id'    => 's.value_boolean',
                 'type'      => Table::TYPE_BOOLEAN,
                 'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'datetime' => [
+                'title'     => 'DateTime',
                 'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'computed' => [
+                'title'     => 'Computed Value',
                 'sql_id'    => 'computed',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
         ]);
     }

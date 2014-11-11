@@ -82,9 +82,11 @@ class Table
      *     // ...
      * ];
      * $columnParams = [
+     *     'title' => $columnTitle,
      *     'type' => $columnType, // One of TYPE_* constants
      *     'filters' => $columnFilters, // Array of FILTER_* constants
      *     'sortable' => true|false,
+     *     'visible' => true|false,
      * ];
      *
      * @var array
@@ -176,6 +178,8 @@ class Table
         foreach ($columns as $id => $params) {
             if (!is_string($id) || strlen($id) < 1)
                 throw new \Exception("Column ID should be a non-empty string");
+            if (!isset($params['title']))
+                throw new \Exception("No 'title' param for ID $id");
             if (!isset($params['type']))
                 throw new \Exception("No 'type' param for ID $id");
             if (!in_array($params['type'], self::getAvailableTypes()))
@@ -184,6 +188,8 @@ class Table
                 throw new \Exception("No 'filters' param for ID $id");
             if (!isset($params['sortable']))
                 throw new \Exception("No 'sortable' param for ID $id");
+            if (!isset($params['visible']))
+                throw new \Exception("No 'visible' param for ID $id");
 
             foreach ($params['filters'] as $filter) {
                 if (!in_array($filter, self::getAvailableFilters()))
@@ -415,9 +421,11 @@ class Table
         $columns = [];
         foreach ($this->columns as $id => $params) {
             $columns[$id] = [
+                'title'     => $params['title'],
                 'type'      => $params['type'],
                 'filters'   => $params['filters'],
                 'sortable'  => $params['sortable'],
+                'visible'   => $params['visible'],
             ];
         }
 

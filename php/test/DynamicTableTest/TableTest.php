@@ -19,9 +19,11 @@ class TableTest extends PHPUnit_Framework_TestCase
         try {
             $this->table->setColumns([
                 'id' => [
+                    'title' => 'ID',
                     'type' => Table::TYPE_INTEGER,
                     'filters' => [ Table::FILTER_LIKE ],
                     'sortable' => true,
+                    'visible' => true,
                 ]
             ]);
         } catch (\Exception $e) {
@@ -33,9 +35,11 @@ class TableTest extends PHPUnit_Framework_TestCase
     {
         $this->table->setColumns([
             'id' => [
+                'title' => 'ID',
                 'type' => Table::TYPE_INTEGER,
                 'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
+                'visible' => true,
             ]
         ]);
 
@@ -71,9 +75,11 @@ class TableTest extends PHPUnit_Framework_TestCase
 
         $this->table->setColumns([
             'id' => [
+                'title' => 'ID',
                 'type' => Table::TYPE_INTEGER,
                 'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
+                'visible' => true,
             ]
         ]);
 
@@ -105,9 +111,11 @@ class TableTest extends PHPUnit_Framework_TestCase
     {
         $this->table->setColumns([
             'id' => [
+                'title' => 'ID',
                 'type' => Table::TYPE_INTEGER,
                 'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
+                'visible' => true,
             ]
         ]);
 
@@ -135,9 +143,11 @@ class TableTest extends PHPUnit_Framework_TestCase
     {
        $columns = [ 
             'id' => [
+                'title' => 'ID',
                 'type' => Table::TYPE_INTEGER,
                 'filters' => [ Table::FILTER_EQUAL ],
                 'sortable' => true,
+                'visible' => true,
             ]
         ];
 
