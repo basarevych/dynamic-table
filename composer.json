@@ -10,7 +10,7 @@
     ],
     "homepage": "https://github.com/basarevych/dynamic-table",
     "require": {
-        "php": ">=5.4.8",
+        "php": ">=5.4.8"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"
