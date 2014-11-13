@@ -1,7 +1,23 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            Empty index page
+            <h3><?= $this->translate('Doctrine-backed Dynamic Table') ?></h3>
+            <div id="table1"></div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><?= $this->translate('Array-backed Dynamic Table') ?></h3>
+            <div id="table2"></div>
+    </div>
 </div>
+
+<script>
+    var table1 = $('#table1').dynamicTable({
+        'url': 'index/doctrine-table',
+    });
+    var table2 = $('#table2').dynamicTable({
+        'url': 'index/array-table',
+    });
+</script>

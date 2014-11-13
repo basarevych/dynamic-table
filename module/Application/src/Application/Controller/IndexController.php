@@ -35,7 +35,7 @@ class IndexController extends AbstractActionController
     /**
      * Table data retrieving action (Database version)
      */
-    public function dbDataAction()
+    public function doctrineTableAction()
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
@@ -92,7 +92,7 @@ class IndexController extends AbstractActionController
     /**
      * Table data retrieving action (Array version)
      */
-    public function arrayDataAction()
+    public function arrayTableAction()
     {
         $data = [];
         $dt = new \DateTime("2010-05-11 13:00:00");
@@ -164,50 +164,67 @@ class IndexController extends AbstractActionController
      */
     protected function createTable()
     {
+        $sl = $this->getServiceLocator();
+        $translate = $sl->get('viewhelpermanager')->get('translate');
+
         $table = new Table();
 
         $table->setColumns([
             'id' => [
+                'title'     => $translate('ID'),
                 'sql_id'    => 's.id',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_EQUAL ],
                 'sortable'  => true,
+                'visible'   => false,
             ],
             'string' => [
+                'title'     => $translate('String'),
                 'sql_id'    => 's.value_string',
                 'type'      => Table::TYPE_STRING,
                 'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'integer' => [
+                'title'     => $translate('Integer'),
                 'sql_id'    => 's.value_integer',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'float' => [
+                'title'     => $translate('Float'),
                 'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'boolean' => [
+                'title'     => $translate('Boolean'),
                 'sql_id'    => 's.value_boolean',
                 'type'      => Table::TYPE_BOOLEAN,
                 'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'datetime' => [
+                'title'     => $translate('DateTime'),
                 'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
             'computed' => [
+                'title'     => $translate('Computed Value'),
                 'sql_id'    => 'computed',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
                 'sortable'  => true,
+                'visible'   => true,
             ],
         ]);
 
