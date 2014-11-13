@@ -456,7 +456,7 @@ class Table
             'page_size'     => $this->getPageSize(),
             'total_pages'   => $this->getTotalPages(),
             'filters'       => count($filters) ? $filters : new \StdClass(),
-            'data'          => $result,
+            'rows'          => $result,
         ];
     }
 

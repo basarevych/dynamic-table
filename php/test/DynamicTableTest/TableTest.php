@@ -184,6 +184,6 @@ class TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, in_array('page_size', $keys), "No 'page_size'");
         $this->assertEquals(true, in_array('total_pages', $keys), "No 'total_pages'");
         $this->assertEquals(true, in_array('filters', $keys), "No 'filters'");
-        $this->assertEquals(true, in_array('data', $keys), "No 'data'");
+        $this->assertEquals(true, in_array('rows', $keys), "No 'rows'");
     }
 }

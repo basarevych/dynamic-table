@@ -1,0 +1,19 @@
+.dynaic-table th:not(.selector):not(:last-child) {
+    white-space: nowrap;
+    padding-right: 3em !important;
+}
+.dynamic-table .selector {
+    width: 1px;
+}
+.dynamic-table .sort-asc, .dynamic-table .sort-desc {
+    margin-left: 1em;
+}
+.dynamic-table .filter {
+    margin-left: 1em;
+}
+.dynamic-table tbody.empty td {
+    padding: 1em 0;
+    text-align: center;
+    font-size: 120%;
+    font-style: italic;
+}
