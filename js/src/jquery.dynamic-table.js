@@ -127,7 +127,7 @@
             if (plugin.options.rowIdColumn != null) {
                 var rowId = row[plugin.options.rowIdColumn];
 
-                tr.attr('data-row-id', $rowId);
+                tr.attr('data-row-id', rowId);
 
                 var selector = $('<th class="selector"><input type="checkbox"></th>');
                 selector.appendTo(tr)
@@ -136,11 +136,16 @@
                         .prop('value', rowId);
             }
 
+            var content = plugin.options.mapper != null
+                ? plugin.options.mapper(row) : row;
 
             $.each(plugin.columns, function (id, props) {
                 var td = $('<td></td>');
-                td.text(row[id])
-                  .attr('data-column-id', id)
+                if (plugin.options.mapper == null)
+                    td.text(content[id]);
+                else
+                    td.html(content[id]);
+                td.attr('data-column-id', id)
                   .css('display', props.visible ? 'table-cell' : 'none')
                   .appendTo(tr)
             });
@@ -158,6 +163,7 @@
         this.element = element;
         this.options = {
             rowIdColumn: null,
+            mapper: null,
             tableClass: 'table table-striped table-hover table-condensed',
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
