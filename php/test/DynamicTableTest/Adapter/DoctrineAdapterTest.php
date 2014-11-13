@@ -26,19 +26,16 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
 
         $this->adapter = new DoctrineAdapter();
         $this->adapter->setMapper(function ($row) {
-            $boolean = $row[0]->getValueBoolean();
-            if ($boolean !== null)
-                $boolean = $boolean ? 'TRUE' : 'FALSE';
             $datetime = $row[0]->getValueDatetime();
             if ($datetime !== null)
-                $datetime = $datetime->format('Y-m-d H:i:s');
+                $datetime = $datetime->getTimestamp();
 
             return [
                 'id'        => $row[0]->getId(),
                 'string'    => $row[0]->getValueString(),
                 'integer'   => $row[0]->getValueInteger(),
                 'float'     => $row[0]->getValueFloat(),
-                'boolean'   => $boolean,
+                'boolean'   => $row[0]->getValueBoolean(),
                 'datetime'  => $datetime,
                 'computed'  => $row['computed'],
             ];

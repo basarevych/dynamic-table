@@ -16,10 +16,8 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->adapter->setMapper(function ($row) {
             $result = $row;
 
-            if ($row['boolean'] !== null)
-                $result['boolean'] = $row['boolean'] ? 'TRUE_VALUE' : 'FALSE_VALUE';
             if ($row['datetime'] !== null)
-                $result['datetime'] = $row['datetime']->format('Y-m-d H:i:s T');
+                $result['datetime'] = $row['datetime']->getTimestamp();
 
             return $result;
         });

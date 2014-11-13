@@ -1,6 +1,6 @@
 {
     "name": "basarevych/dynamic-table",
-    "type": "component",
+    "type": "library",
     "description": "Dynamic HTML grid",
     "license": "MIT",
     "keywords": [
@@ -11,20 +11,9 @@
     "homepage": "https://github.com/basarevych/dynamic-table",
     "require": {
         "php": ">=5.4.8",
-        "robloach/component-installer": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"
-    },
-    "extra": {
-        "component": {
-            "scripts": [
-                "js/src/jquery.dynamic-table.js"
-            ],
-            "styles": [
-                "css/dynamic-table.css"
-            ]
-        }
     },
     "autoload": {
         "psr-0": {
