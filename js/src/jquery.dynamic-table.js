@@ -8,11 +8,12 @@
 
         var overlayBack = $('<div></div>');
         overlayBack.attr('class', 'overlay-back')
-               .appendTo(plugin.element);
+                   .appendTo(plugin.element);
 
         var overlayLoader = $('<div></div>');
         overlayLoader.attr('class', 'overlay-loader')
-               .appendTo(plugin.element);
+                     .css('background-image', 'url(' + plugin.options.loaderImage + ')')
+                     .appendTo(plugin.element);
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
@@ -76,7 +77,7 @@
         var td = $('<td></td>');
         td.attr('colspan', visibleCounter)
           .text(plugin.options.strings.BANNER_LOADING)
-          .html(td.html() + '<br><img src="img/loader.gif"><br>')
+          .html(td.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
           .appendTo(tr);
 
         var tbodyData = $('<tbody></tbody>');
@@ -173,6 +174,7 @@
             rowIdColumn: null,
             mapper: null,
             tableClass: 'table table-striped table-hover table-condensed',
+            loaderImage: 'img/loader.gif',
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
                 BANNER_EMPTY: 'Nothing found',
