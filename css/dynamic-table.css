@@ -1,3 +1,16 @@
+.dynamic-table .overlay-back {
+    position: absolute;
+    background: #000000;
+    opacity: 0.05;
+    z-index: 9000;
+    display: none;
+}
+.dynamic-table .overlay-loader {
+    position: absolute;
+    background: transparent url(img/loader.gif) center center no-repeat;
+    z-index: 9001;
+    display: none;
+}
 .dynaic-table th:not(.selector):not(:last-child) {
     white-space: nowrap;
     padding-right: 3em !important;

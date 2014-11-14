@@ -6,6 +6,14 @@
     var _buildTable = function (plugin) {
         plugin.element.addClass('dynamic-table');
 
+        var overlayBack = $('<div></div>');
+        overlayBack.attr('class', 'overlay-back')
+               .appendTo(plugin.element);
+
+        var overlayLoader = $('<div></div>');
+        overlayLoader.attr('class', 'overlay-loader')
+               .appendTo(plugin.element);
+
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
              .appendTo(plugin.element);
@@ -204,18 +212,23 @@
 
         enable: function (enabled) {
             var plugin = this;
+
             $.each(this.columns, function (id, props) {
                 _enableColumn(plugin, id, enabled);
-/*
-                var thead = plugin.element.find('thead');
-                var pos = thead.position();
-                var overlay = $('<div style="background: #000000; opacity: 0.5; position: absolute; z-index: 999"></div>');
-                overlay.width(thead.width())
-                       .height(thead.height())
+            });
+
+            var tbody = plugin.element.find('tbody.data');
+            if (tbody.css('display') == 'none')
+                return;
+
+            var pos = tbody.position();
+            $.each([ '.overlay-back', '.overlay-loader' ], function (index, value) {
+                var overlay = plugin.element.find(value);
+                overlay.width(tbody.width())
+                       .height(tbody.height())
                        .css('top', pos.top)
                        .css('left', pos.left)
-                       .prependTo(plugin.element);
-*/
+                       .css('display', enabled ? 'none' : 'block');
             });
         },
 
