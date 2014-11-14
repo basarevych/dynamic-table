@@ -1,0 +1,9 @@
+{
+  "name": "zf2-skeleton",
+  "description": "ZF2 Skeleton",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "minify": "~1.0"
+  }
+}
