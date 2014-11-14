@@ -11,6 +11,8 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="dynamic-table.css" media="screen" rel="stylesheet" type="text/css">
+        <script src="moment.js"></script>
+        <script src="moment-timezone-with-data.js"></script>
         <script src="jquery.dynamic-table.js"></script>
     </head>
     <body>
@@ -37,6 +39,10 @@
                 row['boolean'] = '<i class="fa fa-'
                     + (row['boolean'] ? 'check' : 'remove')
                     + '"></i>';
+            }
+            if (row['datetime'] != null) {
+                var date = moment.tz(row['datetime'], 'X', 'UTC');
+                row['datetime'] = date.local().format("YYYY-MM-DD H:mm:ss");
             }
 
             return row;

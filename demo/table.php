@@ -92,14 +92,6 @@ $table->setColumns([
         'sortable'  => true,
         'visible'   => true,
     ],
-    'computed' => [
-        'title'     => 'Computed Value',
-        'sql_id'    => 'computed',
-        'type'      => \DynamicTable\Table::TYPE_INTEGER,
-        'filters'   => [ \DynamicTable\Table::FILTER_GREATER, \DynamicTable\Table::FILTER_LESS, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
-    ],
 ]);
 
 $table->setAdapter($adapter);
