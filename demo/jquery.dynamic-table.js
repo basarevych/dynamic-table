@@ -1,0 +1,1 @@
+../js/src/jquery.dynamic-table.js
