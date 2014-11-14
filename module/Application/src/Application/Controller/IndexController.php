@@ -47,19 +47,16 @@ class IndexController extends AbstractActionController
         $adapter = new DoctrineAdapter();
         $adapter->setQueryBuilder($qb);
         $adapter->setMapper(function ($row) {
-            $boolean = $row[0]->getValueBoolean();
-            if ($boolean !== null)
-                $boolean = $boolean ? 'TRUE_VALUE' : 'FALSE_VALUE';
             $datetime = $row[0]->getValueDatetime();
             if ($datetime !== null)
-                $datetime = $datetime->format('Y-m-d H:i:s T');
+                $datetime = $datetime->getTimestamp();
 
             return [
                 'id'        => $row[0]->getId(),
                 'string'    => $row[0]->getValueString(),
                 'integer'   => $row[0]->getValueInteger(),
                 'float'     => $row[0]->getValueFloat(),
-                'boolean'   => $boolean,
+                'boolean'   => $row[0]->getValueBoolean(),
                 'datetime'  => $datetime,
                 'computed'  => $row['computed'],
             ];
@@ -125,10 +122,8 @@ class IndexController extends AbstractActionController
         $adapter->setMapper(function ($row) {
             $result = $row;
 
-            if ($row['boolean'] !== null)
-                $result['boolean'] = $row['boolean'] ? 'TRUE_VALUE' : 'FALSE_VALUE';
             if ($row['datetime'] !== null)
-                $result['datetime'] = $row['datetime']->format('Y-m-d H:i:s T');
+                $result['datetime'] = $row['datetime']->getTimestamp();
 
             return $result;
         });

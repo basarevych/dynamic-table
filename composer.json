@@ -18,15 +18,20 @@
         "zendframework/zendframework": "2.3.*",
         "doctrine/doctrine-orm-module": "0.*",
         "components/jquery": "2.1.*",
-        "components/bootstrap": "3.3.*",
-        "components/font-awesome": "4.2.*",
+        "twbs/bootstrap": "3.3.*",
+        "FortAwesome/Font-Awesome": "4.2.*",
         "basarevych/dynamic-table": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
         "webfactory/doctrine-orm-test-infrastructure": "@stable"
     },
-    "config": {
-        "component-dir": "public/components"
+    "scripts": {
+        "post-install-cmd": [
+            "rm -rf components"
+        ],
+        "post-update-cmd": [
+            "rm -rf components"
+        ]
     }
 }
