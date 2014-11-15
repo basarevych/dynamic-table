@@ -97,16 +97,18 @@
 
         var rightToolbar = $('<div></div>');
         rightToolbar.attr('class', 'pull-right btn-toolbar')
+                    .attr('role', 'toolbar')
                     .appendTo(td);
 
         var dropdown = $('<div></div>');
-        dropdown.attr('class', 'btn-group dropdown')
+        dropdown.attr('class', 'btn-group dropdown dropup')
+                .attr('role', 'group')
                 .appendTo(rightToolbar);
 
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.PAGE_SIZE + ' <span class="caret"></span>')
+            .html(plugin.options.strings.BTN_PAGE_SIZE + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -124,7 +126,7 @@
             $('<a></a>')
                 .attr('role', 'menuitem')
                 .attr('tabindex', '-1')
-                .attr('href', 'javascript:void()')
+                .attr('href', 'javascript:void(0)')
                 .attr('data-size', value)
                 .text(value == 0 ? 'All' : value)
                 .on('click', function() {
@@ -139,6 +141,43 @@
                 })
                 .appendTo(li);
         });
+
+        var dropdown = $('<div></div>');
+        dropdown.attr('class', 'btn-group dropdown dropup')
+                .attr('role', 'group')
+                .appendTo(rightToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default dropdown-toggle')
+            .attr('data-toggle', 'dropdown')
+            .html(plugin.options.strings.BTN_COLUMNS + ' <span class="caret"></span>')
+            .appendTo(dropdown);
+
+        var list = $('<ul></ul>');
+        list.attr('class', 'dropdown-menu')
+            .attr('role', 'menu')
+            .appendTo(dropdown);
+
+        $.each(plugin.columns, function (id, column) {
+            var li = $('<li></li>');
+            li.attr('role', 'presentation')
+              .appendTo(list);
+
+            var span = $('<span></span>');
+            span.text(column.title);
+
+            $('<a></a>')
+                .attr('role', 'menuitem')
+                .attr('tabindex', '-1')
+                .attr('href', 'javascript:void(0)')
+                .attr('data-column-id', id)
+                .html('<i class="fa ' + (column.visible ? 'fa-check-square-o' : 'fa-square-o') + '"></i> ' + span.html())
+                .on('click', function() {
+                    plugin.toggleColumn($(this).attr('data-column-id'));
+                })
+                .appendTo(li);
+        });
+
 
 /*
     <tfoot>
@@ -304,7 +343,8 @@
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
                 BANNER_EMPTY: 'Nothing found',
-                PAGE_SIZE: 'Page size',
+                BTN_PAGE_SIZE: 'Page size',
+                BTN_COLUMNS: 'Columns',
             },
         };
         this.columns = [];
@@ -398,6 +438,36 @@
         setSize: function (size) {
             this.pageSize = size;
             this.refresh();
+        },
+
+        toggleColumn: function (column) {
+            var plugin = this, visibleCounter = 0, visible;
+
+            if (this.options.rowIdColumn != null)
+                visibleCounter++;
+
+            $.each(this.columns, function (id, props) {
+                if (id == column) {
+                    visible = !props.visible;
+                    plugin.columns[id].visible = visible;
+                    if (visible)
+                        visibleCounter++;
+                } else {
+                    if (props.visible)
+                        visibleCounter++;
+                }
+            });
+
+            this.element.find('thead th[data-column-id=' + column + ']')
+                        .css('display', visible ? 'table-cell' : 'none');
+            this.element.find('tbody td[data-column-id=' + column + ']')
+                        .css('display', visible ? 'table-cell' : 'none');
+            this.element.find('thead.empty td')
+                        .prop('colspan', visibleCounter);
+            this.element.find('tfoot td')
+                        .prop('colspan', visibleCounter);
+            this.element.find('tfoot a[data-column-id=' + column + '] i')
+                        .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
         },
     };
 
