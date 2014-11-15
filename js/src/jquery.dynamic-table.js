@@ -6,14 +6,14 @@
     var _buildTable = function (plugin) {
         plugin.element.addClass('dynamic-table');
 
-        var overlayBack = $('<div></div>');
-        overlayBack.attr('class', 'overlay-back')
-                   .appendTo(plugin.element);
+        $('<div></div>')
+            .attr('class', 'overlay-back')
+            .appendTo(plugin.element);
 
-        var overlayLoader = $('<div></div>');
-        overlayLoader.attr('class', 'overlay-loader')
-                     .css('background-image', 'url(' + plugin.options.loaderImage + ')')
-                     .appendTo(plugin.element);
+        $('<div></div>')
+            .attr('class', 'overlay-loader')
+            .css('background-image', 'url(' + plugin.options.loaderImage + ')')
+            .appendTo(plugin.element);
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
@@ -29,10 +29,10 @@
 
         if (plugin.options.rowIdColumn != null) {
             visibleCounter++;
-            var allSelector = $('<th class="selector"><input type="checkbox"></th>');
-            allSelector.appendTo(tr)
-                       .find('input')
-                       .prop('disabled', true);
+            $('<th class="selector"><input type="checkbox"></th>')
+                .appendTo(tr)
+                .find('input')
+                .prop('disabled', true);
         }
 
         $.each(plugin.columns, function (id, props) {
@@ -44,27 +44,27 @@
               .css('display', props.visible ? 'table-cell' : 'none')
               .appendTo(tr)
 
-            var text = $('<span class="text"></span>');
-            text.text(props.title)
-                .appendTo(th);
-
-            var link = $('<a class="link" href="#"></a>');
-            link.css('display', 'none')
+            $('<span class="text"></span>')
                 .text(props.title)
                 .appendTo(th);
 
-            var sortAsc = $('<i class="sort-asc fa fa-sort-alpha-asc"></i>');
-            sortAsc.css('display', 'none')
-                   .appendTo(th);
+            $('<a class="link" href="#"></a>')
+                .css('display', 'none')
+                .text(props.title)
+                .appendTo(th);
 
-            var sortDesc = $('<i class="sort-desc fa fa-sort-alpha-desc"></i>');
-            sortDesc.css('display', 'none')
-                    .appendTo(th);
+            $('<i class="sort-asc fa fa-sort-alpha-asc"></i>')
+                .css('display', 'none')
+                .appendTo(th);
 
-            var filter = $('<button class="filter btn btn-default btn-xs"></button>');
-            filter.css('display', 'none')
-                  .html('<i class="fa fa-filter"></i>')
-                  .appendTo(th);
+            $('<i class="sort-desc fa fa-sort-alpha-desc"></i>')
+                .css('display', 'none')
+                .appendTo(th);
+
+            $('<button class="filter btn btn-default btn-xs"></button>')
+                .css('display', 'none')
+                .html('<i class="fa fa-filter"></i>')
+                .appendTo(th);
         });
 
         var tbodyEmpty = $('<tbody></tbody>');
@@ -74,7 +74,7 @@
         var tr = $('<tr></tr>')
         tr.appendTo(tbodyEmpty);
 
-        var td = $('<td></td>');
+        var td = $('<td></td>')
         td.attr('colspan', visibleCounter)
           .text(plugin.options.strings.BANNER_LOADING)
           .html(td.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
@@ -84,6 +84,118 @@
         tbodyData.attr('class', 'data')
                  .attr('display', 'none')
                  .appendTo(table);
+
+        var tfoot = $('<tfoot></tfoot>');
+        tfoot.appendTo(table);
+
+        var tr = $('<tr></tr>');
+        tr.appendTo(tfoot);
+
+        var td = $('<td></td>');
+        td.attr('colspan', visibleCounter)
+          .appendTo(tr);
+
+        var rightToolbar = $('<div></div>');
+        rightToolbar.attr('class', 'pull-right btn-toolbar')
+                    .appendTo(td);
+
+        var dropdown = $('<div></div>');
+        dropdown.attr('class', 'btn-group dropdown')
+                .appendTo(rightToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default dropdown-toggle')
+            .attr('data-toggle', 'dropdown')
+            .html('Dropdown <span class="caret"></span>')
+            .appendTo(dropdown);
+
+        var list = $('<ul></ul>');
+        list.attr('class', 'dropdown-menu')
+            .attr('role', 'menu')
+            .appendTo(dropdown);
+
+        $.each([ 15, 30, 50, 100, 0 ], function (index, value) {
+            var li = $('<li></li>');
+            li.attr('role', 'presentation')
+              .appendTo(list);
+            $('<a></a>')
+                .attr('role', 'menuitem')
+                .attr('tabindex', '-1')
+                .attr('href', 'javascript:void()')
+                .text(value == 0 ? 'All' : value)
+                .appendTo(li);
+        });
+
+/*
+    <tfoot>
+        <tr>
+            <td colspan="{{ totalColumns() }}">
+                <div class="pull-right btn-toolbar">
+                    <div class="btn-group" dropdown is-open="setPageToggle">
+                        <button class="btn btn-default dropdown-toggle" ng-disabled="model.disabled">
+                            {{ 'PAGE_SIZE' | translate }} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="size in [15, 30, 50, 100, 300]" ng-class="{ active: model.page.size == size }">
+                                <a href="" ng-click="setPage(1, size)">{{ size }}</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{ active: model.page.size == 0 }">
+                                <a href="" ng-click="setPage(1, 0)">{{ 'ALL_RECORDS' | translate }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group" dropdown>
+                        <button class="btn btn-default dropdown-toggle" ng-disabled="model.disabled">
+                            {{ 'COLUMNS' | translate }} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="column in model.columns">
+                                <a href="" ng-click="toggleHidden(column)">
+                                    <i ng-show="column.hidden" class="fa fa-square-o"></i>
+                                    <i ng-hide="column.hidden" class="fa fa-check-square-o"></i>
+                                    {{ column.title | translate }}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-click="pageNumber = 1; refresh()" ng-disabled="model.disabled || model.page.number <= 1">
+                            <span class="fa fa-fast-backward"></span>
+                        </button>
+                        <button class="btn btn-default" ng-click="pageNumber = pagePrevious; refresh()" ng-disabled="model.disabled || model.page.number <= 1">
+                            <span class="fa fa-step-backward"></span>
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" ng-show="pageOf1.length">{{ pageOf1 }}</span>
+                            <input type="text" class="form-control pagination-input" ng-model="model.page.number"
+                                   number-only min="1" max="model.page.total" key-enter="refresh()" ng-disabled="model.disabled">
+                            <span class="input-group-addon"i ng-show="pageOf2.length">{{ pageOf2 }}</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-click="pageNumber = pageNext; refresh()" ng-disabled="model.disabled || model.page.number >= model.page.total">
+                            <span class="fa fa-step-forward"></span>
+                        </button>
+                        <button class="btn btn-default" ng-click="pageNumber = model.page.total; refresh()" ng-disabled="model.disabled || model.page.number >= model.page.total">
+                            <span class="fa fa-fast-forward"></span>
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-default" ng-click="refresh()" ng-disabled="model.disabled">
+                            {{ 'REFRESH_BUTTON' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+*/
     };
 
     var _enableColumn = function (plugin, id, enabled)
@@ -182,7 +294,7 @@
         };
         this.columns = [];
         this.rows = [];
-        this.filters = [];
+        this.filters = {};
         this.sortColumn = null;
         this.sortDir = 'asc';
         this.pageNumber = 1;
@@ -240,7 +352,14 @@
 
             $.getJSON(
                 this.options.url,
-                { query: 'data' },
+                {
+                    query: 'data',
+                    filters: JSON.stringify(plugin.filters),
+                    sort_column: JSON.stringify(plugin.sortColumn),
+                    sort_dir: JSON.stringify(plugin.sortDir),
+                    page_number: JSON.stringify(plugin.pageNumber),
+                    page_size: JSON.stringify(plugin.pageSize),
+                },
                 function (data) {
                     if (data.success !== true) {
                         plugin.enable(true);

@@ -102,11 +102,11 @@ case 'describe':
     $data = $table->describe();
     break;
 case 'data':
-    $table->setFiltersJson(@$_GET['filters']);
-    $table->setSortColumn(@$_GET['sort_column']);
-    $table->setSortDir(@$_GET['sort_dir']);
-    $table->setPageNumber(@$_GET['page_number']);
-    $table->setPageSize(@$_GET['page_size']);
+    $table->setFilters(json_decode(@$_GET['filters'], true));
+    $table->setSortColumn(json_decode(@$_GET['sort_column'], true));
+    $table->setSortDir(json_decode(@$_GET['sort_dir'], true));
+    $table->setPageNumber(json_decode(@$_GET['page_number'], true));
+    $table->setPageSize(json_decode(@$_GET['page_size'], true));
     $data = $table->fetch();
     break;
 default:

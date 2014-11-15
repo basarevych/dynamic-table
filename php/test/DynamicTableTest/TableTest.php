@@ -62,51 +62,6 @@ class TableTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->table->getFilters());
     }
 
-    public function testSetFiltersJsonConvertsInput()
-    {
-        $this->table = $this->getMockBuilder('DynamicTable\Table')
-                            ->setMethods([ 'setFilters' ])
-                            ->getMockForAbstractClass();
-        $this->table->expects($this->any())
-            ->method('setFilters')
-            ->will($this->returnCallback(function ($filters) use (&$result) {
-                $result = $filters;
-            }));
-
-        $this->table->setColumns([
-            'id' => [
-                'title' => 'ID',
-                'type' => Table::TYPE_INTEGER,
-                'filters' => [ Table::FILTER_EQUAL ],
-                'sortable' => true,
-                'visible' => true,
-            ]
-        ]);
-
-        $result = null;
-        $this->table->setFiltersJson('{
-            "id": {
-                "equal": 123,
-                "like": "xxx"
-            },
-            "missing": {
-                "equal": 123
-            }
-        }');
-
-        $expected = [
-            'id' => [
-                Table::FILTER_EQUAL => 123,
-                Table::FILTER_LIKE => 'xxx',
-            ],
-            'missing' => [
-                Table::FILTER_EQUAL => 123,
-            ]
-        ];
-
-        $this->assertEquals($expected, $result);
-    }
-
     public function testSetSortColumnCorrectsParams()
     {
         $this->table->setColumns([

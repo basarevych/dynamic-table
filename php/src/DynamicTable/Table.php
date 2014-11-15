@@ -247,24 +247,6 @@ class Table
     }
 
     /**
-     * JSON version of filters setter
-     *
-     * @param string $filters
-     * @return Table
-     */
-    public function setFiltersJson($filters)
-    {
-        if ($filters === null)
-            return $this->setFilters([]);
-
-        $data = json_decode($filters, true);
-        if ($data === null)
-            throw new \Exception('Could not decode JSON data');
-
-        return $this->setFilters($data);
-    }
-
-    /**
      * Filters getter
      *
      * @return array
