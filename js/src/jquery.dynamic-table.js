@@ -106,7 +106,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html('Dropdown <span class="caret"></span>')
+            .html(plugin.options.strings.PAGE_SIZE + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -118,11 +118,25 @@
             var li = $('<li></li>');
             li.attr('role', 'presentation')
               .appendTo(list);
+            if (value == plugin.pageSize)
+                li.attr('class', 'active');
+
             $('<a></a>')
                 .attr('role', 'menuitem')
                 .attr('tabindex', '-1')
                 .attr('href', 'javascript:void()')
+                .attr('data-size', value)
                 .text(value == 0 ? 'All' : value)
+                .on('click', function() {
+                    var el = $(this);
+                    el.closest('ul')
+                      .find('li')
+                      .removeClass('active');
+                    el.closest('li')
+                      .addClass('active');
+
+                    plugin.setSize(el.attr('data-size'));
+                })
                 .appendTo(li);
         });
 
@@ -290,6 +304,7 @@
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
                 BANNER_EMPTY: 'Nothing found',
+                PAGE_SIZE: 'Page size',
             },
         };
         this.columns = [];
@@ -378,6 +393,11 @@
                     plugin.enable(true);
                 }
             );
+        },
+
+        setSize: function (size) {
+            this.pageSize = size;
+            this.refresh();
         },
     };
 
