@@ -9,6 +9,7 @@
         this.options = {
             rowIdColumn: null,
             mapper: null,
+            pageSizes: [ 15, 30, 50, 100, 0 ],
             tableClass: 'table table-striped table-hover table-condensed',
             loaderImage: 'img/loader.gif',
             strings: {
@@ -273,7 +274,7 @@
             .attr('role', 'menu')
             .appendTo(dropdown);
 
-        $.each([ 15, 30, 50, 100, 0 ], function (index, value) {
+        $.each(plugin.options.pageSizes, function (index, value) {
             var li = $('<li></li>');
             li.attr('role', 'presentation')
               .appendTo(list);
@@ -373,8 +374,7 @@
                   .appendTo(group);
 
         $('<span></span>')
-            .attr('class', 'input-group-addon')
-            .text(plugin.options.strings.LABEL_PAGE_OF_1)
+            .attr('class', 'input-group-addon pagination-before')
             .appendTo(inputGroup);
 
         $('<input>')
@@ -399,8 +399,7 @@
             .appendTo(inputGroup);
 
         $('<span></span>')
-            .attr('class', 'input-group-addon')
-            .text(plugin.options.strings.LABEL_PAGE_OF_2.replace('{0}', plugin.totalPages))
+            .attr('class', 'input-group-addon pagination-after')
             .appendTo(inputGroup);
 
         var group = $('<div></div>');
@@ -508,6 +507,15 @@
 
     var _showData = function (plugin)
     {
+        plugin.element.find('.pagination-input')
+                      .val(plugin.pageNumber);
+
+        plugin.element.find('tfoot .pagination-before')
+            .text(plugin.options.strings.LABEL_PAGE_OF_1.replace('{0}', plugin.totalPages))
+
+        plugin.element.find('tfoot .pagination-after')
+            .text(plugin.options.strings.LABEL_PAGE_OF_2.replace('{0}', plugin.totalPages))
+
         if (plugin.rows.length == 0) {
             var tbodyData = plugin.element.find('tbody.data');
             tbodyData.css('display', 'none');
@@ -557,9 +565,6 @@
         plugin.element.find('tbody.empty').css('display', 'none');
         plugin.element.find('tbody.data').replaceWith(tbodyData)
                                          .css('display', 'table-row-group');
-
-        plugin.element.find('.pagination-input')
-                      .val(plugin.pageNumber);
     };
 
 }(jQuery, window, document));
