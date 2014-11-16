@@ -3,6 +3,163 @@
     var pluginName = "dynamicTable",
         dataKey = "plugin_" + pluginName;
 
+    var Plugin = function (element, options) {
+        this.id = element.attr('id');
+        this.element = element;
+        this.options = {
+            rowIdColumn: null,
+            mapper: null,
+            tableClass: 'table table-striped table-hover table-condensed',
+            loaderImage: 'img/loader.gif',
+            strings: {
+                BANNER_LOADING: 'Loading... Please wait',
+                BANNER_EMPTY: 'Nothing found',
+                BUTTON_PAGE_SIZE: 'Page size',
+                BUTTON_COLUMNS: 'Columns',
+                BUTTON_REFRESH: 'Refresh',
+                LABEL_PAGE_OF_1: 'Page',
+                LABEL_PAGE_OF_2: 'of {0}',
+            },
+        };
+        this.columns = [];
+        this.rows = [];
+        this.filters = {};
+        this.sortColumn = null;
+        this.sortDir = 'asc';
+        this.pageNumber = 1;
+        this.pageSize = 15;
+        this.totalPages = 1;
+
+        this.init(options);
+    };
+
+    Plugin.prototype = {
+        init: function (options) {
+            $.extend(this.options, options);
+
+            var plugin = this;
+            $.getJSON(
+                this.options.url,
+                { query: 'describe' },
+                function (data) {
+                    if (data.success !== true)
+                        return;
+                    
+                    plugin.columns = data.columns;
+
+                    _buildTable(plugin);
+                    plugin.refresh();
+                }
+            );
+        },
+
+        enable: function (enable) {
+            var plugin = this;
+
+            $.each(this.columns, function (id, props) {
+                _enableColumnControls(plugin, id, enable);
+            });
+
+            _enableOverlay(plugin, !enable);
+
+            _enablePaginator(plugin, enable);
+        },
+
+        refresh: function (override) {
+            var plugin = this;
+            plugin.enable(false);
+
+            var data = {
+                query: 'data',
+                filters: JSON.stringify(plugin.filters),
+                sort_column: JSON.stringify(plugin.sortColumn),
+                sort_dir: JSON.stringify(plugin.sortDir),
+                page_number: JSON.stringify(plugin.pageNumber),
+                page_size: JSON.stringify(plugin.pageSize),
+            };
+            if (override != undefined) {
+                $.each(override, function (key, value) {
+                    data[key] = JSON.stringify(value);
+                });
+            }
+
+            $.getJSON(this.options.url, data, function (data) {
+                if (data.success !== true) {
+                    plugin.enable(true);
+                    return;
+                }
+
+                plugin.sortColumn = data.sort_column;
+                plugin.sortDir = data.sort_dir;
+                plugin.pageNumber = data.page_number;
+                plugin.pageSize = data.page_size;
+                plugin.totalPages = data.total_pages;
+                plugin.filters = data.filters;
+                plugin.rows = data.rows;
+
+                _showData(plugin);
+                plugin.enable(true);
+            });
+        },
+
+        setSize: function (size) {
+            this.refresh({ page_size: size });
+        },
+
+        setPage: function (page) {
+            page = parseInt(page);
+            if (page < 1)
+                page = 1;
+            else if (page > this.totalPages)
+                page = this.totalPages;
+
+            this.refresh({ page_number: page });
+        },
+
+        toggleColumn: function (column) {
+            var plugin = this, visibleCounter = 0, visible;
+
+            if (this.options.rowIdColumn != null)
+                visibleCounter++;
+
+            $.each(this.columns, function (id, props) {
+                if (id == column) {
+                    visible = !props.visible;
+                    plugin.columns[id].visible = visible;
+                    if (visible)
+                        visibleCounter++;
+                } else {
+                    if (props.visible)
+                        visibleCounter++;
+                }
+            });
+
+            this.element.find('thead th[data-column-id=' + column + ']')
+                        .css('display', visible ? 'table-cell' : 'none');
+            this.element.find('tbody td[data-column-id=' + column + ']')
+                        .css('display', visible ? 'table-cell' : 'none');
+            this.element.find('thead.empty td')
+                        .prop('colspan', visibleCounter);
+            this.element.find('tfoot td')
+                        .prop('colspan', visibleCounter);
+            this.element.find('tfoot a[data-column-id=' + column + '] i')
+                        .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
+        },
+    };
+
+    $.fn[pluginName] = function (options) {
+        var plugin = this.data(dataKey);
+        if (plugin instanceof Plugin) {
+            if (typeof options !== 'undefined')
+                plugin.init(options);
+        } else {
+            plugin = new Plugin(this, options);
+            this.data(dataKey, plugin);
+        }
+
+        return plugin;
+    };
+
     var _buildTable = function (plugin) {
         plugin.element.addClass('dynamic-table');
 
@@ -108,7 +265,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.BTN_PAGE_SIZE + ' <span class="caret"></span>')
+            .html(plugin.options.strings.BUTTON_PAGE_SIZE + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -150,7 +307,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.BTN_COLUMNS + ' <span class="caret"></span>')
+            .html(plugin.options.strings.BUTTON_COLUMNS + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -178,85 +335,119 @@
                 .appendTo(li);
         });
 
+        var leftToolbar = $('<div></div>');
+        leftToolbar.attr('class', 'btn-toolbar')
+                    .attr('role', 'toolbar')
+                    .appendTo(td);
 
-/*
-    <tfoot>
-        <tr>
-            <td colspan="{{ totalColumns() }}">
-                <div class="pull-right btn-toolbar">
-                    <div class="btn-group" dropdown is-open="setPageToggle">
-                        <button class="btn btn-default dropdown-toggle" ng-disabled="model.disabled">
-                            {{ 'PAGE_SIZE' | translate }} <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="size in [15, 30, 50, 100, 300]" ng-class="{ active: model.page.size == size }">
-                                <a href="" ng-click="setPage(1, size)">{{ size }}</a>
-                            </li>
-                            <li class="divider"></li>
-                            <li ng-class="{ active: model.page.size == 0 }">
-                                <a href="" ng-click="setPage(1, 0)">{{ 'ALL_RECORDS' | translate }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="btn-group" dropdown>
-                        <button class="btn btn-default dropdown-toggle" ng-disabled="model.disabled">
-                            {{ 'COLUMNS' | translate }} <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="column in model.columns">
-                                <a href="" ng-click="toggleHidden(column)">
-                                    <i ng-show="column.hidden" class="fa fa-square-o"></i>
-                                    <i ng-hide="column.hidden" class="fa fa-check-square-o"></i>
-                                    {{ column.title | translate }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        var group = $('<div></div>');
+        group.attr('class', 'btn-group')
+             .attr('role', 'group')
+             .appendTo(leftToolbar);
 
-                <div class="btn-toolbar">
-                    <div class="btn-group">
-                        <button class="btn btn-default" ng-click="pageNumber = 1; refresh()" ng-disabled="model.disabled || model.page.number <= 1">
-                            <span class="fa fa-fast-backward"></span>
-                        </button>
-                        <button class="btn btn-default" ng-click="pageNumber = pagePrevious; refresh()" ng-disabled="model.disabled || model.page.number <= 1">
-                            <span class="fa fa-step-backward"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <div class="input-group">
-                            <span class="input-group-addon" ng-show="pageOf1.length">{{ pageOf1 }}</span>
-                            <input type="text" class="form-control pagination-input" ng-model="model.page.number"
-                                   number-only min="1" max="model.page.total" key-enter="refresh()" ng-disabled="model.disabled">
-                            <span class="input-group-addon"i ng-show="pageOf2.length">{{ pageOf2 }}</span>
-                        </div>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-default" ng-click="pageNumber = pageNext; refresh()" ng-disabled="model.disabled || model.page.number >= model.page.total">
-                            <span class="fa fa-step-forward"></span>
-                        </button>
-                        <button class="btn btn-default" ng-click="pageNumber = model.page.total; refresh()" ng-disabled="model.disabled || model.page.number >= model.page.total">
-                            <span class="fa fa-fast-forward"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-default" ng-click="refresh()" ng-disabled="model.disabled">
-                            {{ 'REFRESH_BUTTON' | translate }}
-                        </button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tfoot>
-*/
+        $('<button></button>')
+            .attr('class', 'btn btn-default')
+            .attr('data-action', 'first')
+            .html('<i class="fa fa-fast-backward"></i>')
+            .on('click', function () {
+                plugin.setPage(1);
+            })
+            .appendTo(group);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default')
+            .attr('data-action', 'previous')
+            .html('<i class="fa fa-step-backward"></i>')
+            .on('click', function () {
+                plugin.setPage(plugin.pageNumber - 1);
+            })
+            .appendTo(group);
+
+        var group = $('<div></div>');
+        group.attr('class', 'btn-group')
+             .attr('role', 'group')
+             .appendTo(leftToolbar);
+
+        var inputGroup = $('<div></div>');
+        inputGroup.attr('class', 'input-group')
+                  .appendTo(group);
+
+        $('<span></span>')
+            .attr('class', 'input-group-addon')
+            .text(plugin.options.strings.LABEL_PAGE_OF_1)
+            .appendTo(inputGroup);
+
+        $('<input>')
+            .attr('class', 'form-control pagination-input')
+            .on('keypress', function (event) {
+                if (event.keyCode == 13)
+                    plugin.setPage($(this).val());
+                else if (event.keyCode < 48 || event.keyCode > 57)
+                    event.preventDefault();
+            })
+            .on('keyup', function () {
+                if ($(this).val() != plugin.pageNumber) {
+                    plugin.element.find('tfoot button[data-action=refresh]')
+                                  .addClass('btn-primary')
+                                  .removeClass('btn-default');
+                } else {
+                    plugin.element.find('tfoot button[data-action=refresh]')
+                                  .addClass('btn-default')
+                                  .removeClass('btn-primary');
+                }
+            })
+            .appendTo(inputGroup);
+
+        $('<span></span>')
+            .attr('class', 'input-group-addon')
+            .text(plugin.options.strings.LABEL_PAGE_OF_2.replace('{0}', plugin.totalPages))
+            .appendTo(inputGroup);
+
+        var group = $('<div></div>');
+        group.attr('class', 'btn-group')
+             .attr('role', 'group')
+             .appendTo(leftToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default')
+            .attr('data-action', 'next')
+            .html('<i class="fa fa-step-forward"></i>')
+            .on('click', function () {
+                plugin.setPage(plugin.pageNumber + 1);
+            })
+            .appendTo(group);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default')
+            .attr('data-action', 'last')
+            .html('<i class="fa fa-fast-forward"></i>')
+            .on('click', function () {
+                plugin.setPage(plugin.totalPages);
+            })
+            .appendTo(group);
+
+        var group = $('<div></div>');
+        group.attr('class', 'btn-group')
+             .attr('role', 'group')
+             .appendTo(leftToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default')
+            .attr('data-action', 'refresh')
+            .text(plugin.options.strings.BUTTON_REFRESH)
+            .on('click', function () {
+                var input = plugin.element.find('tfoot input.pagination-input');
+                plugin.refresh({ page_number: input.val() });
+            })
+            .appendTo(group);
     };
 
-    var _enableColumn = function (plugin, id, enabled)
+    var _enableColumnControls = function (plugin, id, enable)
     {
         var props = plugin.columns[id];
 
         plugin.element.find('.selector input')
-                      .prop('disabled', !enabled);
+                      .prop('disabled', !enable);
 
         var th = plugin.element.find('[data-column-id=' + id + ']');
         th.find('.text')
@@ -277,6 +468,42 @@
           );
         th.find('.filter')
           .css('display', props.filters.length > 0 ? 'inline' : 'none');
+    };
+
+    var _enableOverlay = function (plugin, enable) {
+        var tbody = plugin.element.find('tbody.data');
+        var pos = tbody.position();
+        $.each([ '.overlay-back', '.overlay-loader' ], function (index, value) {
+            var overlay = plugin.element.find(value);
+            overlay.width(tbody.width())
+                   .height(tbody.height())
+                   .css('top', pos.top)
+                   .css('left', pos.left)
+                   .css('display', enable ? 'block' : 'none');
+        });
+    };
+
+    var _enablePaginator = function (plugin, enable)
+    {
+        var disabled = (!enable || plugin.pageNumber == 1);
+        plugin.element.find('tfoot button[data-action=first]')
+                      .prop('disabled', disabled);
+        plugin.element.find('tfoot button[data-action=previous]')
+                      .prop('disabled', disabled);
+
+        var disabled = (!enable || plugin.pageNumber == plugin.totalPages);
+        plugin.element.find('tfoot button[data-action=next]')
+                      .prop('disabled', disabled);
+        plugin.element.find('tfoot button[data-action=last]')
+                      .prop('disabled', disabled);
+
+        plugin.element.find('tfoot button[data-action=refresh]')
+                      .prop('disabled', !enable)
+                      .addClass('btn-default')
+                      .removeClass('btn-primary');
+
+        plugin.element.find('tfoot .pagination-input')
+                      .prop('disabled', !enable);
     };
 
     var _showData = function (plugin)
@@ -330,158 +557,9 @@
         plugin.element.find('tbody.empty').css('display', 'none');
         plugin.element.find('tbody.data').replaceWith(tbodyData)
                                          .css('display', 'table-row-group');
-    }
 
-    var Plugin = function (element, options) {
-        this.id = element.attr('id');
-        this.element = element;
-        this.options = {
-            rowIdColumn: null,
-            mapper: null,
-            tableClass: 'table table-striped table-hover table-condensed',
-            loaderImage: 'img/loader.gif',
-            strings: {
-                BANNER_LOADING: 'Loading... Please wait',
-                BANNER_EMPTY: 'Nothing found',
-                BTN_PAGE_SIZE: 'Page size',
-                BTN_COLUMNS: 'Columns',
-            },
-        };
-        this.columns = [];
-        this.rows = [];
-        this.filters = {};
-        this.sortColumn = null;
-        this.sortDir = 'asc';
-        this.pageNumber = 1;
-        this.pageSize = 15;
-        this.totalPages = 1;
-
-        this.init(options);
-    };
-
-    Plugin.prototype = {
-        init: function (options) {
-            $.extend(this.options, options);
-
-            var plugin = this;
-            $.getJSON(
-                this.options.url,
-                { query: 'describe' },
-                function (data) {
-                    if (data.success !== true)
-                        return;
-                    
-                    plugin.columns = data.columns;
-
-                    _buildTable(plugin);
-                    plugin.refresh();
-                }
-            );
-        },
-
-        enable: function (enabled) {
-            var plugin = this;
-
-            $.each(this.columns, function (id, props) {
-                _enableColumn(plugin, id, enabled);
-            });
-
-            var tbody = plugin.element.find('tbody.data');
-            if (tbody.css('display') == 'none')
-                return;
-
-            var pos = tbody.position();
-            $.each([ '.overlay-back', '.overlay-loader' ], function (index, value) {
-                var overlay = plugin.element.find(value);
-                overlay.width(tbody.width())
-                       .height(tbody.height())
-                       .css('top', pos.top)
-                       .css('left', pos.left)
-                       .css('display', enabled ? 'none' : 'block');
-            });
-        },
-
-        refresh: function () {
-            var plugin = this;
-            plugin.enable(false);
-
-            $.getJSON(
-                this.options.url,
-                {
-                    query: 'data',
-                    filters: JSON.stringify(plugin.filters),
-                    sort_column: JSON.stringify(plugin.sortColumn),
-                    sort_dir: JSON.stringify(plugin.sortDir),
-                    page_number: JSON.stringify(plugin.pageNumber),
-                    page_size: JSON.stringify(plugin.pageSize),
-                },
-                function (data) {
-                    if (data.success !== true) {
-                        plugin.enable(true);
-                        return;
-                    }
-
-                    plugin.sortColumn = data.sort_column;
-                    plugin.sortDir = data.sort_dir;
-                    plugin.pageNumber = data.page_number;
-                    plugin.pageSize = data.page_size;
-                    plugin.totalPages = data.total_pages;
-                    plugin.filters = data.filters;
-                    plugin.rows = data.rows;
-
-                    _showData(plugin);
-                    plugin.enable(true);
-                }
-            );
-        },
-
-        setSize: function (size) {
-            this.pageSize = size;
-            this.refresh();
-        },
-
-        toggleColumn: function (column) {
-            var plugin = this, visibleCounter = 0, visible;
-
-            if (this.options.rowIdColumn != null)
-                visibleCounter++;
-
-            $.each(this.columns, function (id, props) {
-                if (id == column) {
-                    visible = !props.visible;
-                    plugin.columns[id].visible = visible;
-                    if (visible)
-                        visibleCounter++;
-                } else {
-                    if (props.visible)
-                        visibleCounter++;
-                }
-            });
-
-            this.element.find('thead th[data-column-id=' + column + ']')
-                        .css('display', visible ? 'table-cell' : 'none');
-            this.element.find('tbody td[data-column-id=' + column + ']')
-                        .css('display', visible ? 'table-cell' : 'none');
-            this.element.find('thead.empty td')
-                        .prop('colspan', visibleCounter);
-            this.element.find('tfoot td')
-                        .prop('colspan', visibleCounter);
-            this.element.find('tfoot a[data-column-id=' + column + '] i')
-                        .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
-        },
-    };
-
-    $.fn[pluginName] = function (options) {
-        var plugin = this.data(dataKey);
-        if (plugin instanceof Plugin) {
-            if (typeof options !== 'undefined')
-                plugin.init(options);
-        } else {
-            plugin = new Plugin(this, options);
-            this.data(dataKey, plugin);
-        }
-
-        return plugin;
+        plugin.element.find('.pagination-input')
+                      .val(plugin.pageNumber);
     };
 
 }(jQuery, window, document));

@@ -30,3 +30,7 @@
     font-size: 120%;
     font-style: italic;
 }
+.dynamic-table .pagination-input {
+    width: 4em;
+    text-align: center;
+}
