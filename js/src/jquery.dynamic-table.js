@@ -54,18 +54,6 @@
             );
         },
 
-        enable: function (enable) {
-            var plugin = this;
-
-            $.each(this.columns, function (id, props) {
-                _enableColumnControls(plugin, id, enable);
-            });
-
-            _enableOverlay(plugin, !enable);
-
-            _enablePaginator(plugin, enable);
-        },
-
         refresh: function (override) {
             var plugin = this;
             plugin.enable(false);
@@ -84,6 +72,8 @@
                 });
             }
 
+            var selected = this.element.find('tbody td.selector input:checked');
+
             $.getJSON(this.options.url, data, function (data) {
                 if (data.success !== true) {
                     plugin.enable(true);
@@ -99,8 +89,25 @@
                 plugin.rows = data.rows;
 
                 _showData(plugin);
+
+                $.each(selected, function (index, element) {
+                    plugin.toggleSelect($(element).val());
+                });
+
                 plugin.enable(true);
             });
+        },
+
+        enable: function (enable) {
+            var plugin = this;
+
+            $.each(this.columns, function (id, props) {
+                _enableColumnControls(plugin, id, enable);
+            });
+
+            _enableOverlay(plugin, !enable);
+
+            _enablePaginator(plugin, enable);
         },
 
         setSize: function (size) {
@@ -146,6 +153,20 @@
             this.element.find('tfoot a[data-column-id=' + column + '] i')
                         .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
         },
+
+        toggleSelect: function (rowId) {
+            var input = $('tbody tr[data-row-id=' + rowId + '] td.selector input'),
+                checked = !input.prop('checked');
+            input.prop('checked', checked);
+            if (checked) {
+                input.closest('tr')
+                     .addClass('success');
+            } else {
+                input.closest('tr')
+                     .removeClass('success');
+            }
+            return false;
+        }
     };
 
     $.fn[pluginName] = function (options) {
@@ -190,7 +211,19 @@
             $('<th class="selector"><input type="checkbox"></th>')
                 .appendTo(tr)
                 .find('input')
-                .prop('disabled', true);
+                .prop('disabled', true)
+                .on('change', function () {
+                    var inputs = plugin.element.find('tbody td.selector input');
+                    if ($(this).prop('checked')) {
+                        inputs.prop('checked', true)
+                              .closest('tr')
+                              .addClass('success');
+                    } else {
+                        inputs.prop('checked', false)
+                              .closest('tr')
+                              .removeClass('success');
+                    }
+                });
         }
 
         $.each(plugin.columns, function (id, props) {
@@ -538,11 +571,22 @@
 
                 tr.attr('data-row-id', rowId);
 
-                var selector = $('<th class="selector"><input type="checkbox"></th>');
+                var selector = $('<td class="selector"><input type="checkbox"></td>');
                 selector.appendTo(tr)
                         .find('input')
                         .prop('disabled', true)
-                        .prop('value', rowId);
+                        .prop('value', rowId)
+                        .on('click', function () {
+                            var me = $(this);
+                            if (me.prop('checked'))
+                                me.closest('tr').addClass('success');
+                            else
+                                me.closest('tr').removeClass('success');
+
+                            var all = plugin.element.find('tbody td.selector input:checked');
+                            plugin.element.find('thead th.selector input')
+                                          .prop('checked', all.length == plugin.rows.length);
+                        });
             }
 
             var content = plugin.options.mapper != null
