@@ -137,30 +137,17 @@ class ArrayAdapter extends AbstractAdapter
 
         $columns = $table->getColumns();
         $result = [];
-        $firstRow = true;
         foreach ($this->data as $row) {
             $passed = false;
-            if ($firstRow)
-                $successfulFilters = [];
             foreach ($filters as $id => $filterData) {
-                $successfulNames = [];
                 foreach ($filterData as $name => $value) {
                     $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
-                    if ($test !== null) {
-                        if ($firstRow)
-                            $successfulNames[$name] = $value;
-                        if ($test)
-                            $passed = true;
-                    }
+                    if ($test === true)
+                        $passed = true;
                 }
-                if ($firstRow && count($successfulNames) > 0)
-                    $successfulFilters[$id] = $successfulNames;
             }
-            if ($firstRow)
-                $table->setFilters($successfulFilters);
             if ($passed)
                 $result[] = $row;
-            $firstRow = false;
         }
 
         $this->data = $result;
