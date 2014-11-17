@@ -29,6 +29,8 @@
                 LABEL_FILTER_BETWEEN_START: 'Values greater than or equal to',
                 LABEL_FILTER_BETWEEN_END: 'Values less than or equal to',
                 LABEL_FILTER_NULL: 'Include rows with empty value in this column',
+                LABEL_TRUE: 'True',
+                LABEL_FALSE: 'False',
             },
         };
         this.columns = [];
@@ -324,19 +326,49 @@
             }
 
             if (props.filters.indexOf('equal') != -1) {
-                var group = $('<div></div>');
-                group.attr('class', 'form-group')
-                     .appendTo(form);
+                if (props.type == 'boolean') {
+                    var group = $('<div></div>');
+                    group.attr('class', 'radio')
+                         .appendTo(form);
 
-                $('<label></label>')
-                    .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
-                    .appendTo(group);
+                    var radio = $('<input type="radio">');
+                    radio.attr('data-filter', 'equal-false')
+                         .attr('name', plugin.id + '-' + id)
+                         .val(0);
 
-                $('<input></input>')
-                    .attr('type', 'text')
-                    .attr('class', 'form-control')
-                    .attr('data-filter', 'equal')
-                    .appendTo(group);
+                    var label = $('<label></label>');
+                    label.html(radio)
+                         .html(label.html() + plugin.options.strings.LABEL_FALSE)
+                         .appendTo(group);
+
+                    var group = $('<div></div>');
+                    group.attr('class', 'radio')
+                         .appendTo(form);
+
+                    var radio = $('<input type="radio">');
+                    radio.attr('data-filter', 'equal-true')
+                         .attr('name', plugin.id + '-' + id)
+                         .val(1);
+
+                    var label = $('<label></label>');
+                    label.html(radio)
+                         .html(label.html() + plugin.options.strings.LABEL_TRUE)
+                        .appendTo(group);
+                } else {
+                    var group = $('<div></div>');
+                    group.attr('class', 'form-group')
+                         .appendTo(form);
+
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
+                        .appendTo(group);
+
+                    $('<input></input>')
+                        .attr('type', 'text')
+                        .attr('class', 'form-control')
+                        .attr('data-filter', 'equal')
+                        .appendTo(group);
+                }
             }
 
             if (props.filters.indexOf('between') != -1) {
@@ -391,9 +423,18 @@
                             data.like = like.val();
                     }
                     if (props.filters.indexOf('equal') != -1) {
-                        var equal = form.find('input[data-filter=equal]');
-                        if (equal.val().trim().length > 0)
-                            data.equal = equal.val();
+                        if (props.type == 'boolean') {
+                            var equalTrue = form.find('input[data-filter=equal-true]');
+                            var equalFalse = form.find('input[data-filter=equal-false]');
+                            if (equalTrue.prop('checked'))
+                                data.equal = true;
+                            else if (equalFalse.prop('checked'))
+                                data.equal = false;
+                        } else {
+                            var equal = form.find('input[data-filter=equal]');
+                            if (equal.val().trim().length > 0)
+                                data.equal = equal.val();
+                        }
                     }
                     if (props.filters.indexOf('between') != -1) {
                         var start = form.find('input[data-filter=between-start]');
@@ -735,6 +776,8 @@
             var th = plugin.element.find('thead th[data-column-id=' + id + ']');
             th.find('input[data-filter=like]').val('');
             th.find('input[data-filter=equal]').val('');
+            th.find('input[data-filter=equal-true]').prop('checked', false);
+            th.find('input[data-filter=equal-false]').prop('checked', false);
             th.find('input[data-filter=between-start]').val('');
             th.find('input[data-filter=between-end]').val('');
             th.find('input[data-filter=null]').prop('check', false);
@@ -752,7 +795,14 @@
 
             var equal = plugin.filters[id].equal;
             if (typeof equal != 'undefined') {
-                th.find('input[data-filter=equal]').val(equal);
+                if (props.type == 'boolean') {
+                    if (equal)
+                        th.find('input[data-filter=equal-true]').prop('checked', true);
+                    else
+                        th.find('input[data-filter=equal-false]').prop('checked', true);
+                } else {
+                    th.find('input[data-filter=equal]').val(equal);
+                }
                 hasFilter = true;
             }
 

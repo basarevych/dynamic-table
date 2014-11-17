@@ -210,7 +210,7 @@ class ArrayAdapter extends AbstractAdapter
             case Table::FILTER_LIKE:
                 return $real !== null && strpos($real, $test) !== false;
             case Table::FILTER_EQUAL:
-                return $real !== null && $test === $real;
+                return $real !== null && $test == $real;
             case Table::FILTER_BETWEEN:
                 if ($real === null)
                     return false;
