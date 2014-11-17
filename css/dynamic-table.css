@@ -24,6 +24,9 @@
 .dynamic-table .filter {
     margin-left: 1em;
 }
+.dynamic-table th .popover {
+    width: 300px;
+}
 .dynamic-table tbody.empty td {
     padding: 1em 0;
     text-align: center;

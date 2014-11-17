@@ -53,7 +53,7 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'Float',
                 'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -69,7 +69,7 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'DateTime',
                 'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -219,35 +219,8 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $result[0]['id'], "Incorrect row after EQUAL filtering");
 
         $this->table->setFilters([
-            'float' => [
-                Table::FILTER_GREATER => 0.02
-            ]
-        ]);
-
-        $this->adapter->setData([ $a, $b, $c, $d ]);
-        $this->adapter->filter($this->table);
-        $result = $this->adapter->getData();
-
-        $this->assertEquals(1, count($result), "One row should remain");
-        $this->assertEquals(4, $result[0]['id'], "Incorrect row after GREATER filtering");
-
-        $date = new \DateTime('2010-03-25 14:00:00');
-        $this->table->setFilters([
-            'datetime' => [
-                Table::FILTER_LESS => $date->getTimestamp()
-            ]
-        ]);
-
-        $this->adapter->setData([ $a, $b, $c, $d ]);
-        $this->adapter->filter($this->table);
-        $result = $this->adapter->getData();
-
-        $this->assertEquals(1, count($result), "One row should remain");
-        $this->assertEquals(1, $result[0]['id'], "Incorrect row after LESS filtering");
-
-        $this->table->setFilters([
             'integer' => [
-                Table::FILTER_BETWEEN => [1, 4]
+                Table::FILTER_BETWEEN => [1, 3]
             ]
         ]);
 
@@ -255,8 +228,9 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->adapter->filter($this->table);
         $result = $this->adapter->getData();
 
-        $this->assertEquals(1, count($result), "One row should remain");
-        $this->assertEquals(2, $result[0]['id'], "Incorrect row after BETWEEN filtering");
+        $this->assertEquals(2, count($result), "Two rows should remain");
+        $this->assertEquals(1, $result[0]['id'], "Incorrect row[0] after BETWEEN filtering");
+        $this->assertEquals(2, $result[1]['id'], "Incorrect row[1] after BETWEEN filtering");
 
         $this->table->setFilters([
             'datetime' => [

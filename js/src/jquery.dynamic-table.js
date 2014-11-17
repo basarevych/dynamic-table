@@ -18,8 +18,17 @@
                 BUTTON_PAGE_SIZE: 'Page size',
                 BUTTON_COLUMNS: 'Columns',
                 BUTTON_REFRESH: 'Refresh',
+                BUTTON_OK: 'OK',
+                BUTTON_CLEAR: 'Clear',
+                BUTTON_CANCEL: 'Cancel',
+                TITLE_FILTER_WINDOW: 'Filter',
                 LABEL_PAGE_OF_1: 'Page',
                 LABEL_PAGE_OF_2: 'of {0}',
+                LABEL_FILTER_LIKE: 'Strings like',
+                LABEL_FILTER_EQUAL: 'Values equal to',
+                LABEL_FILTER_BETWEEN_START: 'Values greater than or equal to',
+                LABEL_FILTER_BETWEEN_END: 'Values less than or equal to',
+                LABEL_FILTER_NULL: 'Include rows with empty value in this column',
             },
         };
         this.columns = [];
@@ -122,6 +131,12 @@
                 page = this.totalPages;
 
             this.refresh({ page_number: page });
+        },
+
+        setFilters: function (id, filters) {
+            var cur = this.filters;
+            cur[id] = filters;
+            this.refresh({ filters: cur });
         },
 
         toggleColumn: function (column) {
@@ -252,10 +267,172 @@
                 .css('display', 'none')
                 .appendTo(th);
 
+            if (props.filters.length == 0)
+                return;
+ 
             $('<button class="filter btn btn-default btn-xs"></button>')
                 .css('display', 'none')
                 .html('<i class="fa fa-filter"></i>')
+                .on('click', function () {
+                    var popover = $(this).parent().find('.popover');
+                    var thead = plugin.element.find('thead');
+                    var th = $(this).closest('th');
+                    var posTh = th.position(), posThead = thead.position();
+                    var left = posTh.left;
+
+                    thead.find('.popover').css('display', 'none');
+
+                    if (posTh.left + popover.width() > posThead.left + thead.width())
+                        left -= (popover.width() - th.width());
+                    popover.css('top', posTh.top + $(this).height() + 15)
+                           .css('left', left)
+                           .css('display', popover.css('display') == 'block' ? 'none' : 'block');
+                })
                 .appendTo(th);
+
+            var popover = $('<div></div>');
+            popover.attr('class', 'popover')
+                   .appendTo(th);
+
+            $('<h3></h3>')
+                .attr('class', 'popover-title')
+                .text(plugin.options.strings.TITLE_FILTER_WINDOW)
+                .appendTo(popover);
+
+            var formWrapper = $('<div></div>');
+            formWrapper.attr('class', 'popover-content')
+                       .appendTo(popover);
+
+            var form = $('<form onsubmit="return false"></form>');
+            form.attr('role', 'form')
+                .appendTo(formWrapper);
+
+            if (props.filters.indexOf('like') != -1) {
+                var group = $('<div></div>');
+                group.attr('class', 'form-group')
+                     .appendTo(form);
+
+                $('<label></label>')
+                    .text(plugin.options.strings.LABEL_FILTER_LIKE + ':')
+                    .appendTo(group);
+
+                $('<input></input>')
+                    .attr('type', 'text')
+                    .attr('class', 'form-control')
+                    .attr('data-filter', 'like')
+                    .appendTo(group);
+            }
+
+            if (props.filters.indexOf('equal') != -1) {
+                var group = $('<div></div>');
+                group.attr('class', 'form-group')
+                     .appendTo(form);
+
+                $('<label></label>')
+                    .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
+                    .appendTo(group);
+
+                $('<input></input>')
+                    .attr('type', 'text')
+                    .attr('class', 'form-control')
+                    .attr('data-filter', 'equal')
+                    .appendTo(group);
+            }
+
+            if (props.filters.indexOf('between') != -1) {
+                var group = $('<div></div>');
+                group.attr('class', 'form-group')
+                     .appendTo(form);
+
+                $('<label></label>')
+                    .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
+                    .appendTo(group);
+
+                $('<input></input>')
+                    .attr('type', 'text')
+                    .attr('class', 'form-control')
+                    .attr('data-filter', 'between-start')
+                    .appendTo(group);
+
+                $('<label></label>')
+                    .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
+                    .appendTo(group);
+
+                $('<input></input>')
+                    .attr('type', 'text')
+                    .attr('class', 'form-control')
+                    .attr('data-filter', 'between-end')
+                    .appendTo(group);
+            }
+
+            if (props.filters.indexOf('null') != -1) {
+                var group = $('<div></div>');
+                group.attr('class', 'checkbox')
+                     .appendTo(form);
+
+                $('<label></label>')
+                    .html(
+                        '<input type="checkbox" data-filter="null">'
+                        + plugin.options.strings.LABEL_FILTER_NULL
+                    )
+                    .appendTo(group);
+            }
+
+            $('<button></button>')
+                .attr('class', 'btn btn-primary')
+                .text(plugin.options.strings.BUTTON_OK)
+                .on('click', function () {
+                    popover.css('display', 'none');
+                    var data = {};
+                    if (props.filters.indexOf('like') != -1) {
+                        var like = form.find('input[data-filter=like]');
+                        if (like.val().trim().length > 0)
+                            data.like = like.val();
+                    }
+                    if (props.filters.indexOf('equal') != -1) {
+                        var equal = form.find('input[data-filter=equal]');
+                        if (equal.val().trim().length > 0)
+                            data.equal = equal.val();
+                    }
+                    if (props.filters.indexOf('between') != -1) {
+                        var start = form.find('input[data-filter=between-start]');
+                        var end = form.find('input[data-filter=between-end]');
+                        start = start.val().trim().length > 0 ? start.val() : null;
+                        end = end.val().trim().length > 0 ? end.val() : null;
+                        if (start != null || end != null)
+                            data.between = [ start, end ];
+                    }
+                    if (props.filters.indexOf('null') != -1) {
+                        var check = form.find('input[data-filter=null]');
+                        if (check.prop('checked'))
+                            data.null = true;
+                    }
+                    plugin.setFilters(id, data);
+                })
+                .appendTo(form);
+
+            $('<span>&nbsp;</span>').appendTo(form);
+
+            $('<button></button>')
+                .attr('class', 'btn btn-default')
+                .text(plugin.options.strings.BUTTON_CLEAR)
+                .on('click', function () {
+                    popover.css('display', 'none');
+                    if (props.filters.indexOf('like') != -1)
+                        form.find('input[data-filter=like]').val('');
+                    plugin.setFilters(id, {});
+                })
+                .appendTo(form);
+
+            $('<span>&nbsp;</span>').appendTo(form);
+
+            $('<button></button>')
+                .attr('class', 'btn btn-default')
+                .text(plugin.options.strings.BUTTON_CANCEL)
+                .on('click', function () {
+                    popover.css('display', 'none');
+                })
+                .appendTo(form);
         });
 
         var tbodyEmpty = $('<tbody></tbody>');
@@ -548,6 +725,16 @@
 
         plugin.element.find('tfoot .pagination-after')
             .text(plugin.options.strings.LABEL_PAGE_OF_2.replace('{0}', plugin.totalPages))
+
+        plugin.element.find('thead button.filter')
+                      .removeClass('btn-primary')
+                      .addClass('btn-default');
+
+        $.each(plugin.filters, function (id, filters) {
+            plugin.element.find('thead th[data-column-id=' + id + '] button.filter')
+                          .removeClass('btn-default')
+                          .addClass('btn-primary');
+        });
 
         if (plugin.rows.length == 0) {
             var tbodyData = plugin.element.find('tbody.data');

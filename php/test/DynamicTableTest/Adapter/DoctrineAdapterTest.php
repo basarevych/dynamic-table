@@ -72,7 +72,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'Float',
                 'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -88,7 +88,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'DateTime',
                 'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -96,7 +96,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'Computed Value',
                 'sql_id'    => 'computed',
                 'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -176,10 +176,6 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
             'integer' => [
                 Table::FILTER_BETWEEN => [ 10, 20 ]
             ],
-            'float' => [
-                Table::FILTER_GREATER => 5,
-                Table::FILTER_LESS => 8
-            ],
             'boolean' => [
                 Table::FILTER_NULL => true
             ]
@@ -191,9 +187,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             "(s.id = :s_id_equal)"
             ." OR (s.value_string LIKE :s_value_string_like)"
-            ." OR (s.value_integer > :s_value_integer_begin AND s.value_integer < :s_value_integer_end)"
-            ." OR (s.value_float > :s_value_float_greater)"
-            ." OR (s.value_float < :s_value_float_less)"
+            ." OR (s.value_integer >= :s_value_integer_begin AND s.value_integer <= :s_value_integer_end)"
             ." OR (s.value_boolean IS NULL)",
             $resultWhere,
             "SQL WHERE is incorrect"
@@ -204,8 +198,6 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 "s_value_string_like" => "%abc%",
                 "s_value_integer_begin" => 10,
                 "s_value_integer_end" => 20,
-                "s_value_float_greater" => 5,
-                "s_value_float_less" => 8
             ],
             $resultParams,
             "SQL parameters are wrong"

@@ -187,8 +187,8 @@ class DoctrineAdapter extends AbstractAdapter
             if ($filter == Table::FILTER_BETWEEN
                     && is_array($value) && count($value) == 2) {
                 $value = [
-                    new \DateTime('@' . $value[0]),
-                    new \DateTime('@' . $value[1]),
+                    $value[0] ? new \DateTime('@' . $value[0]) : null,
+                    $value[1] ? new \DateTime('@' . $value[1]) : null,
                 ];
             } else if ($filter != Table::FILTER_BETWEEN
                     && is_scalar($value)) {
@@ -216,22 +216,19 @@ class DoctrineAdapter extends AbstractAdapter
                 $this->sqlOrs[] = "($field = :$param)";
                 $this->sqlParams[$param] = $value;
                 break;
-            case Table::FILTER_GREATER:
-                $param = $paramBaseName . '_greater';
-                $this->sqlOrs[] = "($field > :$param)";
-                $this->sqlParams[$param] = $value;
-                break;
-            case Table::FILTER_LESS:
-                $param = $paramBaseName . '_less';
-                $this->sqlOrs[] = "($field < :$param)";
-                $this->sqlParams[$param] = $value;
-                break;
             case Table::FILTER_BETWEEN:
-                $param1 = $paramBaseName . '_begin';
-                $param2 = $paramBaseName . '_end';
-                $this->sqlOrs[] = "($field > :$param1 AND $field < :$param2)";
-                $this->sqlParams[$param1] = $value[0];
-                $this->sqlParams[$param2] = $value[1];
+                $ands = [];
+                if ($value[0] !== null) {
+                    $param1 = $paramBaseName . '_begin';
+                    $ands[] = "$field >= :$param1";
+                    $this->sqlParams[$param1] = $value[0];
+                }
+                if ($value[1] !== null) {
+                    $param2 = $paramBaseName . '_end';
+                    $ands[] = "$field <= :$param2";
+                    $this->sqlParams[$param2] = $value[1];
+                }
+                $this->sqlOrs[] = "(" . join(' AND ', $ands) . ")";
                 break;
             case Table::FILTER_NULL:
                 $this->sqlOrs[] = "($field IS NULL)";

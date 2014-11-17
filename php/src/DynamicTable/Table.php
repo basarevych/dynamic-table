@@ -46,8 +46,6 @@ class Table
      */
     const FILTER_LIKE = 'like';
     const FILTER_EQUAL = 'equal';
-    const FILTER_GREATER = 'greater';
-    const FILTER_LESS = 'less';
     const FILTER_BETWEEN = 'between';
     const FILTER_NULL = 'null';
 
@@ -468,8 +466,6 @@ class Table
         return [
             self::FILTER_LIKE,
             self::FILTER_EQUAL,
-            self::FILTER_GREATER,
-            self::FILTER_LESS,
             self::FILTER_BETWEEN,
             self::FILTER_NULL,
         ];

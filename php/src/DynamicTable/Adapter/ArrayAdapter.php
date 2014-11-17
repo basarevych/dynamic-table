@@ -63,7 +63,7 @@ class ArrayAdapter extends AbstractAdapter
         foreach ($filters as $id => $filterData) {
             $successfulNames = [];
             foreach ($filterData as $name => $value) {
-                $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
+                $test = $this->checkFilter($name, $columns[$id]['type'], $value, 0);
                 if ($test !== null)
                     $successfulNames[$name] = $value;
             }
@@ -200,9 +200,9 @@ class ArrayAdapter extends AbstractAdapter
         if ($type == Table::TYPE_DATETIME) {
             if ($filter == Table::FILTER_BETWEEN
                     && is_array($test) && count($test) == 2) {
-                $value = [
-                    new \DateTime('@' . $test[0]),
-                    new \DateTime('@' . $test[1]),
+                $test = [
+                    $test[0] ? new \DateTime('@' . $test[0]) : null,
+                    $test[1] ? new \DateTime('@' . $test[1]) : null,
                 ];
             } else if ($filter != Table::FILTER_BETWEEN
                     && is_scalar($test)) {
@@ -224,12 +224,14 @@ class ArrayAdapter extends AbstractAdapter
                 return $real !== null && strpos($real, $test) !== false;
             case Table::FILTER_EQUAL:
                 return $real !== null && $test === $real;
-            case Table::FILTER_GREATER:
-                return $real !== null && $real > $test;
-            case Table::FILTER_LESS:
-                return $real !== null && $real < $test;
             case Table::FILTER_BETWEEN:
-                return $real !== null && $real > $test[0] && $real < $test[1];
+                if ($real === null)
+                    return false;
+                if ($test[0] !== null && $real < $test[0])
+                    return false;
+                if ($test[1] !== null && $real > $test[1])
+                    return false;
+                return true;
             case Table::FILTER_NULL:
                 return $real === null;
             default:
