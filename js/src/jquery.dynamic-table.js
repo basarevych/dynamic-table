@@ -379,6 +379,7 @@
             }
 
             $('<button></button>')
+                .attr('type', 'submit')
                 .attr('class', 'btn btn-primary')
                 .text(plugin.options.strings.BUTTON_OK)
                 .on('click', function () {
@@ -730,10 +731,51 @@
                       .removeClass('btn-primary')
                       .addClass('btn-default');
 
-        $.each(plugin.filters, function (id, filters) {
-            plugin.element.find('thead th[data-column-id=' + id + '] button.filter')
-                          .removeClass('btn-default')
-                          .addClass('btn-primary');
+        $.each(plugin.columns, function (id, props) {
+            var th = plugin.element.find('thead th[data-column-id=' + id + ']');
+            th.find('input[data-filter=like]').val('');
+            th.find('input[data-filter=equal]').val('');
+            th.find('input[data-filter=between-start]').val('');
+            th.find('input[data-filter=between-end]').val('');
+            th.find('input[data-filter=null]').prop('check', false);
+
+            if (typeof plugin.filters[id] == 'undefined')
+                return;
+
+            var hasFilter = false;
+
+            var like = plugin.filters[id].like;
+            if (typeof like != 'undefined') {
+                th.find('input[data-filter=like]').val(like);
+                hasFilter = true;
+            }
+
+            var equal = plugin.filters[id].equal;
+            if (typeof equal != 'undefined') {
+                th.find('input[data-filter=equal]').val(equal);
+                hasFilter = true;
+            }
+
+            var between = plugin.filters[id].between;
+            if (typeof between != 'undefined') {
+                if (between[0] != null)
+                    th.find('input[data-filter=between-start]').val(between[0]);
+                if (between[1] != null)
+                    th.find('input[data-filter=between-end]').val(between[1]);
+                hasFilter = true;
+            }
+
+            var check = plugin.filters[id].null;
+            if (typeof check != 'undefined') {
+                th.find('input[data-filter=null]').prop('checked', true);
+                hasFilter = true;
+            }
+
+            if (hasFilter) {
+                th.find('button.filter')
+                  .removeClass('btn-default')
+                  .addClass('btn-primary');
+            }
         });
 
         if (plugin.rows.length == 0) {
