@@ -1,8 +1,8 @@
 <?php
 
-require '../php/src/DynamicTable/Table.php';
-require '../php/src/DynamicTable/Adapter/AbstractAdapter.php';
-require '../php/src/DynamicTable/Adapter/ArrayAdapter.php';
+require '../php/DynamicTable/Table.php';
+require '../php/DynamicTable/Adapter/AbstractAdapter.php';
+require '../php/DynamicTable/Adapter/ArrayAdapter.php';
 
 $data = [];
 $dt = new \DateTime("2010-05-11 13:00:00");
@@ -88,7 +88,7 @@ $table->setColumns([
         'title'     => 'DateTime',
         'sql_id'    => 's.value_datetime',
         'type'      => \DynamicTable\Table::TYPE_DATETIME,
-        'filters'   => [ \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
+        'filters'   => [ \DynamicTable\Table::FILTER_EQUAL, \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
         'sortable'  => true,
         'visible'   => true,
     ],

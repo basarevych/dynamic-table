@@ -5,12 +5,14 @@
         <title>Dynamic Table</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="dynamic-table.css" media="screen" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" href="vendor/bootstrap.min.css">
+        <link rel="stylesheet" href="vendor/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="vendor/font-awesome.min.css">
+        <link rel="stylesheet" href="dynamic-table.css">
+
+        <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/bootstrap.min.js"></script>
         <script src="jquery.dynamic-table.js"></script>
     </head>
     <body>
@@ -35,7 +37,7 @@
             }
             if (row['boolean'] != null) {
                 row['boolean'] = '<i class="fa fa-'
-                    + (row['boolean'] ? 'check text-success' : 'remove text-danger')
+                    + (row['boolean'] ? 'check text-success' : 'times text-danger')
                     + '"></i>';
             }
             if (row['datetime'] != null) {

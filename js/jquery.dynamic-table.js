@@ -354,6 +354,23 @@
                     label.html(radio)
                          .html(label.html() + plugin.options.strings.LABEL_TRUE)
                         .appendTo(group);
+                } else if (props.type = 'datetime') {
+                    var group = $('<div></div>');
+                    group.attr('class', 'form-group input-group date')
+                         .appendTo(form);
+
+                    $('<input type="text">')
+                        .attr('class', 'form-control')
+                        .appendTo(group);
+
+                    var span = $('<span></span>');
+                    span.attr('class', 'input-group-btn')
+                        .appendTo(group);
+
+                    $('<button></button>')
+                        .attr('class', 'btn btn-default')
+                        .html('<i class="fa fa-calendar"></i>')
+                        .appendTo(span);
                 } else {
                     var group = $('<div></div>');
                     group.attr('class', 'form-group')

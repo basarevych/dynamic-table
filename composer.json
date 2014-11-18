@@ -11,14 +11,14 @@
     "homepage": "https://github.com/basarevych/dynamic-table",
     "require": {
         "php": ">=5.4.8"
-    },
+     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
         "webfactory/doctrine-orm-test-infrastructure": "@stable"
     },
     "autoload": {
         "psr-0": {
-            "DynamicTable": "php/src"
+            "DynamicTable": "php"
         }
     }
 }
