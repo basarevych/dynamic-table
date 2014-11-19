@@ -194,7 +194,17 @@
             var all = this.element.find('tbody.data td.selector input:checked');
             this.element.find('thead th.selector input')
                         .prop('checked', all.length == this.rows.length);
-        }
+        },
+
+        getSelected: function () {
+            var inputs = this.element.find('tbody.data td.selector input:checked');
+            var ids = [];
+            inputs.each(function (index, el) {
+                ids.push($(el).val());
+            });
+
+            return ids;
+        },
     };
 
     $.fn[pluginName] = function (options) {

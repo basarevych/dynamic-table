@@ -26,6 +26,14 @@
             <h3>Array-backed Dynamic Table</h3>
             <div id="table"></div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="selected"></div>
+            <button class="btn btn-default" onclick="$('#selected').text('Selected: ' + table.getSelected().join(', '))">
+                Get selected
+            </button>
+        </div>
+    </div>
 </div>
 
 <script>
