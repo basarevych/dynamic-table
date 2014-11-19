@@ -191,7 +191,9 @@
             else
                 input.closest('tr').removeClass('success');
 
-            return false;
+            var all = this.element.find('tbody.data td.selector input:checked');
+            this.element.find('thead th.selector input')
+                        .prop('checked', all.length == this.rows.length);
         }
     };
 
@@ -1029,7 +1031,7 @@
                             else
                                 me.closest('tr').removeClass('success');
 
-                            var all = plugin.element.find('tbody td.selector input:checked');
+                            var all = plugin.element.find('tbody.data td.selector input:checked');
                             plugin.element.find('thead th.selector input')
                                           .prop('checked', all.length == plugin.rows.length);
                         });
