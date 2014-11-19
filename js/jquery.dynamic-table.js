@@ -42,6 +42,7 @@
         this.pageNumber = 1;
         this.pageSize = 15;
         this.totalPages = 1;
+        this.visibleColumns = 0;
 
         this.init(options);
     };
@@ -49,6 +50,8 @@
     Plugin.prototype = {
         init: function (options) {
             $.extend(this.options, options);
+
+            _createTable(this);
 
             var plugin = this;
             $.getJSON(
@@ -59,8 +62,7 @@
                         return;
                     
                     plugin.columns = data.columns;
-
-                    _buildTable(plugin);
+                    _initTable(plugin);
                     plugin.refresh();
                 }
             );
@@ -78,7 +80,7 @@
                 page_number: JSON.stringify(plugin.pageNumber),
                 page_size: JSON.stringify(plugin.pageSize),
             };
-            if (override != undefined) {
+            if (typeof override != 'undefined') {
                 $.each(override, function (key, value) {
                     data[key] = JSON.stringify(value);
                 });
@@ -103,7 +105,7 @@
                 _showData(plugin);
 
                 $.each(selected, function (index, element) {
-                    plugin.toggleSelect($(element).val());
+                    plugin.toggleSelected($(element).val());
                 });
 
                 plugin.enable(true);
@@ -137,9 +139,9 @@
         },
 
         setFilters: function (id, filters) {
-            var cur = this.filters;
-            cur[id] = filters;
-            this.refresh({ filters: cur });
+            var data = this.filters;
+            data[id] = filters;
+            this.refresh({ filters: data });
         },
 
         toggleColumn: function (column) {
@@ -172,17 +174,16 @@
                         .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
         },
 
-        toggleSelect: function (rowId) {
+        toggleSelected: function (rowId) {
             var input = $('tbody tr[data-row-id=' + rowId + '] td.selector input'),
                 checked = !input.prop('checked');
+
             input.prop('checked', checked);
-            if (checked) {
-                input.closest('tr')
-                     .addClass('success');
-            } else {
-                input.closest('tr')
-                     .removeClass('success');
-            }
+            if (checked)
+                input.closest('tr').addClass('success');
+            else
+                input.closest('tr').removeClass('success');
+
             return false;
         }
     };
@@ -200,8 +201,13 @@
         return plugin;
     };
 
-    var _buildTable = function (plugin) {
+    var _createTable = function (plugin) {
+        plugin.element.html('');
         plugin.element.addClass('dynamic-table');
+
+        var table = $('<table></table>');
+        table.attr('class', plugin.options.tableClass)
+             .appendTo(plugin.element);
 
         $('<div></div>')
             .attr('class', 'overlay-back')
@@ -212,20 +218,33 @@
             .css('background-image', 'url(' + plugin.options.loaderImage + ')')
             .appendTo(plugin.element);
 
-        var table = $('<table></table>');
-        table.attr('class', plugin.options.tableClass)
-             .appendTo(plugin.element);
+        var loader = $('<div></div>');
+        loader.attr('class', 'table-loader')
+              .css('text-align', 'center')
+              .text(plugin.options.strings.BANNER_LOADING)
+              .html(loader.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
+              .appendTo(plugin.element);
+    };
 
+    var _initTable = function (plugin) {
+        plugin.element.find('.table-loader')
+                      .remove();
+
+        _createThead(plugin);
+        _createTbody(plugin);
+        _createTfoot(plugin);
+    };
+
+    var _createThead = function (plugin) {
         var thead = $('<thead></thead>');
-        thead.appendTo(table);
 
         var tr = $('<tr></tr>');
         tr.appendTo(thead);
 
-        var visibleCounter = 0;
-
+        plugin.visibleColumns = 0;
         if (plugin.options.rowIdColumn != null) {
-            visibleCounter++;
+            plugin.visibleColumns++;
+
             $('<th class="selector"><input type="checkbox"></th>')
                 .appendTo(tr)
                 .find('input')
@@ -246,7 +265,7 @@
 
         $.each(plugin.columns, function (id, props) {
             if (props.visible)
-                visibleCounter++;
+                plugin.visibleColumns++;
 
             var th = $('<th></th>');
             th.attr('data-column-id', id)
@@ -278,7 +297,6 @@
                 .html('<i class="fa fa-filter"></i>')
                 .on('click', function () {
                     var popover = $(this).parent().find('.popover');
-                    var thead = plugin.element.find('thead');
                     var th = $(this).closest('th');
                     var posTh = th.position(), posThead = thead.position();
                     var left = posTh.left;
@@ -288,6 +306,7 @@
 
                     if (posTh.left + popover.width() > posThead.left + thead.width())
                         left -= (popover.width() - th.width());
+
                     popover.css('top', posTh.top + $(this).height() + 15)
                            .css('left', left)
                            .css('display', visible ? 'none' : 'block');
@@ -335,7 +354,7 @@
 
                     var radio = $('<input type="radio">');
                     radio.attr('data-filter', 'equal-false')
-                         .attr('name', plugin.id + '-' + id)
+                         .attr('name', plugin.id + '-' + id + '-equal')
                          .val(0);
 
                     var label = $('<label></label>');
@@ -349,14 +368,14 @@
 
                     var radio = $('<input type="radio">');
                     radio.attr('data-filter', 'equal-true')
-                         .attr('name', plugin.id + '-' + id)
+                         .attr('name', plugin.id + '-' + id + '-equal')
                          .val(1);
 
                     var label = $('<label></label>');
                     label.html(radio)
                          .html(label.html() + plugin.options.strings.LABEL_TRUE)
                         .appendTo(group);
-                } else if (props.type = 'datetime') {
+                } else if (props.type == 'datetime') {
                     var group = $('<div></div>');
                     group.attr('class', 'form-group')
                          .appendTo(form);
@@ -405,7 +424,7 @@
             }
 
             if (props.filters.indexOf('between') != -1) {
-                if (props.type = 'datetime') {
+                if (props.type == 'datetime') {
                     var group = $('<div></div>');
                     group.attr('class', 'form-group')
                          .appendTo(form);
@@ -540,18 +559,17 @@
                     }
                     if (props.filters.indexOf('between') != -1) {
                         if (props.type == 'datetime') {
-                            var start = form.find('input[data-filter=between-start]');
-                            var value1 = dtPicker1.data('DateTimePicker').getDate();
-                            var end = form.find('input[data-filter=between-end]');
-                            var value2 = dtPicker2.data('DateTimePicker').getDate();
-                            if (start.val().trim().length > 0 && value1 != null)
-                                value1 = value1.unix();
-                            else
-                                value1 = null;
-                            if (end.val().trim().length > 0 && value2 != null)
-                                value2 = value2.unix();
-                            else
-                                value2 = null;
+                            var startInput = form.find('input[data-filter=between-start]');
+                            var startValue = dtPicker1.data('DateTimePicker').getDate();
+                            var endInput = form.find('input[data-filter=between-end]');
+                            var endValue = dtPicker2.data('DateTimePicker').getDate();
+
+                            var value1 = null;
+                            if (startInput.val().trim().length > 0 && startValue != null)
+                                value1 = startValue.unix();
+                            var value2 = null;
+                            if (endInput.val().trim().length > 0 && endValue != null)
+                                value2 = endValue.unix();
                             if (value1 != null || value2 != null)
                                 data.between = [ value1, value2 ];
                         } else {
@@ -594,32 +612,37 @@
                 .appendTo(form);
         });
 
+        thead.appendTo(plugin.element.find('table'));
+    };
+
+    var _createTbody = function (plugin) {
         var tbodyEmpty = $('<tbody></tbody>');
         tbodyEmpty.attr('class', 'empty')
-                  .appendTo(table);
+                  .attr('display', 'none');
 
         var tr = $('<tr></tr>')
         tr.appendTo(tbodyEmpty);
 
         var td = $('<td></td>')
-        td.attr('colspan', visibleCounter)
-          .text(plugin.options.strings.BANNER_LOADING)
-          .html(td.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
+        td.attr('colspan', plugin.visibleColumns)
           .appendTo(tr);
 
         var tbodyData = $('<tbody></tbody>');
         tbodyData.attr('class', 'data')
                  .attr('display', 'none')
-                 .appendTo(table);
 
+        tbodyEmpty.appendTo(plugin.element.find('table'));
+        tbodyData.appendTo(plugin.element.find('table'));
+    };
+
+    var _createTfoot = function (plugin) {
         var tfoot = $('<tfoot></tfoot>');
-        tfoot.appendTo(table);
 
         var tr = $('<tr></tr>');
         tr.appendTo(tfoot);
 
         var td = $('<td></td>');
-        td.attr('colspan', visibleCounter)
+        td.attr('colspan', plugin.visibleColumns)
           .appendTo(tr);
 
         var rightToolbar = $('<div></div>');
@@ -808,6 +831,8 @@
                 plugin.refresh({ page_number: input.val() });
             })
             .appendTo(group);
+
+        tfoot.appendTo(plugin.element.find('table'));
     };
 
     var _enableColumnControls = function (plugin, id, enable)
