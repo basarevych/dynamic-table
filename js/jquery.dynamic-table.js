@@ -31,6 +31,7 @@
                 LABEL_FILTER_NULL: 'Include rows with empty value in this column',
                 LABEL_TRUE: 'True',
                 LABEL_FALSE: 'False',
+                DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm:ss',
             },
         };
         this.columns = [];
@@ -281,6 +282,7 @@
                     var th = $(this).closest('th');
                     var posTh = th.position(), posThead = thead.position();
                     var left = posTh.left;
+                    var visible = popover.is(':visible');
 
                     thead.find('.popover').css('display', 'none');
 
@@ -288,7 +290,7 @@
                         left -= (popover.width() - th.width());
                     popover.css('top', posTh.top + $(this).height() + 15)
                            .css('left', left)
-                           .css('display', popover.css('display') == 'block' ? 'none' : 'block');
+                           .css('display', visible ? 'none' : 'block');
                 })
                 .appendTo(th);
 
@@ -370,7 +372,7 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'equal')
-                         .attr('data-date-format', 'YYYY-MM-DD HH:mm:ss')
+                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
