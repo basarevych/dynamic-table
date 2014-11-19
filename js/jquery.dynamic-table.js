@@ -405,29 +405,93 @@
             }
 
             if (props.filters.indexOf('between') != -1) {
-                var group = $('<div></div>');
-                group.attr('class', 'form-group')
-                     .appendTo(form);
+                if (props.type = 'datetime') {
+                    var group = $('<div></div>');
+                    group.attr('class', 'form-group')
+                         .appendTo(form);
 
-                $('<label></label>')
-                    .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
-                    .appendTo(group);
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
+                        .appendTo(group);
 
-                $('<input></input>')
-                    .attr('type', 'text')
-                    .attr('class', 'form-control')
-                    .attr('data-filter', 'between-start')
-                    .appendTo(group);
+                    var inputGroup = $('<div></div>');
+                    inputGroup.attr('class', 'input-group date')
+                              .appendTo(group);
 
-                $('<label></label>')
-                    .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
-                    .appendTo(group);
+                    var input = $('<input type="text">');
+                    input.attr('class', 'form-control')
+                         .attr('data-filter', 'between-start')
+                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
+                         .appendTo(inputGroup);
 
-                $('<input></input>')
-                    .attr('type', 'text')
-                    .attr('class', 'form-control')
-                    .attr('data-filter', 'between-end')
-                    .appendTo(group);
+                    var span = $('<span></span>');
+                    span.attr('class', 'input-group-btn')
+                        .appendTo(inputGroup);
+
+                    $('<button></button>')
+                        .attr('class', 'btn btn-default')
+                        .html('<i class="fa fa-calendar"></i>')
+                        .appendTo(span);
+
+                    var dtPicker1 = inputGroup.datetimepicker({
+                        useSeconds: true,
+                    });
+
+                    var group = $('<div></div>');
+                    group.attr('class', 'form-group')
+                         .appendTo(form);
+
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
+                        .appendTo(group);
+
+                    var inputGroup = $('<div></div>');
+                    inputGroup.attr('class', 'input-group date')
+                              .appendTo(group);
+
+                    var input = $('<input type="text">');
+                    input.attr('class', 'form-control')
+                         .attr('data-filter', 'between-end')
+                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
+                         .appendTo(inputGroup);
+
+                    var span = $('<span></span>');
+                    span.attr('class', 'input-group-btn')
+                        .appendTo(inputGroup);
+
+                    $('<button></button>')
+                        .attr('class', 'btn btn-default')
+                        .html('<i class="fa fa-calendar"></i>')
+                        .appendTo(span);
+
+                    var dtPicker2 = inputGroup.datetimepicker({
+                        useSeconds: true,
+                    });
+                } else {
+                    var group = $('<div></div>');
+                    group.attr('class', 'form-group')
+                         .appendTo(form);
+
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
+                        .appendTo(group);
+
+                    $('<input></input>')
+                        .attr('type', 'text')
+                        .attr('class', 'form-control')
+                        .attr('data-filter', 'between-start')
+                        .appendTo(group);
+
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
+                        .appendTo(group);
+
+                    $('<input></input>')
+                        .attr('type', 'text')
+                        .attr('class', 'form-control')
+                        .attr('data-filter', 'between-end')
+                        .appendTo(group);
+                }
             }
 
             if (props.filters.indexOf('null') != -1) {
@@ -464,9 +528,10 @@
                             else if (equalFalse.prop('checked'))
                                 data.equal = false;
                         } else if (props.type == 'datetime') {
-                            var equal = dtPicker.data('DateTimePicker').getDate();
-                            if (equal != null)
-                                data.equal = equal.unix();
+                            var equal = form.find('input[data-filter=equal]');
+                            var value = dtPicker.data('DateTimePicker').getDate();
+                            if (equal.val().trim().length > 0 && value != null)
+                                data.equal = value.unix();
                         } else {
                             var equal = form.find('input[data-filter=equal]');
                             if (equal.val().trim().length > 0)
@@ -474,12 +539,29 @@
                         }
                     }
                     if (props.filters.indexOf('between') != -1) {
-                        var start = form.find('input[data-filter=between-start]');
-                        var end = form.find('input[data-filter=between-end]');
-                        start = start.val().trim().length > 0 ? start.val() : null;
-                        end = end.val().trim().length > 0 ? end.val() : null;
-                        if (start != null || end != null)
-                            data.between = [ start, end ];
+                        if (props.type == 'datetime') {
+                            var start = form.find('input[data-filter=between-start]');
+                            var value1 = dtPicker1.data('DateTimePicker').getDate();
+                            var end = form.find('input[data-filter=between-end]');
+                            var value2 = dtPicker2.data('DateTimePicker').getDate();
+                            if (start.val().trim().length > 0 && value1 != null)
+                                value1 = value1.unix();
+                            else
+                                value1 = null;
+                            if (end.val().trim().length > 0 && value2 != null)
+                                value2 = value2.unix();
+                            else
+                                value2 = null;
+                            if (value1 != null || value2 != null)
+                                data.between = [ value1, value2 ];
+                        } else {
+                            var start = form.find('input[data-filter=between-start]');
+                            var end = form.find('input[data-filter=between-end]');
+                            start = start.val().trim().length > 0 ? start.val() : null;
+                            end = end.val().trim().length > 0 ? end.val() : null;
+                            if (start != null || end != null)
+                                data.between = [ start, end ];
+                        }
                     }
                     if (props.filters.indexOf('null') != -1) {
                         var check = form.find('input[data-filter=null]');
@@ -497,8 +579,6 @@
                 .text(plugin.options.strings.BUTTON_CLEAR)
                 .on('click', function () {
                     popover.css('display', 'none');
-                    if (props.filters.indexOf('like') != -1)
-                        form.find('input[data-filter=like]').val('');
                     plugin.setFilters(id, {});
                 })
                 .appendTo(form);
@@ -817,7 +897,7 @@
             th.find('input[data-filter=equal-false]').prop('checked', false);
             th.find('input[data-filter=between-start]').val('');
             th.find('input[data-filter=between-end]').val('');
-            th.find('input[data-filter=null]').prop('check', false);
+            th.find('input[data-filter=null]').prop('checked', false);
 
             if (typeof plugin.filters[id] == 'undefined')
                 return;
@@ -848,10 +928,21 @@
 
             var between = plugin.filters[id].between;
             if (typeof between != 'undefined') {
-                if (between[0] != null)
-                    th.find('input[data-filter=between-start]').val(between[0]);
-                if (between[1] != null)
-                    th.find('input[data-filter=between-end]').val(between[1]);
+                if (props.type == 'datetime') {
+                    if (between[0] != null) {
+                        var dtPicker1 = th.find('input[data-filter=between-start]').closest('.input-group');
+                        dtPicker1.data('DateTimePicker').setDate(moment(between[0] * 1000));
+                    }
+                    if (between[1] != null) {
+                        var dtPicker2 = th.find('input[data-filter=between-end]').closest('.input-group');
+                        dtPicker2.data('DateTimePicker').setDate(moment(between[1] * 1000));
+                    }
+                } else {
+                    if (between[0] != null)
+                        th.find('input[data-filter=between-start]').val(between[0]);
+                    if (between[1] != null)
+                        th.find('input[data-filter=between-end]').val(between[1]);
+                }
                 hasFilter = true;
             }
 

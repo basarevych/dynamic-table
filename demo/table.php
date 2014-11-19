@@ -88,7 +88,7 @@ $table->setColumns([
         'title'     => 'DateTime',
         'sql_id'    => 's.value_datetime',
         'type'      => \DynamicTable\Table::TYPE_DATETIME,
-        'filters'   => [ \DynamicTable\Table::FILTER_EQUAL, \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
+        'filters'   => [ \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
         'sortable'  => true,
         'visible'   => true,
     ],
