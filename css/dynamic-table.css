@@ -19,7 +19,7 @@
     width: 1px;
 }
 .dynamic-table .sort-asc, .dynamic-table .sort-desc {
-    margin-left: 1em;
+    margin-left: 0.5em;
 }
 .dynamic-table .filter {
     margin-left: 1em;

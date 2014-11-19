@@ -144,6 +144,13 @@
             this.refresh({ filters: data });
         },
 
+        toggleSort: function (id) {
+            var dir = 'asc';
+            if (this.sortColumn == id)
+                dir = (this.sortDir == 'asc' ? 'desc' : 'asc');
+            this.refresh({ sort_column: id, sort_dir: dir });
+        },
+
         toggleColumn: function (column) {
             var plugin = this, visibleCounter = 0, visible;
 
@@ -230,12 +237,12 @@
         plugin.element.find('.table-loader')
                       .remove();
 
-        _createThead(plugin);
-        _createTbody(plugin);
-        _createTfoot(plugin);
+        _initThead(plugin);
+        _initTbody(plugin);
+        _initTfoot(plugin);
     };
 
-    var _createThead = function (plugin) {
+    var _initThead = function (plugin) {
         var thead = $('<thead></thead>');
 
         var tr = $('<tr></tr>');
@@ -276,9 +283,13 @@
                 .text(props.title)
                 .appendTo(th);
 
-            $('<a class="link" href="#"></a>')
+            $('<a class="link"></a>')
                 .css('display', 'none')
+                .attr('href', 'javascript:void(0)')
                 .text(props.title)
+                .on('click', function () {
+                    plugin.toggleSort(id);
+                })
                 .appendTo(th);
 
             $('<i class="sort-asc fa fa-sort-alpha-asc"></i>')
@@ -615,7 +626,7 @@
         thead.appendTo(plugin.element.find('table'));
     };
 
-    var _createTbody = function (plugin) {
+    var _initTbody = function (plugin) {
         var tbodyEmpty = $('<tbody></tbody>');
         tbodyEmpty.attr('class', 'empty')
                   .attr('display', 'none');
@@ -635,7 +646,7 @@
         tbodyData.appendTo(plugin.element.find('table'));
     };
 
-    var _createTfoot = function (plugin) {
+    var _initTfoot = function (plugin) {
         var tfoot = $('<tfoot></tfoot>');
 
         var tr = $('<tr></tr>');
