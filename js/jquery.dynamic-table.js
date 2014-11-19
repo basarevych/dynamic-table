@@ -356,21 +356,35 @@
                         .appendTo(group);
                 } else if (props.type = 'datetime') {
                     var group = $('<div></div>');
-                    group.attr('class', 'form-group input-group date')
+                    group.attr('class', 'form-group')
                          .appendTo(form);
 
-                    $('<input type="text">')
-                        .attr('class', 'form-control')
+                    $('<label></label>')
+                        .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
                         .appendTo(group);
+
+                    var inputGroup = $('<div></div>');
+                    inputGroup.attr('class', 'input-group date')
+                              .appendTo(group);
+
+                    var input = $('<input type="text">');
+                    input.attr('class', 'form-control')
+                         .attr('data-filter', 'equal')
+                         .attr('data-date-format', 'YYYY-MM-DD HH:mm:ss')
+                         .appendTo(inputGroup);
 
                     var span = $('<span></span>');
                     span.attr('class', 'input-group-btn')
-                        .appendTo(group);
+                        .appendTo(inputGroup);
 
                     $('<button></button>')
                         .attr('class', 'btn btn-default')
                         .html('<i class="fa fa-calendar"></i>')
                         .appendTo(span);
+
+                    var dtPicker = inputGroup.datetimepicker({
+                        useSeconds: true,
+                    });
                 } else {
                     var group = $('<div></div>');
                     group.attr('class', 'form-group')
@@ -447,6 +461,10 @@
                                 data.equal = true;
                             else if (equalFalse.prop('checked'))
                                 data.equal = false;
+                        } else if (props.type == 'datetime') {
+                            var equal = dtPicker.data('DateTimePicker').getDate();
+                            if (equal != null)
+                                data.equal = equal.unix();
                         } else {
                             var equal = form.find('input[data-filter=equal]');
                             if (equal.val().trim().length > 0)
@@ -817,6 +835,9 @@
                         th.find('input[data-filter=equal-true]').prop('checked', true);
                     else
                         th.find('input[data-filter=equal-false]').prop('checked', true);
+                } else if (props.type == 'datetime') {
+                    var dtPicker = th.find('input[data-filter=equal]').closest('.input-group');
+                    dtPicker.data('DateTimePicker').setDate(moment(equal * 1000));
                 } else {
                     th.find('input[data-filter=equal]').val(equal);
                 }

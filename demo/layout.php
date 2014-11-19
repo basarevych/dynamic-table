@@ -9,10 +9,13 @@
         <link rel="stylesheet" href="vendor/bootstrap.min.css">
         <link rel="stylesheet" href="vendor/bootstrap-theme.min.css">
         <link rel="stylesheet" href="vendor/font-awesome.min.css">
+        <link rel="stylesheet" href="vendor/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="dynamic-table.css">
 
         <script src="vendor/jquery.min.js"></script>
+        <script src="vendor/moment-with-locales.min.js"></script>
         <script src="vendor/bootstrap.min.js"></script>
+        <script src="vendor/bootstrap-datetimepicker.min.js"></script>
         <script src="jquery.dynamic-table.js"></script>
     </head>
     <body>
@@ -41,13 +44,8 @@
                     + '"></i>';
             }
             if (row['datetime'] != null) {
-                var date = new Date(row['datetime'] * 1000);
-                row['datetime'] = date.getFullYear() + '-'
-                    + ('0' + (date.getMonth()+1)).slice(-2) + '-'
-                    + ('0' + date.getDate()).slice(-2) + ' '
-                    + ('0' + date.getHours()).slice(-2) + ':'
-                    + ('0' + date.getMinutes()).slice(-2) + ':'
-                    + ('0' + date.getSeconds()).slice(-2);
+                var m = moment(row['datetime'] * 1000);
+                row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
             }
 
             return row;

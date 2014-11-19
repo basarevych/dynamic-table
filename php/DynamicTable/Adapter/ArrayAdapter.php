@@ -63,7 +63,7 @@ class ArrayAdapter extends AbstractAdapter
         foreach ($filters as $id => $filterData) {
             $successfulNames = [];
             foreach ($filterData as $name => $value) {
-                $test = $this->checkFilter($name, $columns[$id]['type'], $value, 0);
+                $test = $this->checkFilter($name, $columns[$id]['type'], $value, null);
                 if ($test !== null)
                     $successfulNames[$name] = $value;
             }
