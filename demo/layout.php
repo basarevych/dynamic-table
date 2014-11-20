@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="vendor/bootstrap-theme.min.css">
         <link rel="stylesheet" href="vendor/font-awesome.min.css">
         <link rel="stylesheet" href="vendor/bootstrap-datetimepicker.min.css">
-        <link rel="stylesheet" href="dynamic-table.css">
+        <link rel="stylesheet" href="jquery.dynamic-table.css">
 
         <script src="vendor/jquery.min.js"></script>
         <script src="vendor/moment-with-locales.min.js"></script>
