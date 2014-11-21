@@ -3,6 +3,9 @@
 $pos = strpos($_SERVER['REQUEST_URI'], '?');
 $file = $pos === false ? $_SERVER['REQUEST_URI'] : substr($_SERVER['REQUEST_URI'], 0, $pos);
 
+if (strpos($file, '..') !== false)
+    die('Bad request');
+
 if (is_file('.' . $file)) {
     if (preg_match('/.*\.php$/', $file)) {
         header('Content-Type: text/html; charset=utf-8');
@@ -14,6 +17,7 @@ if (is_file('.' . $file)) {
         header('Content-Type: text/css');
         echo file_get_contents('.' . $file);
     } else {
+        header('Content-Type: ' . exec('file --mime-type ' + escapeshellarg($file)));
         echo file_get_contents('.' . $file);
     }
     exit;
