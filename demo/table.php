@@ -49,7 +49,7 @@ $table->setColumns([
         'sql_id'    => 's.id',
         'type'      => \DynamicTable\Table::TYPE_INTEGER,
         'filters'   => [ \DynamicTable\Table::FILTER_EQUAL ],
-        'sortable'  => true,
+        'sortable'  => false,
         'visible'   => false,
     ],
     'string' => [

@@ -152,31 +152,22 @@
         },
 
         toggleColumn: function (column) {
-            var plugin = this, visibleCounter = 0, visible;
+            var props = this.columns[column];
+            var visible = (this.columns[column].visible = !props.visible);
 
-            if (this.options.rowIdColumn != null)
-                visibleCounter++;
-
-            $.each(this.columns, function (id, props) {
-                if (id == column) {
-                    visible = !props.visible;
-                    plugin.columns[id].visible = visible;
-                    if (visible)
-                        visibleCounter++;
-                } else {
-                    if (props.visible)
-                        visibleCounter++;
-                }
-            });
+            if (visible)
+                this.visibleColumns++;
+            else
+                this.visibleColumns--;
 
             this.element.find('thead th[data-column-id=' + column + ']')
                         .css('display', visible ? 'table-cell' : 'none');
             this.element.find('tbody td[data-column-id=' + column + ']')
                         .css('display', visible ? 'table-cell' : 'none');
             this.element.find('thead.empty td')
-                        .prop('colspan', visibleCounter);
+                        .prop('colspan', this.visibleColumns);
             this.element.find('tfoot td')
-                        .prop('colspan', visibleCounter);
+                        .prop('colspan', this.visibleColumns);
             this.element.find('tfoot a[data-column-id=' + column + '] i')
                         .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
         },
@@ -867,23 +858,23 @@
 
         var th = plugin.element.find('[data-column-id=' + id + ']');
         th.find('.text')
-          .css('display', props.sortable ? 'none' : 'inline');
+          .css('display', !enable || !props.sortable ? 'inline' : 'none');
         th.find('.link')
-          .css('display', props.sortable ? 'inline' : 'none');
+          .css('display', enable && props.sortable ? 'inline' : 'none');
         th.find('.sort-asc')
           .css(
               'display',
-              plugin.sortColumn == id && plugin.sortDir == 'asc'
+              enable && plugin.sortColumn == id && plugin.sortDir == 'asc'
                   ? 'inline' : 'none'
           );
         th.find('.sort-desc')
           .css(
               'display',
-              plugin.sortColumn == id && plugin.sortDir == 'desc'
+              enable && plugin.sortColumn == id && plugin.sortDir == 'desc'
                   ? 'inline' : 'none'
           );
         th.find('.filter')
-          .css('display', props.filters.length > 0 ? 'inline' : 'none');
+          .css('display', enable && props.filters.length > 0 ? 'inline' : 'none');
     };
 
     var _enableOverlay = function (plugin, enable) {

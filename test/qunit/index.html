@@ -6,26 +6,24 @@
  
       <title>jQuery.simpleFAQ QUnit Test Runner</title>
  
+      <link rel='stylesheet' href='../../bower_components/bootstrap/dist/css/bootstrap.min.css'>
+      <link rel='stylesheet' href='../../bower_components/bootstrap/dist/css/bootstrap-theme.min.css'>
+      <link rel='stylesheet' href='../../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'>
       <link rel='stylesheet' href='../../bower_components/qunit/qunit/qunit.css'>
  
-      <!-- add any external libraries your code needs -->
       <script src='../../bower_components/jquery/dist/jquery.min.js'></script>
- 
-      <script src='../../js/jquery.dynamic-table.js'></script>
-      <!-- add any JS files under test (or put them in different .html files) -->
- 
+      <script src='../../bower_components/bootstrap/dist/js/bootstrap.min.js'></script>
+      <script src='../../bower_components/moment/min/moment-with-locales.min.js'></script>
+      <script src='../../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'></script>
       <script src='../../bower_components/qunit/qunit/qunit.js'></script>
- 
-      <!-- your tests, any and all to run with the given fixtures below -->
+      <script src='../../js/jquery.dynamic-table.js'></script>
+
+      <script src='data.js'></script>
       <script src='tests.js'></script>
- 
   </head>
   <body>
-    <div id="qunit"></div> <!-- QUnit fills this with results, etc -->
+    <div id="qunit"></div>
     <div id='qunit-fixture'>
- 
-      <!-- any HTML you want to be present in each test (will be reset for each test) -->
- 
     </div>
   </body>
 </html>
