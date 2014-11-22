@@ -3,6 +3,12 @@
     "type": "library",
     "description": "Dynamic HTML grid",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Ross Basarevych",
+            "email": "basarevych@gmail.com"
+        }
+    ],
     "keywords": [
         "zf2",
         "jquery",
