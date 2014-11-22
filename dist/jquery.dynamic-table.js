@@ -1,4 +1,4 @@
-/*! dynamic-table - v0.0.1 - 2014-11-21
+/*! dynamic-table - v0.0.1 - 2014-11-22
 * Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 ;(function ($, window, document, undefined) {
 
