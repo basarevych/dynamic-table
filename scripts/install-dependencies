@@ -12,10 +12,18 @@ if [ "$1" != "dev" -a "$1" != "prod" ]; then
     exit 1
 fi
 
-
-if [ "$1" == "dev" ]; then
-    run_command php composer.phar self-update
-    run_command php composer.phar update
-elif [ $1 == "prod" ]; then
+if [ $1 == "prod" ]; then
     run_command php composer.phar --no-dev install
+    exit 0
 fi
+
+which npm > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Please install node.js and npm"
+    exit 3
+fi
+
+run_command php composer.phar self-update
+run_command php composer.phar update
+run_command npm install
+run_command node_modules/.bin/bower install

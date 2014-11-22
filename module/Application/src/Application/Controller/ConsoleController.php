@@ -47,15 +47,17 @@ class ConsoleController extends AbstractConsoleController
         $repo->removeAll();
 
         $dt = new \DateTime("2010-05-11 13:00:00");
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             $dt->add(new \DateInterval('PT10S'));
 
             $entity = new SampleEntity();
-            $entity->setValueString("string $i");
-            $entity->setValueInteger($i);
-            $entity->setValueFloat($i / 100);
-            $entity->setValueBoolean($i % 2 == 0);
-            $entity->setValueDatetime($dt);
+            if ($i != 3) {
+                $entity->setValueString("string $i");
+                $entity->setValueInteger($i);
+                $entity->setValueFloat($i / 100);
+                $entity->setValueBoolean($i % 2 == 0);
+                $entity->setValueDatetime(clone $dt);
+            }
             $em->persist($entity);
         }
         $em->flush();

@@ -7,6 +7,7 @@ ZF2 Skeleton
 Yet another Zend Framework 2 Skeleton Application and a little tutorial (see the docs below).
 
 Features:
+* Tools used: Composer/Bower/Grunt - [docs](docs/tools.md)
 * Doctrine integration - [docs](docs/doctrine.md)
 * Memcached integration - [docs](docs/memcached.md)
 * Sample console controller - [docs](docs/console.md)
@@ -14,7 +15,7 @@ Features:
 * Mail service - [docs](docs/mail.md)
 * Custom Error Strategy - [docs](docs/error-strategy.md)
 * Session - [docs](docs/session.md)
-* DynamicTable - TODO
+* DynamicTable (a jQuery grid with server-side pagination, filtering and sorting) - [docs](https://github.com/basarevych/dynamic-table)
 
 Installation
 ------------
