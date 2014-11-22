@@ -7,31 +7,14 @@
         "doctrine"
     ],
     "homepage": "https://github.com/basarevych/zf2-skeleton",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/basarevych/dynamic-table.git"
-        }
-    ],
     "require": {
         "php": ">=5.4.8",
         "zendframework/zendframework": "2.3.*",
         "doctrine/doctrine-orm-module": "0.*",
-        "components/jquery": "2.1.*",
-        "twbs/bootstrap": "3.3.*",
-        "FortAwesome/Font-Awesome": "4.2.*",
         "basarevych/dynamic-table": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
         "webfactory/doctrine-orm-test-infrastructure": "@stable"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "rm -rf components"
-        ],
-        "post-update-cmd": [
-            "rm -rf components"
-        ]
     }
 }

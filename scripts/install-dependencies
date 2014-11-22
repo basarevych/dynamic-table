@@ -12,45 +12,18 @@ if [ "$1" != "dev" -a "$1" != "prod" ]; then
     exit 1
 fi
 
+if [ $1 == "prod" ]; then
+    run_command php composer.phar --no-dev install
+    exit 0
+fi
+
 which npm > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Please install node.js and npm"
     exit 3
 fi
 
-
-if [ "$1" == "dev" ]; then
-    run_command php composer.phar self-update
-    run_command php composer.phar update
-elif [ $1 == "prod" ]; then
-    run_command php composer.phar --no-dev install
-fi
-
+run_command php composer.phar self-update
+run_command php composer.phar update
 run_command npm install
-
-#
-# Building vendor public files
-#
-rm -rf public/vendor
-mkdir -p public/vendor/dist
-mkdir -p public/vendor/fonts
-
-# Building vendor.js
-run_command ./node_modules/.bin/minify \
-    vendor/components/jquery/jquery.js \
-    vendor/twbs/bootstrap/dist/js/bootstrap.js \
-    vendor/basarevych/dynamic-table/js/src/jquery.dynamic-table.js \
-    > public/vendor/dist/min.js
-
-# Building vendor.css
-run_command ./node_modules/.bin/minify \
-    vendor/twbs/bootstrap/dist/css/bootstrap.css \
-    vendor/twbs/bootstrap/dist/css/bootstrap-theme.css \
-    vendor/fortawesome/font-awesome/css/font-awesome.css \
-    vendor/basarevych/dynamic-table/css/dynamic-table.css \
-    > public/vendor/dist/min.css
-
-# Linking files
-cd public/vendor/fonts
-ln -s ../../../vendor/twbs/bootstrap/dist/fonts/* ./
-ln -s ../../../vendor/fortawesome/font-awesome/fonts/* ./
+run_command node_modules/.bin/bower install

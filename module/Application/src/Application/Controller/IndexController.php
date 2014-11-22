@@ -14,7 +14,6 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use DynamicTable\Table;
 use DynamicTable\Adapter\DoctrineAdapter;
-use DynamicTable\Adapter\ArrayAdapter;
 
 /**
  * Index controller
@@ -37,32 +36,8 @@ class IndexController extends AbstractActionController
      */
     public function doctrineTableAction()
     {
-        $sl = $this->getServiceLocator();
-        $em = $sl->get('Doctrine\ORM\EntityManager');
-
-        $qb = $em->createQueryBuilder();
-        $qb->select('s, s.id + 100 AS computed')
-           ->from('Application\Entity\Sample', 's');
-
-        $adapter = new DoctrineAdapter();
-        $adapter->setQueryBuilder($qb);
-        $adapter->setMapper(function ($row) {
-            $datetime = $row[0]->getValueDatetime();
-            if ($datetime !== null)
-                $datetime = $datetime->getTimestamp();
-
-            return [
-                'id'        => $row[0]->getId(),
-                'string'    => $row[0]->getValueString(),
-                'integer'   => $row[0]->getValueInteger(),
-                'float'     => $row[0]->getValueFloat(),
-                'boolean'   => $row[0]->getValueBoolean(),
-                'datetime'  => $datetime,
-                'computed'  => $row['computed'],
-            ];
-        });
-
         $table = $this->createTable();
+        $adapter = $this->createAdapter();
         $table->setAdapter($adapter);
 
         $query = $this->params()->fromQuery('query');
@@ -71,77 +46,21 @@ class IndexController extends AbstractActionController
             $data = $table->describe();
             break;
         case 'data':
-            $table->setFiltersJson($this->params()->fromQuery('filters'));
-            $table->setSortColumn($this->params()->fromQuery('sort_column'));
-            $table->setSortDir($this->params()->fromQuery('sort_dir'));
-            $table->setPageNumber($this->params()->fromQuery('page_number'));
-            $table->setPageSize($this->params()->fromQuery('page_size'));
-            $data = $table->fetch();
-            break;
-        default:
-            throw new \Exception('Unknown query type: ' . $query);
-        }
+            $filters = $this->params()->fromQuery('filters');
+            $table->setFilters(json_decode($filters, true));
 
-        $data['success'] = true;
-        return new JsonModel($data);
-    }
+            $column = $this->params()->fromQuery('sort_column');
+            $table->setSortColumn(json_decode($column, true));
 
-    /**
-     * Table data retrieving action (Array version)
-     */
-    public function arrayTableAction()
-    {
-        $data = [];
-        $dt = new \DateTime("2010-05-11 13:00:00");
-        for ($i = 1; $i <= 100; $i++) {
-            $dt->add(new \DateInterval('PT10S'));
+            $dir = $this->params()->fromQuery('sort_dir');
+            $table->setSortDir(json_decode($dir, true));
 
-            if ($i == 3) {
-                $data[] = [
-                    'id' => $i,
-                    'string' => null,
-                    'integer' => null,
-                    'float' => null,
-                    'boolean' => null,
-                    'datetime' => null,
-                ];
-            } else {
-                $data[] = [
-                    'id' => $i,
-                    'string' => "string $i",
-                    'integer' => $i,
-                    'float' => $i / 100,
-                    'boolean' => ($i % 2 == 0),
-                    'datetime' => clone $dt,
-                ];
-            }
-        }
+            $page = $this->params()->fromQuery('page_number');
+            $table->setPageNumber(json_decode($page, true));
 
-        $adapter = new ArrayAdapter();
-        $adapter->setData($data);
-        $adapter->setMapper(function ($row) {
-            $result = $row;
+            $size = $this->params()->fromQuery('page_size');
+            $table->setPageSize(json_decode($size, true));
 
-            if ($row['datetime'] !== null)
-                $result['datetime'] = $row['datetime']->getTimestamp();
-
-            return $result;
-        });
-
-        $table = $this->createTable();
-        $table->setAdapter($adapter);
-
-        $query = $this->params()->fromQuery('query');
-        switch ($query) {
-        case 'describe':
-            $data = $table->describe();
-            break;
-        case 'data':
-            $table->setFiltersJson($this->params()->fromQuery('filters'));
-            $table->setSortColumn($this->params()->fromQuery('sort_column'));
-            $table->setSortDir($this->params()->fromQuery('sort_dir'));
-            $table->setPageNumber($this->params()->fromQuery('page_number'));
-            $table->setPageSize($this->params()->fromQuery('page_size'));
             $data = $table->fetch();
             break;
         default:
@@ -185,7 +104,7 @@ class IndexController extends AbstractActionController
                 'title'     => $translate('Integer'),
                 'sql_id'    => 's.value_integer',
                 'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -193,7 +112,7 @@ class IndexController extends AbstractActionController
                 'title'     => $translate('Float'),
                 'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -209,7 +128,7 @@ class IndexController extends AbstractActionController
                 'title'     => $translate('DateTime'),
                 'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -217,12 +136,47 @@ class IndexController extends AbstractActionController
                 'title'     => $translate('Computed Value'),
                 'sql_id'    => 'computed',
                 'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_GREATER, Table::FILTER_LESS, Table::FILTER_NULL ],
+                'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
         ]);
 
         return $table;
+    }
+
+    /**
+     * Create adapter
+     *
+     * @return DoctrineAdapter
+     */
+    protected function createAdapter()
+    {
+        $sl = $this->getServiceLocator();
+        $em = $sl->get('Doctrine\ORM\EntityManager');
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('s, s.id + 100 AS computed')
+           ->from('Application\Entity\Sample', 's');
+
+        $adapter = new DoctrineAdapter();
+        $adapter->setQueryBuilder($qb);
+        $adapter->setMapper(function ($row) {
+            $datetime = $row[0]->getValueDatetime();
+            if ($datetime !== null)
+                $datetime = $datetime->getTimestamp();
+
+            return [
+                'id'        => $row[0]->getId(),
+                'string'    => $row[0]->getValueString(),
+                'integer'   => $row[0]->getValueInteger(),
+                'float'     => $row[0]->getValueFloat(),
+                'boolean'   => $row[0]->getValueBoolean(),
+                'datetime'  => $datetime,
+                'computed'  => $row['computed'],
+            ];
+        });
+
+        return $adapter;
     }
 }
