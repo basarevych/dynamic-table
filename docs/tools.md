@@ -32,6 +32,6 @@ Adding new front-end dependency
 -------------------------------
 When adding new dependency simply add the appropriate line to "require" section of **bower.json** and run **scripts/install-dependecies**.
 
-Now add the dependency's .js and .css files to Gruntfile.js lists and run **scripts/build-server** script to create new **vendor.js** and **vendor.css** files.
+Now add the dependency's .js and .css files to Gruntfile.js lists and run **scripts/build-front** script to create new **vendor.js** and **vendor.css** files.
 
 Put vendor.\* files under git control so you will have them ready to use in production (you compile them in development environment only).
