@@ -267,3 +267,76 @@ test("toggleSelected()/getSelected()", function (assert) {
     assert.equal(input.prop('checked'), false, "Switched off again");
     assert.equal(selected.length, 0, "Empty array again");
 });
+
+test("Table filters", function (assert) {
+    var root = $('#table');
+    var table = root.dynamicTable({ url: 'someurl' });
+
+    $.each(table.columns, function (id, props) {
+        if (props.filters.length == 0)
+            return;
+
+        var th = root.find('thead th[data-column-id=' + id + ']');
+        var button = th.find('button.filter');
+        var popover = th.find('.popover');
+
+        button.trigger('click');
+        assert.notEqual(popover.css('display'), 'none', "Popover filter form");
+
+        var expected = {};
+        $.each(props.filters, function (index, filter) {
+            switch (filter) {
+                case 'like':
+                    var input = popover.find('input[data-filter=like]');
+                    input.val('test');
+                    expected.like = 'test';
+                    break;
+                case 'equal':
+                    if (props.type == 'boolean') {
+                        var input = popover.find('input[data-filter=equal-true]');
+                        input.prop('checked', true);
+                        expected.equal = true;
+                    } else if (props.type == 'datetime') {
+                        var input = popover.find('input[data-filter=equal]');
+                        input.val('2010-05-01').trigger('change');
+                        var value = moment(input.val()).unix();
+                        expected.equal = value;
+                    } else {
+                        var input = popover.find('input[data-filter=equal]');
+                        input.val('test');
+                        expected.equal = 'test';
+                    }
+                    break;
+                case 'between':
+                    if (props.type == 'datetime') {
+                        var input1 = popover.find('input[data-filter=between-start]');
+                        input1.val('2010-05-01').trigger('change');
+                        var value1 = moment(input1.val()).unix();
+                        var input2 = popover.find('input[data-filter=between-end]');
+                        input2.val('2012-05-01').trigger('change');
+                        var value2 = moment(input2.val()).unix();
+                        expected.between = [ value1, value2 ];
+                    } else {
+                        var input1 = popover.find('input[data-filter=between-start]');
+                        input1.val('test1');
+                        var input2 = popover.find('input[data-filter=between-end]');
+                        input2.val('test2');
+                        expected.between = [ 'test1', 'test2' ];
+                    }
+                    break;
+            }
+        });
+
+        var actualId = null;
+        var actualParams = null;
+        table.setFilters = function (id, params) {
+            actualId = id;
+            actualParams = params;
+        };
+
+        popover.find('button[type=submit]').trigger('click');
+
+        assert.equal(actualId, id, "Correct field ID: " + id);
+        assert.deepEqual(actualParams, expected, "Correct filter params: " + id);
+    });
+});

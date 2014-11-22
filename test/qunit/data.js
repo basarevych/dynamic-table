@@ -17,7 +17,7 @@ var $description = {
         "integer": {
             "title": "Integer",
             "type": "integer",
-            "filters": [ "between", "null" ],
+            "filters": [ "equal", "between", "null" ],
             "sortable": true,
             "visible": true
         },
@@ -38,7 +38,7 @@ var $description = {
         "datetime": {
             "title": "DateTime",
             "type": "datetime",
-            "filters": [ "between", "null" ],
+            "filters": [ "equal", "between", "null" ],
             "sortable": true,
             "visible": true
         }
