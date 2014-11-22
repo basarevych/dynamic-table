@@ -1,5 +1,6 @@
 /* zf2-skeleton - v0.0.1 - 2014-11-22
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
+
 /*!
  * Bootstrap v3.1.1 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -7701,8 +7702,6 @@ button.close {
   content: "\f1e2";
 }
 
-/*! dynamic-table - v0.0.1 - 2014-11-22
-* Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 .dynamic-table .overlay-back {
     position: absolute;
     background: #000000;

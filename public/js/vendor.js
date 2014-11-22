@@ -1,5 +1,6 @@
 /* zf2-skeleton - v0.0.1 - 2014-11-22
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
+
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -21895,8 +21896,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 }));
 
-/*! dynamic-table - v0.0.1 - 2014-11-22
-* Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 ;(function ($, window, document, undefined) {
 
     var pluginName = "dynamicTable",

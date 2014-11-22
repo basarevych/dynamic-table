@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./node_components/.bin/grunt
+./node_modules/.bin/grunt
