@@ -19,7 +19,19 @@ Features:
 
 Installation
 ------------
-1. Fork or clone
+1. You can create a repo for your project like this:
+
+  1. Create an empty repository on github (your-login/my-project)
+
+  2. ```shell
+     > mkdir MyProject
+     > cd MyProject
+     > git init
+     > git remote add skeleton https://github.com/basarevych/zf2-skeleton.git
+     > git pull skeleton master
+     > git remote add origin https://github.com/your-login/my-project.git
+     > git push -u origin master
+     ```
 
 2. Install dependencies
 
