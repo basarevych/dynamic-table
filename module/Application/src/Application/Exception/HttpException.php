@@ -1,8 +1,8 @@
 <?php
 /**
- * AngularZF
+ * zf2-skeleton
  *
- * @link        https://github.com/basarevych/AngularZF
+ * @link        https://github.com/basarevych/zf2-skeleton
  * @copyright   Copyright (c) 2014 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
