@@ -60,18 +60,18 @@ abstract class AbstractAdapter
     abstract public function check(Table $table);
 
     /**
-     * Sort data
-     *
-     * @param Table $table
-     */
-    abstract public function sort(Table $table);
-
-    /**
      * Filter data
      *
      * @param Table $table
      */
     abstract public function filter(Table $table);
+
+    /**
+     * Sort data
+     *
+     * @param Table $table
+     */
+    abstract public function sort(Table $table);
 
     /**
      * Paginate and return result

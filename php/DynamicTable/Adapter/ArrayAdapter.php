@@ -74,6 +74,38 @@ class ArrayAdapter extends AbstractAdapter
     }
 
     /**
+     * Filter data
+     *
+     * @param Table $table
+     */
+    public function filter(Table $table)
+    {
+        $filters = $table->getFilters();
+        if (count($filters) == 0)
+            return;
+
+        $columns = $table->getColumns();
+        $result = [];
+        foreach ($this->data as $row) {
+            $passedAnds = true;
+            foreach ($filters as $id => $filterData) {
+                $passedOrs = false;
+                foreach ($filterData as $name => $value) {
+                    $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
+                    if ($test === true)
+                        $passedOrs = true;
+                }
+                if (!$passedOrs)
+                    $passedAnds = false;
+            }
+            if ($passedAnds)
+                $result[] = $row;
+        }
+
+        $this->data = $result;
+    }
+
+    /**
      * Sort data
      *
      * @param Table $table
@@ -122,35 +154,6 @@ class ArrayAdapter extends AbstractAdapter
 
         if (!uasort($this->data, $cmp))
             throw new \Exception('PHP sort failed');
-    }
-
-    /**
-     * Filter data
-     *
-     * @param Table $table
-     */
-    public function filter(Table $table)
-    {
-        $filters = $table->getFilters();
-        if (count($filters) == 0)
-            return;
-
-        $columns = $table->getColumns();
-        $result = [];
-        foreach ($this->data as $row) {
-            $passed = false;
-            foreach ($filters as $id => $filterData) {
-                foreach ($filterData as $name => $value) {
-                    $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
-                    if ($test === true)
-                        $passed = true;
-                }
-            }
-            if ($passed)
-                $result[] = $row;
-        }
-
-        $this->data = $result;
     }
 
     /**

@@ -79,6 +79,36 @@ class DoctrineAdapter extends AbstractAdapter
     }
 
     /**
+     * Filter data
+     *
+     * @param Table $table
+     */
+    public function filter(Table $table)
+    {
+        $this->sqlWhere = [];
+        $this->sqlParams = [];
+
+        $columns = $table->getColumns();
+        foreach ($table->getFilters() as $column => $filters) {
+            foreach ($filters as $name => $value) {
+                $this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value);
+            }
+        }
+
+        if (count($this->sqlWhere) == 0)
+            return;
+
+        $ands = [];
+        foreach ($this->sqlWhere as $filter => $ors)
+            $ands[] = '(' . join(') OR (', $ors) . ')';
+
+        $qb = $this->getQueryBuilder();
+        $qb->andWhere('(' . join(') AND (', $ands));
+        foreach ($this->sqlParams as $name => $value)
+            $qb->setParameter($name, $value);
+    }
+
+    /**
      * Sort data
      *
      * @param Table $table
@@ -104,32 +134,6 @@ class DoctrineAdapter extends AbstractAdapter
 
         $qb = $this->getQueryBuilder();
         $qb->addOrderBy($sqlId, $dir);
-    }
-
-    /**
-     * Filter data
-     *
-     * @param Table $table
-     */
-    public function filter(Table $table)
-    {
-        $this->sqlOrs = [];
-        $this->sqlParams = [];
-
-        $columns = $table->getColumns();
-        foreach ($table->getFilters() as $column => $filters) {
-            foreach ($filters as $name => $value) {
-                $this->buildFilter($columns[$column]['sql_id'], $columns[$column]['type'], $name, $value);
-            }
-        }
-
-        if (count($this->sqlOrs) == 0)
-            return;
-
-        $qb = $this->getQueryBuilder();
-        $qb->andWhere(join(' OR ', $this->sqlOrs));
-        foreach ($this->sqlParams as $name => $value)
-            $qb->setParameter($name, $value);
     }
 
     /**
@@ -208,12 +212,16 @@ class DoctrineAdapter extends AbstractAdapter
         switch ($filter) {
             case Table::FILTER_LIKE:
                 $param = $paramBaseName . '_like';
-                $this->sqlOrs[] = "($field LIKE :$param)";
+                if (!(isset($this->sqlWhere[$field])))
+                    $this->sqlWhere[$field] = [];
+                $this->sqlWhere[$field][] = "$field LIKE :$param";
                 $this->sqlParams[$param] = '%' . $value . '%';
                 break;
             case Table::FILTER_EQUAL:
                 $param = $paramBaseName . '_equal';
-                $this->sqlOrs[] = "($field = :$param)";
+                if (!(isset($this->sqlWhere[$field])))
+                    $this->sqlWhere[$field] = [];
+                $this->sqlWhere[$field][] = "$field = :$param";
                 $this->sqlParams[$param] = $value;
                 break;
             case Table::FILTER_BETWEEN:
@@ -228,10 +236,14 @@ class DoctrineAdapter extends AbstractAdapter
                     $ands[] = "$field <= :$param2";
                     $this->sqlParams[$param2] = $value[1];
                 }
-                $this->sqlOrs[] = "(" . join(' AND ', $ands) . ")";
+                if (!(isset($this->sqlWhere[$field])))
+                    $this->sqlWhere[$field] = [];
+                $this->sqlWhere[$field][] = join(' AND ', $ands);
                 break;
             case Table::FILTER_NULL:
-                $this->sqlOrs[] = "($field IS NULL)";
+                if (!(isset($this->sqlWhere[$field])))
+                    $this->sqlWhere[$field] = [];
+                $this->sqlWhere[$field][] = "$field IS NULL";
                 break;
             default:
                 throw new \Exception("Unknown filter: $filter");
