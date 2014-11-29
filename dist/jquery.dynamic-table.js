@@ -1,4 +1,4 @@
-/* dynamic-table - v0.0.1 - 2014-11-22
+/* dynamic-table - v0.0.1 - 2014-11-29
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 ;(function ($, window, document, undefined) {
@@ -12,6 +12,10 @@
         this.options = {
             rowIdColumn: null,
             mapper: null,
+            sortColumn: null,
+            sortDir: 'asc',
+            pageNumber: 1,
+            pageSize: 15,
             pageSizes: [ 15, 30, 50, 100, 0 ],
             tableClass: 'table table-striped table-hover table-condensed',
             loaderImage: 'img/loader.gif',
@@ -53,6 +57,11 @@
     Plugin.prototype = {
         init: function (options) {
             $.extend(this.options, options);
+
+            this.sortColumn = this.options.sortColumn;
+            this.sortDir = this.options.sortDir;
+            this.pageNumber = this.options.pageNumber;
+            this.pageSize = this.options.pageSize;
 
             _createTable(this);
 
