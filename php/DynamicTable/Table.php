@@ -424,8 +424,8 @@ class Table
             throw new \Exception("Adapter property is not set");
 
         $adapter->check($this);
-        $adapter->sort($this);
         $adapter->filter($this);
+        $adapter->sort($this);
         $result = $adapter->paginate($this);
 
         $filters = $this->getFilters();
