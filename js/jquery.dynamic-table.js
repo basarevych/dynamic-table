@@ -221,8 +221,8 @@
     };
 
     var _createTable = function (plugin) {
-        plugin.element.html('');
-        plugin.element.addClass('dynamic-table');
+        plugin.element.empty()
+                      .addClass('dynamic-table');
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
