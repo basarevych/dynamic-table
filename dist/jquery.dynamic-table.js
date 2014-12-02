@@ -1,4 +1,4 @@
-/* dynamic-table - v0.0.1 - 2014-11-29
+/* dynamic-table - v0.0.1 - 2014-12-02
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 ;(function ($, window, document, undefined) {
@@ -224,8 +224,8 @@
     };
 
     var _createTable = function (plugin) {
-        plugin.element.html('');
-        plugin.element.addClass('dynamic-table');
+        plugin.element.empty()
+                      .addClass('dynamic-table');
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
