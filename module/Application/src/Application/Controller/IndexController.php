@@ -132,14 +132,6 @@ class IndexController extends AbstractActionController
                 'sortable'  => true,
                 'visible'   => true,
             ],
-            'computed' => [
-                'title'     => $translate('Computed Value'),
-                'sql_id'    => 'computed',
-                'type'      => Table::TYPE_INTEGER,
-                'filters'   => [],
-                'sortable'  => true,
-                'visible'   => true,
-            ],
         ]);
 
         return $table;
@@ -156,24 +148,23 @@ class IndexController extends AbstractActionController
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
         $qb = $em->createQueryBuilder();
-        $qb->select('s, s.id + 100 AS computed')
+        $qb->select('s')
            ->from('Application\Entity\Sample', 's');
 
         $adapter = new DoctrineAdapter();
         $adapter->setQueryBuilder($qb);
         $adapter->setMapper(function ($row) {
-            $datetime = $row[0]->getValueDatetime();
+            $datetime = $row->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->getTimestamp();
 
             return [
-                'id'        => $row[0]->getId(),
-                'string'    => $row[0]->getValueString(),
-                'integer'   => $row[0]->getValueInteger(),
-                'float'     => $row[0]->getValueFloat(),
-                'boolean'   => $row[0]->getValueBoolean(),
+                'id'        => $row->getId(),
+                'string'    => $row->getValueString(),
+                'integer'   => $row->getValueInteger(),
+                'float'     => $row->getValueFloat(),
+                'boolean'   => $row->getValueBoolean(),
                 'datetime'  => $datetime,
-                'computed'  => $row['computed'],
             ];
         });
 
