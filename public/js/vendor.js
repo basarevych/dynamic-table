@@ -1,4 +1,4 @@
-/* zf2-skeleton - v0.0.1 - 2014-11-23
+/* zf2-skeleton - v0.0.1 - 2014-12-02
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 /*!
@@ -21907,6 +21907,10 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         this.options = {
             rowIdColumn: null,
             mapper: null,
+            sortColumn: null,
+            sortDir: 'asc',
+            pageNumber: 1,
+            pageSize: 15,
             pageSizes: [ 15, 30, 50, 100, 0 ],
             tableClass: 'table table-striped table-hover table-condensed',
             loaderImage: 'img/loader.gif',
@@ -21948,6 +21952,11 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     Plugin.prototype = {
         init: function (options) {
             $.extend(this.options, options);
+
+            this.sortColumn = this.options.sortColumn;
+            this.sortDir = this.options.sortDir;
+            this.pageNumber = this.options.pageNumber;
+            this.pageSize = this.options.pageSize;
 
             _createTable(this);
 
@@ -22110,8 +22119,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     var _createTable = function (plugin) {
-        plugin.element.html('');
-        plugin.element.addClass('dynamic-table');
+        plugin.element.empty()
+                      .addClass('dynamic-table');
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.tableClass)
