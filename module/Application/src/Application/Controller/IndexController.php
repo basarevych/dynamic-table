@@ -136,7 +136,7 @@ class IndexController extends AbstractActionController
                 'title'     => $translate('Computed Value'),
                 'sql_id'    => 'computed',
                 'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+                'filters'   => [],
                 'sortable'  => true,
                 'visible'   => true,
             ],
