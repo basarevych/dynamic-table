@@ -103,7 +103,7 @@ class DoctrineAdapter extends AbstractAdapter
             $ands[] = '(' . join(') OR (', $ors) . ')';
 
         $qb = $this->getQueryBuilder();
-        $qb->andWhere('(' . join(') AND (', $ands));
+        $qb->andWhere('(' . join(') AND (', $ands) .')');
         foreach ($this->sqlParams as $name => $value)
             $qb->setParameter($name, $value);
     }

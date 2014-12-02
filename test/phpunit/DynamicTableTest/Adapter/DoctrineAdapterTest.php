@@ -64,7 +64,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 'title'     => 'Integer',
                 'sql_id'    => 's.value_integer',
                 'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_BETWEEN ],
+                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
                 'sortable'  => true,
                 'visible'   => true,
             ],
@@ -174,21 +174,18 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 Table::FILTER_LIKE => 'abc'
             ],
             'integer' => [
-                Table::FILTER_BETWEEN => [ 10, 20 ]
-            ],
-            'boolean' => [
+                Table::FILTER_BETWEEN => [ 10, 20 ],
                 Table::FILTER_NULL => true
-            ]
+            ],
         ]);
 
         $this->adapter->setQueryBuilder($qb);
         $this->adapter->filter($this->table);
 
         $this->assertEquals(
-            "(s.id = :s_id_equal)"
-            ." OR (s.value_string LIKE :s_value_string_like)"
-            ." OR (s.value_integer >= :s_value_integer_begin AND s.value_integer <= :s_value_integer_end)"
-            ." OR (s.value_boolean IS NULL)",
+            "((s.id = :s_id_equal))"
+            ." AND ((s.value_string LIKE :s_value_string_like))"
+            ." AND ((s.value_integer >= :s_value_integer_begin AND s.value_integer <= :s_value_integer_end) OR (s.value_integer IS NULL))",
             $resultWhere,
             "SQL WHERE is incorrect"
         );
