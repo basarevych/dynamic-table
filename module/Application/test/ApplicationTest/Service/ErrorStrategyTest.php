@@ -116,7 +116,6 @@ class ErrorStrategyTest extends AbstractControllerTestCase
                 if ($metadata['event'] == MvcEvent::EVENT_DISPATCH_ERROR
                         && $callback[0] instanceof ErrorStrategy) {
                     $dispatchErrorAttached = true;
-var_dump('xxx');
                 } else if ($metadata['event'] == MvcEvent::EVENT_RENDER_ERROR
                         && $callback[0] instanceof ErrorStrategy) {
                     $renderErrorAttached = true;
