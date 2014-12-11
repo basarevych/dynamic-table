@@ -57,7 +57,7 @@ Installation
 
 4. Create and populate the database
 
-  Database schema (MySQL only at this time) is in **database** directory. Consult README file for specific commands.
+  Database schema (MySQL only at this time) is in **database** directory. Consult [README](database/README.md) file for specific commands.
 
 5. Run development server (do not use in production)
 
