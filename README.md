@@ -15,7 +15,6 @@ Features:
 * Mail service - [docs](docs/mail.md)
 * Custom Error Strategy - [docs](docs/error-strategy.md)
 * Session - [docs](docs/session.md)
-* DynamicTable (a jQuery grid with server-side pagination, filtering and sorting) - [docs](https://github.com/basarevych/dynamic-table)
 
 Installation
 ------------
