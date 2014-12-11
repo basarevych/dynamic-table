@@ -10,7 +10,8 @@
     "require": {
         "php": ">=5.4.8",
         "zendframework/zendframework": "2.3.*",
-        "doctrine/doctrine-orm-module": "0.*"
+        "doctrine/doctrine-orm-module": "0.*",
+        "basarevych/dynamic-table": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",

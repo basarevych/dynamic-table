@@ -7701,3 +7701,43 @@ button.close {
 .fa-bomb:before {
   content: "\f1e2";
 }
+
+.dynamic-table .overlay-back {
+    position: absolute;
+    background: #000000;
+    opacity: 0.05;
+    z-index: 9000;
+    display: none;
+}
+.dynamic-table .overlay-loader {
+    position: absolute;
+    background: transparent url(img/loader.gif) center center no-repeat;
+    z-index: 9001;
+    display: none;
+}
+.dynaic-table th:not(.selector):not(:last-child) {
+    white-space: nowrap;
+    padding-right: 3em !important;
+}
+.dynamic-table .selector {
+    width: 1px;
+}
+.dynamic-table .sort-asc, .dynamic-table .sort-desc {
+    margin-left: 0.5em;
+}
+.dynamic-table .filter {
+    margin-left: 1em;
+}
+.dynamic-table th .popover {
+    width: 300px;
+}
+.dynamic-table tbody.empty td {
+    padding: 1em 0;
+    text-align: center;
+    font-size: 120%;
+    font-style: italic;
+}
+.dynamic-table .pagination-input {
+    width: 4em;
+    text-align: center;
+}
