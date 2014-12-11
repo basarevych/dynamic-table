@@ -23,23 +23,4 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertControllerClass('IndexController');
         $this->assertMatchedRouteName('application');
     }
-
-    public function testDoctrineTableActionCanBeAccessed()
-    {
-        $this->dispatch('/index/doctrine-table?query=describe');
-        $this->assertResponseStatusCode(200);
-
-        $this->assertModuleName('application');
-        $this->assertControllerName('application\controller\index');
-        $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('application');
-
-        $this->dispatch('/index/doctrine-table?query=data');
-        $this->assertResponseStatusCode(200);
-
-        $this->assertModuleName('application');
-        $this->assertControllerName('application\controller\index');
-        $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('application');
-    }
 }
