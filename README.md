@@ -1,45 +1,26 @@
-WORK IN PROGRESS
-================
+DynamicTable demo page (ZF2)
+============================
 
-ZF2 Skeleton
-============
-
-Yet another Zend Framework 2 Skeleton Application and a little tutorial (see the docs below).
-
-Features:
-* Tools used: Composer/Bower/Grunt - [docs](docs/tools.md)
-* Doctrine integration - [docs](docs/doctrine.md)
-* Memcached integration - [docs](docs/memcached.md)
-* Sample console controller - [docs](docs/console.md)
-* Translator preconfigured - [docs](docs/translator.md)
-* Mail service - [docs](docs/mail.md)
-* Custom Error Strategy - [docs](docs/error-strategy.md)
-* Session - [docs](docs/session.md)
+This is just a [DynamicTable](https://github.com/basarevych/dynamic-table) project demo application.
 
 Installation
 ------------
-1. You can create a repo for your project like this:
+1. Clone the repo
 
   First create an empty repository on github (your-login/my-project) and then:
 
   ```shell
-  > mkdir MyProject
-  > cd MyProject
-  > git init
-  > git remote add skeleton https://github.com/basarevych/zf2-skeleton.git
-  > git pull skeleton master
-  > git remote add origin https://github.com/your-login/my-project.git
-  > git push -u origin master
+  > git clone https://github.com/basarevych/dynamic-table-demo
   ```
 
 2. Install dependencies
 
   ```shell
-  > cd ProjectRoot
-  > ./scripts/install-dependecies dev
+  > cd dynamic-table-demo
+  > ./scripts/install-dependecies prod
   ```
 
-  Replace "dev" argument with "prod" for production environment.
+  Replace "prod" (production) argument with "dev" for development environment.
 
 3. Create server-local configs
 
@@ -62,9 +43,9 @@ Installation
 
   ```
   <VirtualHost *:80>
-    ServerName zf2-skeleton.example.com
-    DocumentRoot /path/to/ProjectRoot/public
-    <Directory /path/to/ProjectRoot/public>
+    ServerName dynamic-table-demo.example.com
+    DocumentRoot /path/to/dynamic-table-demo/public
+    <Directory /path/to/dynamic-table-demo/public>
       DirectoryIndex index.php
       AllowOverride All
       Order allow,deny
@@ -76,7 +57,7 @@ Installation
   Or run development server (do not use in production)
 
   ```shell
-  > cd ProjectRoot
+  > cd dynamic-table-demo
   > ./scripts/dev-server
   ```
 
@@ -85,6 +66,6 @@ Installation
 6. Run PHP unit tests (requires *development* environment dependencies)
 
   ```shell
-  > cd ProjectRoot
+  > cd dynamic-table-demo
   > ./scripts/test-backend
   ```
