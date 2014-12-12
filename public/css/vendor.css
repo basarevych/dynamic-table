@@ -1,4 +1,4 @@
-/* zf2-skeleton - v0.0.1 - 2014-12-11
+/* zf2-skeleton - v0.0.1 - 2014-12-12
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 /*!
