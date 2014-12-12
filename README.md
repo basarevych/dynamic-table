@@ -36,7 +36,7 @@ Installation
 
   ```shell
   > cd ProjectRoot
-  > ./scripts/install-dependecies dev
+  > ./scripts/install-dependencies dev
   ```
 
   Replace "dev" argument with "prod" for production environment.
