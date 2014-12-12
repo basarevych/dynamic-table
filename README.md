@@ -7,8 +7,6 @@ Installation
 ------------
 1. Clone the repo
 
-  First create an empty repository on github (your-login/my-project) and then:
-
   ```shell
   > git clone https://github.com/basarevych/dynamic-table-demo
   ```
