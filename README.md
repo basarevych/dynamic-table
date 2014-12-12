@@ -63,12 +63,12 @@ Installation
   ```
   <VirtualHost *:80>
     ServerName zf2-skeleton.example.com
-    DocumentRoot /path/to/zf2-skeleton/public
-    <Directory /path/to/zf2-skeleton/public>
-        DirectoryIndex index.php
-        AllowOverride All
-        Order allow,deny
-        Allow from all
+    DocumentRoot /path/to/ProjectRoot/public
+    <Directory /path/to/ProjectRoot/public>
+      DirectoryIndex index.php
+      AllowOverride All
+      Order allow,deny
+      Allow from all
     </Directory>
   </VirtualHost>
   ```
