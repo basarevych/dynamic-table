@@ -58,7 +58,22 @@ Installation
 
   Database schema (MySQL only at this time) is in **database** directory. Consult [README](database/README.md) file for specific commands.
 
-5. Run development server (do not use in production)
+5. Setup your webserver
+
+  ```
+  <VirtualHost *:80>
+    ServerName zf2-skeleton.example.com
+    DocumentRoot /path/to/zf2-skeleton/public
+    <Directory /path/to/zf2-skeleton/public>
+        DirectoryIndex index.php
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+  </VirtualHost>
+  ```
+
+  Or run development server (do not use in production)
 
   ```shell
   > cd ProjectRoot
