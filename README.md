@@ -15,7 +15,7 @@ Installation
 
   ```shell
   > cd dynamic-table-demo
-  > ./scripts/install-dependecies prod
+  > ./scripts/install-dependencies prod
   ```
 
   Replace "prod" (production) argument with "dev" for development environment.
