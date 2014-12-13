@@ -41,9 +41,9 @@ Table::setColumns expects an array of column definitions:
   * Table::FILTER_BETWEEN
   * Table::FILTER_NULL
 * 'sortable' - true if table could be sorted by this column or not
-* 'visible' - true if column should be visible from start
+* 'visible' - true if column should be visible from the beginning
 
-See [createTable()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L79) method of demo page.
+See [createTable()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L94) method of demo page.
 
 Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are two available:
 * read about [ArrayAdapter](docs/array-adapter.md)
@@ -76,4 +76,4 @@ header('Content-Type: application/json; charset=utf-8');
 echo json_encode($data);
 ```
 
-See [arrayTableAction()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php) and [doctrineTableAction()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php) methods of demo page for ZF2 examples.
+See [arrayTableAction()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L67) and [doctrineTableAction()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L40) methods of demo page for ZF2 examples.
