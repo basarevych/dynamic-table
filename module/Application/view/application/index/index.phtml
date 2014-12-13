@@ -15,11 +15,6 @@
 
 <script>
     var mapper = function (row) {
-        if (row['string'] != null) {
-            var span = $('<span></span');
-            span.text(row['string']);
-            row['string'] = span.text();
-        }
         if (row['boolean'] != null) {
             row['boolean'] = '<span class="glyphicon glyphicon-'
                 + (row['boolean'] ? 'ok text-success' : 'remove text-danger')

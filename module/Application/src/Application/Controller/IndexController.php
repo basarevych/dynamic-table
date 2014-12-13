@@ -161,6 +161,7 @@ class IndexController extends AbstractActionController
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
+        $escapeHtml = $sl->get('viewhelpermanager')->get('escapeHtml');
 
         $qb = $em->createQueryBuilder();
         $qb->select('s')
@@ -168,14 +169,14 @@ class IndexController extends AbstractActionController
 
         $adapter = new DoctrineAdapter();
         $adapter->setQueryBuilder($qb);
-        $adapter->setMapper(function ($row) {
+        $adapter->setMapper(function ($row) use ($escapeHtml) {
             $datetime = $row->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->getTimestamp();
 
             return [
                 'id'        => $row->getId(),
-                'string'    => $row->getValueString(),
+                'string'    => $escapeHtml($row->getValueString()),
                 'integer'   => $row->getValueInteger(),
                 'float'     => $row->getValueFloat(),
                 'boolean'   => $row->getValueBoolean(),
@@ -193,6 +194,9 @@ class IndexController extends AbstractActionController
      */
     protected function createArrayAdapter()
     {
+        $sl = $this->getServiceLocator();
+        $escapeHtml = $sl->get('viewhelpermanager')->get('escapeHtml');
+
         $data = [];
         $dt = new \DateTime("2010-05-11 13:00:00");
         for ($i = 1; $i <= 100; $i++) {
@@ -221,9 +225,10 @@ class IndexController extends AbstractActionController
 
         $adapter = new ArrayAdapter();
         $adapter->setData($data);
-        $adapter->setMapper(function ($row) {
+        $adapter->setMapper(function ($row) use ($escapeHtml) {
             $result = $row;
 
+            $result['string'] = $escapeHtml($row['string']);
             if ($row['datetime'] !== null)
                 $result['datetime'] = $row['datetime']->getTimestamp();
 
