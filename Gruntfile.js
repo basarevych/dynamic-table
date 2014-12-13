@@ -31,7 +31,6 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/bootstrap/dist/css/bootstrap.css',
                     'bower_components/bootstrap/dist/css/bootstrap-theme.css',
-                    'bower_components/font-awesome/css/font-awesome.css',
                     'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
                     'vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.css',
                 ],

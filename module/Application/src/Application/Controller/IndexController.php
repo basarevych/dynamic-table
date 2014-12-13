@@ -14,6 +14,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use DynamicTable\Table;
 use DynamicTable\Adapter\DoctrineAdapter;
+use DynamicTable\Adapter\ArrayAdapter;
 
 /**
  * Index controller
@@ -33,11 +34,13 @@ class IndexController extends AbstractActionController
 
     /**
      * Table data retrieving action (Database version)
+     *
+     * @return JsonModel
      */
     public function doctrineTableAction()
     {
         $table = $this->createTable();
-        $adapter = $this->createAdapter();
+        $adapter = $this->createDoctrineAdapter();
         $table->setAdapter($adapter);
 
         $query = $this->params()->fromQuery('query');
@@ -46,22 +49,34 @@ class IndexController extends AbstractActionController
             $data = $table->describe();
             break;
         case 'data':
-            $filters = $this->params()->fromQuery('filters');
-            $table->setFilters(json_decode($filters, true));
+            $data = $table->setPageParams($_GET)->fetch();
+            break;
+        default:
+            throw new \Exception('Unknown query type: ' . $query);
+        }
 
-            $column = $this->params()->fromQuery('sort_column');
-            $table->setSortColumn(json_decode($column, true));
+        $data['success'] = true;
+        return new JsonModel($data);
+    }
 
-            $dir = $this->params()->fromQuery('sort_dir');
-            $table->setSortDir(json_decode($dir, true));
+    /**
+     * Table data retrieving action (Array version)
+     *
+     * @return JsonModel
+     */
+    public function arrayTableAction()
+    {
+        $table = $this->createTable();
+        $adapter = $this->createArrayAdapter();
+        $table->setAdapter($adapter);
 
-            $page = $this->params()->fromQuery('page_number');
-            $table->setPageNumber(json_decode($page, true));
-
-            $size = $this->params()->fromQuery('page_size');
-            $table->setPageSize(json_decode($size, true));
-
-            $data = $table->fetch();
+        $query = $this->params()->fromQuery('query');
+        switch ($query) {
+        case 'describe':
+            $data = $table->describe();
+            break;
+        case 'data':
+            $data = $table->setPageParams($_GET)->fetch();
             break;
         default:
             throw new \Exception('Unknown query type: ' . $query);
@@ -138,11 +153,11 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Create adapter
+     * Create Doctrine adapter
      *
      * @return DoctrineAdapter
      */
-    protected function createAdapter()
+    protected function createDoctrineAdapter()
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
@@ -166,6 +181,53 @@ class IndexController extends AbstractActionController
                 'boolean'   => $row->getValueBoolean(),
                 'datetime'  => $datetime,
             ];
+        });
+
+        return $adapter;
+    }
+
+    /**
+     * Create Array adapter
+     *
+     * @return ArrayAdapter
+     */
+    protected function createArrayAdapter()
+    {
+        $data = [];
+        $dt = new \DateTime("2010-05-11 13:00:00");
+        for ($i = 1; $i <= 100; $i++) {
+            $dt->add(new \DateInterval('PT10S'));
+
+            if ($i == 3) {
+                $data[] = [
+                    'id' => $i,
+                    'string' => null,
+                    'integer' => null,
+                    'float' => null,
+                    'boolean' => null,
+                    'datetime' => null,
+                ];
+            } else {
+                $data[] = [
+                    'id' => $i,
+                    'string' => "string $i",
+                    'integer' => $i,
+                    'float' => $i / 100,
+                    'boolean' => ($i % 2 == 0),
+                    'datetime' => clone $dt,
+                ];
+            }
+        }
+
+        $adapter = new ArrayAdapter();
+        $adapter->setData($data);
+        $adapter->setMapper(function ($row) {
+            $result = $row;
+
+            if ($row['datetime'] !== null)
+                $result['datetime'] = $row['datetime']->getTimestamp();
+
+            return $result;
         });
 
         return $adapter;

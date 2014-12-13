@@ -1,9 +1,9 @@
 {
-    "name": "basarevych/zf2-skeleton",
-    "description": "ZF2 Skeleton",
+    "name": "basarevych/dynamic-table-demo",
+    "description": "DynamicTable demo project",
     "license": "MIT",
     "keywords": [
-        "zf",
+        "zf2",
         "doctrine"
     ],
     "homepage": "https://github.com/basarevych/zf2-skeleton",

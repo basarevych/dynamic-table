@@ -1,6 +1,6 @@
 {
-    "name": "zf2-skeleton",
-    "description": "ZF2 Skeleton",
+    "name": "dynamic-table-demo",
+    "description": "DynamicTable demo project",
     "version": "0.0.1",
     "license": "MIT",
     "author": {
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https:/github.com/basarevych/zf2-skeleton.git"
+        "url": "https:/github.com/basarevych/dynamic-table-demo.git"
     },
     "devDependencies": {
         "bower": "~1.3.11",
