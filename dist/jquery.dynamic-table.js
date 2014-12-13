@@ -1055,11 +1055,8 @@
 
             $.each(plugin.columns, function (id, props) {
                 var td = $('<td></td>');
-                if (plugin.options.mapper == null)
-                    td.text(content[id]);
-                else
-                    td.html(content[id]);
-                td.attr('data-column-id', id)
+                td.html(content[id])
+                  .attr('data-column-id', id)
                   .css('display', props.visible ? 'table-cell' : 'none')
                   .appendTo(tr)
             });
