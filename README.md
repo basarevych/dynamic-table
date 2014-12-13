@@ -1,12 +1,15 @@
 WORK IN PROGRESS
 ================
 
+
 Dynamic Table
 =============
 
 The idea is to feed an array of data (or some other data source, like Doctrine query) to PHP class and to have instantly a grid with sorting, filtering and pagination.
 
 The demo version is available [here](http://demo.daemon-notes.com/dynamic-table/).
+
+Demo project on github: [dynamic-table-demo](https://github.com/basarevych/dynamic-table-demo).
 
 Configuration
 -------------
