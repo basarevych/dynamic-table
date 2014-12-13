@@ -1,4 +1,4 @@
-/* dynamic-table - v0.0.1 - 2014-12-02
+/* dynamic-table - v0.0.1 - 2014-12-13
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 ;(function ($, window, document, undefined) {
@@ -180,8 +180,8 @@
                         .prop('colspan', this.visibleColumns);
             this.element.find('tfoot td')
                         .prop('colspan', this.visibleColumns);
-            this.element.find('tfoot a[data-column-id=' + column + '] i')
-                        .attr('class', 'fa ' + (visible ? 'fa-check-square-o' : 'fa-square-o'));
+            this.element.find('tfoot a[data-column-id=' + column + '] span.glyphicon')
+                        .attr('class', 'glyphicon glyphicon-ok ' + (visible ? '' : 'invisible'));
         },
 
         toggleSelected: function (rowId) {
@@ -307,11 +307,11 @@
                 })
                 .appendTo(th);
 
-            $('<i class="sort-asc fa fa-sort-alpha-asc"></i>')
+            $('<span class="sort-asc glyphicon glyphicon-sort-by-attributes"></span>')
                 .css('display', 'none')
                 .appendTo(th);
 
-            $('<i class="sort-desc fa fa-sort-alpha-desc"></i>')
+            $('<span class="sort-desc glyphicon glyphicon-sort-by-attributes-alt"></span>')
                 .css('display', 'none')
                 .appendTo(th);
 
@@ -320,7 +320,7 @@
  
             $('<button class="filter btn btn-default btn-xs"></button>')
                 .css('display', 'none')
-                .html('<i class="fa fa-filter"></i>')
+                .html('<span class="glyphicon glyphicon-wrench"></span>')
                 .on('click', function () {
                     var popover = $(this).parent().find('.popover');
                     var th = $(this).closest('th');
@@ -426,7 +426,7 @@
 
                     $('<button></button>')
                         .attr('class', 'btn btn-default')
-                        .html('<i class="fa fa-calendar"></i>')
+                        .html('<span class="glyphicon glyphicon-calendar"></span>')
                         .appendTo(span);
 
                     var dtPicker = inputGroup.datetimepicker({
@@ -475,7 +475,7 @@
 
                     $('<button></button>')
                         .attr('class', 'btn btn-default')
-                        .html('<i class="fa fa-calendar"></i>')
+                        .html('<span class="glyphicon glyphicon-calendar"></span>')
                         .appendTo(span);
 
                     var dtPicker1 = inputGroup.datetimepicker({
@@ -506,7 +506,7 @@
 
                     $('<button></button>')
                         .attr('class', 'btn btn-default')
-                        .html('<i class="fa fa-calendar"></i>')
+                        .html('<span class="glyphicon glyphicon-calendar"></span>')
                         .appendTo(span);
 
                     var dtPicker2 = inputGroup.datetimepicker({
@@ -747,7 +747,7 @@
                 .attr('tabindex', '-1')
                 .attr('href', 'javascript:void(0)')
                 .attr('data-column-id', id)
-                .html('<i class="fa ' + (column.visible ? 'fa-check-square-o' : 'fa-square-o') + '"></i> ' + span.html())
+                .html('<span class="glyphicon glyphicon-ok ' + (column.visible ? '' : 'invisible') + '"></span> ' + span.html())
                 .on('click', function() {
                     plugin.toggleColumn($(this).attr('data-column-id'));
                 })
@@ -767,7 +767,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default')
             .attr('data-action', 'first')
-            .html('<i class="fa fa-fast-backward"></i>')
+            .html('<span class="glyphicon glyphicon-fast-backward"></span>')
             .on('click', function () {
                 plugin.setPage(1);
             })
@@ -776,7 +776,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default')
             .attr('data-action', 'previous')
-            .html('<i class="fa fa-step-backward"></i>')
+            .html('<span class="glyphicon glyphicon-step-backward"></span>')
             .on('click', function () {
                 plugin.setPage(plugin.pageNumber - 1);
             })
@@ -828,7 +828,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default')
             .attr('data-action', 'next')
-            .html('<i class="fa fa-step-forward"></i>')
+            .html('<span class="glyphicon glyphicon-step-forward"></span>')
             .on('click', function () {
                 plugin.setPage(plugin.pageNumber + 1);
             })
@@ -837,7 +837,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default')
             .attr('data-action', 'last')
-            .html('<i class="fa fa-fast-forward"></i>')
+            .html('<span class="glyphicon glyphicon-fast-forward"></span>')
             .on('click', function () {
                 plugin.setPage(plugin.totalPages);
             })

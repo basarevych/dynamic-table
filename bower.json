@@ -14,7 +14,6 @@
         "qunit": "~1.15.0",
         "moment": "~2.8.3",
         "bootstrap": "~3.1.1",
-        "font-awesome": "~4.1.0",
         "eonasdan-bootstrap-datetimepicker": "~3.1.3"
     }
 }

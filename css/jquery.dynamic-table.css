@@ -1,3 +1,6 @@
+.dynamic-table .invisible {
+    visibility: hidden;
+}
 .dynamic-table .overlay-back {
     position: absolute;
     background: #000000;

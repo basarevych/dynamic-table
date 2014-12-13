@@ -8,7 +8,6 @@
 
         <link rel="stylesheet" href="vendor/bootstrap.min.css">
         <link rel="stylesheet" href="vendor/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="vendor/font-awesome.min.css">
         <link rel="stylesheet" href="vendor/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="jquery.dynamic-table.css">
 
@@ -47,8 +46,8 @@
                 row['string'] = span.text();
             }
             if (row['boolean'] != null) {
-                row['boolean'] = '<i class="fa fa-'
-                    + (row['boolean'] ? 'check text-success' : 'times text-danger')
+                row['boolean'] = '<i class="glyphicon '
+                    + (row['boolean'] ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger')
                     + '"></i>';
             }
             if (row['datetime'] != null) {
