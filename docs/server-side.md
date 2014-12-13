@@ -28,7 +28,7 @@ $table->setColumns([
 
 Table::setColumns expects an array of column definitions:
 * Array item key is column ID
-* 'title' is the title (goes to <th>)
+* 'title' is the title (goes to &lt;th&gt;)
 * 'type' is one of the following:
   * Table::TYPE_STRING
   * Table::TYPE_INTEGER
@@ -42,6 +42,7 @@ Table::setColumns expects an array of column definitions:
   * Table::FILTER_NULL
 * 'sortable' - true if table could be sorted by this column or not
 * 'visible' - true if column should be visible from the beginning
+
 
 See [createTable()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L94) method of demo page.
 
