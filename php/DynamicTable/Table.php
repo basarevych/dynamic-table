@@ -39,8 +39,6 @@ class Table
      *
      * @const FILTER_LIKE
      * @const FILTER_EQUAL
-     * @const FILTER_GREATER
-     * @const FILTER_LESS
      * @const FILTER_BETWEEN
      * @const FILTER_NULL
      */
@@ -372,6 +370,23 @@ class Table
     public function getTotalPages()
     {
         return $this->totalPages;
+    }
+
+    /**
+     * Sets sort, filter and pagination options
+     *
+     * @param array $params
+     * @return Table
+     */
+    public function setPageParams($params)
+    {
+        $this->setFilters(json_decode(@$params['filters'], true));
+        $this->setSortColumn(json_decode(@$params['sort_column'], true));
+        $this->setSortDir(json_decode(@$params['sort_dir'], true));
+        $this->setPageNumber(json_decode(@$params['page_number'], true));
+        $this->setPageSize(json_decode(@$params['page_size'], true));
+
+        return $this;
     }
 
     /**
