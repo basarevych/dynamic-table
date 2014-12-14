@@ -1,4 +1,4 @@
-/* zf2-skeleton - v0.0.1 - 2014-12-13
+/* dynamic-table-demo - v0.0.1 - 2014-12-14
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 /*!
@@ -22950,11 +22950,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
             $.each(plugin.columns, function (id, props) {
                 var td = $('<td></td>');
-                if (plugin.options.mapper == null)
-                    td.text(content[id]);
-                else
-                    td.html(content[id]);
-                td.attr('data-column-id', id)
+                td.html(content[id])
+                  .attr('data-column-id', id)
                   .css('display', props.visible ? 'table-cell' : 'none')
                   .appendTo(tr)
             });
