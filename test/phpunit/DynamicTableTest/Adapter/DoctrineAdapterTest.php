@@ -25,21 +25,6 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->em = $this->infrastructure->getEntityManager();
 
         $this->adapter = new DoctrineAdapter();
-        $this->adapter->setMapper(function ($row) {
-            $datetime = $row[0]->getValueDatetime();
-            if ($datetime !== null)
-                $datetime = $datetime->getTimestamp();
-
-            return [
-                'id'        => $row[0]->getId(),
-                'string'    => $row[0]->getValueString(),
-                'integer'   => $row[0]->getValueInteger(),
-                'float'     => $row[0]->getValueFloat(),
-                'boolean'   => $row[0]->getValueBoolean(),
-                'datetime'  => $datetime,
-                'computed'  => $row['computed'],
-            ];
-        });
 
         $this->table = new Table();
         $this->table->setAdapter($this->adapter);
@@ -101,6 +86,22 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
                 'visible'   => true,
             ],
         ]);
+        $this->table->setMapper(function ($row) {
+            $datetime = $row[0]->getValueDatetime();
+            if ($datetime !== null)
+                $datetime = $datetime->getTimestamp();
+
+            return [
+                'id'        => $row[0]->getId(),
+                'string'    => $row[0]->getValueString(),
+                'integer'   => $row[0]->getValueInteger(),
+                'float'     => $row[0]->getValueFloat(),
+                'boolean'   => $row[0]->getValueBoolean(),
+                'datetime'  => $datetime,
+                'computed'  => $row['computed'],
+            ];
+        });
+
     }
 
     public function testCheck()

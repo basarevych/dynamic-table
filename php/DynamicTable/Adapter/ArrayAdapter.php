@@ -174,7 +174,7 @@ class ArrayAdapter extends AbstractAdapter
             $data = $this->data;
         }
 
-        $mapper = $this->getMapper();
+        $mapper = $table->getMapper();
         if (!$mapper)
             return $data;
 

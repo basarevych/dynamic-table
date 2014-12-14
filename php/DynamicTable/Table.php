@@ -90,6 +90,17 @@ class Table
     protected $columns = [];
 
     /**
+     * Data row -> result row mapper
+     *
+     * Function should get single argument $row, which is data row
+     * and return an array [ 'column_id' => 'column_value', // ... ]
+     * which is feeded to the front-end
+     *
+     * @var \Closure
+     */
+    protected $mapper = null;
+
+    /**
      * Query filters
      *
      * $filters = [
@@ -205,6 +216,28 @@ class Table
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     * Mapper setter
+     *
+     * @param \Closure $mapper
+     * @return Table
+     */
+    public function setMapper(\Closure $mapper)
+    {
+        $this->mapper = $mapper;
+        return $this;
+    }
+
+    /**
+     * Mapper getter
+     *
+     * @return \Closure
+     */
+    public function getMapper()
+    {
+        return $this->mapper;
     }
 
     /**

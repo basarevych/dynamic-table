@@ -154,9 +154,9 @@ class DoctrineAdapter extends AbstractAdapter
                       ->setMaxResults($table->getPageSize());
         }
 
-        $mapper = $this->getMapper();
+        $mapper = $table->getMapper();
         if (!$mapper)
-            throw new \Exception("Data 'mapper' is not set for the table");
+            throw new \Exception("Data 'mapper' is required when using DoctrineAdapter");
 
         $result = [];
         foreach ($paginator as $row)

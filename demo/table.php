@@ -32,17 +32,8 @@ for ($i = 1; $i <= 100; $i++) {
 
 $adapter = new DynamicTable\Adapter\ArrayAdapter();
 $adapter->setData($data);
-$adapter->setMapper(function ($row) {
-    $result = $row;
-
-    if ($row['datetime'] !== null)
-        $result['datetime'] = $row['datetime']->getTimestamp();
-
-    return $result;
-});
 
 $table = new \DynamicTable\Table();
-
 $table->setColumns([
     'id' => [
         'title'     => 'ID',
@@ -93,6 +84,15 @@ $table->setColumns([
         'visible'   => true,
     ],
 ]);
+$table->setMapper(function ($row) {
+    $result = $row;
+
+    if ($row['datetime'] !== null)
+        $result['datetime'] = $row['datetime']->getTimestamp();
+
+    return $result;
+});
+
 
 $table->setAdapter($adapter);
 

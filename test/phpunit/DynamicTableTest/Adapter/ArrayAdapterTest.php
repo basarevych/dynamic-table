@@ -13,14 +13,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->adapter = new ArrayAdapter();
-        $this->adapter->setMapper(function ($row) {
-            $result = $row;
-
-            if ($row['datetime'] !== null)
-                $result['datetime'] = $row['datetime']->getTimestamp();
-
-            return $result;
-        });
 
         $this->table = new Table();
         $this->table->setAdapter($this->adapter);
@@ -74,6 +66,15 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
                 'visible'   => true,
             ],
         ]);
+        $this->table->setMapper(function ($row) {
+            $result = $row;
+
+            if ($row['datetime'] !== null)
+                $result['datetime'] = $row['datetime']->getTimestamp();
+
+            return $result;
+        });
+
     }
 
     public function testCheck()
