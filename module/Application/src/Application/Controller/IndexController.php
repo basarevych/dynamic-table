@@ -40,8 +40,8 @@ class IndexController extends AbstractActionController
     public function doctrineTableAction()
     {
         $table = $this->createTable();
-        $adapter = $this->createDoctrineAdapter();
-        $table->setAdapter($adapter);
+
+        $this->connectDoctrineData($table);
 
         $query = $this->params()->fromQuery('query');
         switch ($query) {
@@ -67,8 +67,8 @@ class IndexController extends AbstractActionController
     public function arrayTableAction()
     {
         $table = $this->createTable();
-        $adapter = $this->createArrayAdapter();
-        $table->setAdapter($adapter);
+
+        $this->connectArrayData($table);
 
         $query = $this->params()->fromQuery('query');
         switch ($query) {
@@ -153,11 +153,11 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Create Doctrine adapter
+     * Create Doctrine adapter and mapper
      *
-     * @return DoctrineAdapter
+     * @param Table $table
      */
-    protected function createDoctrineAdapter()
+    protected function connectDoctrineData($table)
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
@@ -169,7 +169,8 @@ class IndexController extends AbstractActionController
 
         $adapter = new DoctrineAdapter();
         $adapter->setQueryBuilder($qb);
-        $adapter->setMapper(function ($row) use ($escapeHtml) {
+
+        $mapper = function ($row) use ($escapeHtml) {
             $datetime = $row->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->getTimestamp();
@@ -182,17 +183,18 @@ class IndexController extends AbstractActionController
                 'boolean'   => $row->getValueBoolean(),
                 'datetime'  => $datetime,
             ];
-        });
+        };
 
-        return $adapter;
+        $table->setAdapter($adapter);
+        $table->setMapper($mapper);
     }
 
     /**
-     * Create Array adapter
+     * Create Array adapter and mapper
      *
-     * @return ArrayAdapter
+     * @param Table $table
      */
-    protected function createArrayAdapter()
+    protected function connectArrayData($table)
     {
         $sl = $this->getServiceLocator();
         $escapeHtml = $sl->get('viewhelpermanager')->get('escapeHtml');
@@ -225,16 +227,19 @@ class IndexController extends AbstractActionController
 
         $adapter = new ArrayAdapter();
         $adapter->setData($data);
-        $adapter->setMapper(function ($row) use ($escapeHtml) {
+
+        $mapper = function ($row) use ($escapeHtml) {
             $result = $row;
 
             $result['string'] = $escapeHtml($row['string']);
+
             if ($row['datetime'] !== null)
                 $result['datetime'] = $row['datetime']->getTimestamp();
 
             return $result;
-        });
+        };
 
-        return $adapter;
+        $table->setAdapter($adapter);
+        $table->setMapper($mapper);
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9ea408a94707581e17b68ea57c327c3",
+    "hash": "a48369ff963e9180c0a887314bc88aad",
     "packages": [
         {
             "name": "basarevych/dynamic-table",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "9e482795bdcb39c618b4450db71cac0747e0cc06"
+                "reference": "6ced7d58e88eb7f593696c6e961e77e5e35825e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/9e482795bdcb39c618b4450db71cac0747e0cc06",
-                "reference": "9e482795bdcb39c618b4450db71cac0747e0cc06",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/6ced7d58e88eb7f593696c6e961e77e5e35825e5",
+                "reference": "6ced7d58e88eb7f593696c6e961e77e5e35825e5",
                 "shasum": ""
             },
             "require": {
@@ -46,12 +46,12 @@
             "description": "Dynamic HTML grid",
             "homepage": "https://github.com/basarevych/dynamic-table",
             "keywords": [
+                "doctrine",
                 "grid",
                 "jquery",
-                "php",
-                "zf2"
+                "php"
             ],
-            "time": "2014-12-13 03:31:00"
+            "time": "2014-12-14 01:15:41"
         },
         {
             "name": "doctrine/annotations",
