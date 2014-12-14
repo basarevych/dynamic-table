@@ -30,19 +30,18 @@ Table::setColumns expects an array of column definitions:
 * Array item key is column ID
 * 'title' is the title (goes to &lt;th&gt;)
 * 'type' is one of the following:
-  * Table::TYPE_STRING
-  * Table::TYPE_INTEGER
-  * Table::TYPE_FLOAT
-  * Table::TYPE_BOOLEAN
-  * Table::TYPE_DATETIME
+  * Table::TYPE_STRING - cell value is string
+  * Table::TYPE_INTEGER - cell value is integer
+  * Table::TYPE_FLOAT - cell value is float
+  * Table::TYPE_BOOLEAN - cell value is boolean
+  * Table::TYPE_DATETIME - cell value is DateTime object
 * 'filters' is combination (array) of enabled filters for this column:
-  * Table::FILTER_LIKE
-  * Table::FILTER_EQUAL
-  * Table::FILTER_BETWEEN
-  * Table::FILTER_NULL
+  * Table::FILTER_LIKE - similar to SQL LIKE filter
+  * Table::FILTER_EQUAL - leave cells with specific values only
+  * Table::FILTER_BETWEEN - cell values between 'start' and 'end'
+  * Table::FILTER_NULL - include NULLs to filtered dataset
 * 'sortable' - true if table could be sorted by this column or not
 * 'visible' - true if column should be visible from the beginning
-
 
 See [createTable()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L94) method of demo page.
 
