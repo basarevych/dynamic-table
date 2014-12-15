@@ -8,6 +8,7 @@ $data = [
     [ 1, "string 1", 111, 10.01, true,  new \DateTime('2010-05-10 13:00:00') ],
     [ 2, "string 2", 222, 45.45, false, new \DateTime('2015-01-01 17:00:00') ],
     // ... and so on
+];
 ```
 
 We created a table for it:
@@ -93,7 +94,8 @@ For example, for the first row of our data, we will get this out of our mapper:
 [
     'id'        => 1,
     'string'    => "string 1",
-    'integer'   => 10.01,
+    'integer'   => 111,
+    'float'     => 10.01
     'boolean'   => true,
     'datetime'  => 1273496400,
 ]
