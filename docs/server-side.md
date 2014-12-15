@@ -46,8 +46,8 @@ Table::setColumns expects an array of column definitions:
 See [createTable()](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Controller/IndexController.php#L94) method of demo page.
 
 Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are two available:
-* read about [ArrayAdapter](docs/array-adapter.md)
-* or [DoctrineAdapter](docs/doctrine-adapter.md)
+* read about [ArrayAdapter](array-adapter.md)
+* or [DoctrineAdapter](doctrine-adapter.md)
 
 Back to our table, the last thing to do is to parse jQuery plugin's GET query and return the data.
 
