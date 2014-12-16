@@ -79,6 +79,7 @@
 
         refresh: function (params) {
             var plugin = this;
+            plugin.element.trigger('dt.loading');
             plugin.enable(false);
 
             var data = {
@@ -118,6 +119,7 @@
                 });
 
                 plugin.enable(true);
+                plugin.element.trigger('dt.loaded');
             });
         },
 
@@ -186,10 +188,13 @@
                 checked = !input.prop('checked');
 
             input.prop('checked', checked);
-            if (checked)
+            if (checked) {
                 input.closest('tr').addClass('success');
-            else
+                this.element.trigger('dt.selected');
+            } else {
                 input.closest('tr').removeClass('success');
+                this.element.trigger('dt.deselected');
+            }
 
             var all = this.element.find('tbody.data td.selector input:checked');
             this.element.find('thead th.selector input')
@@ -274,10 +279,12 @@
                         inputs.prop('checked', true)
                               .closest('tr')
                               .addClass('success');
+                        plugin.element.trigger('dt.selected');
                     } else {
                         inputs.prop('checked', false)
                               .closest('tr')
                               .removeClass('success');
+                        plugin.element.trigger('dt.deselected');
                     }
                 });
         }
@@ -1036,10 +1043,13 @@
                         .prop('value', rowId)
                         .on('click', function () {
                             var me = $(this);
-                            if (me.prop('checked'))
+                            if (me.prop('checked')) {
                                 me.closest('tr').addClass('success');
-                            else
+                                plugin.element.trigger('dt.selected');
+                            } else {
                                 me.closest('tr').removeClass('success');
+                                plugin.element.trigger('dt.deselected');
+                            }
 
                             var all = plugin.element.find('tbody.data td.selector input:checked');
                             plugin.element.find('thead th.selector input')

@@ -21,16 +21,21 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <h3>Array-backed Dynamic Table</h3>
-            <div id="table"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="selected"></div>
+        <div class="col-lg-6">
             <button class="btn btn-default" onclick="$('#selected').text('Selected: ' + table.getSelected().join(', '))">
                 Get selected
             </button>
+            <pre id="selected">&nbsp;</pre>
+        </div>
+        <div class="col-lg-6">
+            <div>Last Event:</div>
+            <pre id="event">&nbsp;</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Array-backed Dynamic Table</h3>
+            <div id="table"></div>
         </div>
     </div>
 </div>
@@ -52,6 +57,19 @@
 
             return row;
         },
+    });
+
+    $('#table').on('dt.loading', function (e) {
+        $('#event').text('Loading');
+    });
+    $('#table').on('dt.loaded', function (e) {
+        $('#event').text('Loaded');
+    });
+    $('#table').on('dt.selected', function (e) {
+        $('#event').text('Selected');
+    });
+    $('#table').on('dt.deselected', function (e) {
+        $('#event').text('Deselected');
     });
 </script>
 
