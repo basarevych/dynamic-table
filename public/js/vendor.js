@@ -1,4 +1,4 @@
-/* dynamic-table-demo - v0.0.1 - 2014-12-14
+/* dynamic-table-demo - v0.0.1 - 2014-12-16
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 /*!
@@ -21905,15 +21905,15 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         this.id = element.attr('id');
         this.element = element;
         this.options = {
-            rowIdColumn: null,
+            row_id_column: null,
             mapper: null,
-            sortColumn: null,
-            sortDir: 'asc',
-            pageNumber: 1,
-            pageSize: 15,
-            pageSizes: [ 15, 30, 50, 100, 0 ],
-            tableClass: 'table table-striped table-hover table-condensed',
-            loaderImage: 'img/loader.gif',
+            sort_column: null,
+            sort_dir: 'asc',
+            page_number: 1,
+            page_size: 15,
+            page_sizes: [ 15, 30, 50, 100, 0 ],
+            table_class: 'table table-striped table-hover table-condensed',
+            loader_image: 'img/loader.gif',
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
                 BANNER_EMPTY: 'Nothing found',
@@ -21953,10 +21953,10 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         init: function (options) {
             $.extend(this.options, options);
 
-            this.sortColumn = this.options.sortColumn;
-            this.sortDir = this.options.sortDir;
-            this.pageNumber = this.options.pageNumber;
-            this.pageSize = this.options.pageSize;
+            this.sortColumn = this.options.sort_column;
+            this.sortDir = this.options.sort_dir;
+            this.pageNumber = this.options.page_number;
+            this.pageSize = this.options.page_size;
 
             _createTable(this);
 
@@ -21975,7 +21975,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
             );
         },
 
-        refresh: function (override) {
+        refresh: function (params) {
             var plugin = this;
             plugin.enable(false);
 
@@ -21987,8 +21987,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                 page_number: JSON.stringify(plugin.pageNumber),
                 page_size: JSON.stringify(plugin.pageSize),
             };
-            if (typeof override != 'undefined') {
-                $.each(override, function (key, value) {
+            if (typeof params != 'undefined') {
+                $.each(params, function (key, value) {
                     data[key] = JSON.stringify(value);
                 });
             }
@@ -22123,7 +22123,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
                       .addClass('dynamic-table');
 
         var table = $('<table></table>');
-        table.attr('class', plugin.options.tableClass)
+        table.attr('class', plugin.options.table_class)
              .appendTo(plugin.element);
 
         $('<div></div>')
@@ -22132,14 +22132,14 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
         $('<div></div>')
             .attr('class', 'overlay-loader')
-            .css('background-image', 'url(' + plugin.options.loaderImage + ')')
+            .css('background-image', 'url(' + plugin.options.loader_image + ')')
             .appendTo(plugin.element);
 
         var loader = $('<div></div>');
         loader.attr('class', 'table-loader')
               .css('text-align', 'center')
               .text(plugin.options.strings.BANNER_LOADING)
-              .html(loader.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
+              .html(loader.html() + '<br><img src="' + plugin.options.loader_image + '"><br>')
               .appendTo(plugin.element);
     };
 
@@ -22159,7 +22159,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         tr.appendTo(thead);
 
         plugin.visibleColumns = 0;
-        if (plugin.options.rowIdColumn != null) {
+        if (plugin.options.row_id_column != null) {
             plugin.visibleColumns++;
 
             $('<th class="selector"><input type="checkbox"></th>')
@@ -22587,7 +22587,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
             .attr('role', 'menu')
             .appendTo(dropdown);
 
-        $.each(plugin.options.pageSizes, function (index, value) {
+        $.each(plugin.options.page_sizes, function (index, value) {
             var li = $('<li></li>');
             li.attr('role', 'presentation')
               .appendTo(list);
@@ -22922,8 +22922,8 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         $.each(plugin.rows, function (index, row) {
             var tr = $('<tr></tr>');
 
-            if (plugin.options.rowIdColumn != null) {
-                var rowId = row[plugin.options.rowIdColumn];
+            if (plugin.options.row_id_column != null) {
+                var rowId = row[plugin.options.row_id_column];
 
                 tr.attr('data-row-id', rowId);
 

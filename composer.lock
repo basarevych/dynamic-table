@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "6ced7d58e88eb7f593696c6e961e77e5e35825e5"
+                "reference": "6ff7bdf70842e041c91bf3312fa7215a671db01a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/6ced7d58e88eb7f593696c6e961e77e5e35825e5",
-                "reference": "6ced7d58e88eb7f593696c6e961e77e5e35825e5",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/6ff7bdf70842e041c91bf3312fa7215a671db01a",
+                "reference": "6ff7bdf70842e041c91bf3312fa7215a671db01a",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "jquery",
                 "php"
             ],
-            "time": "2014-12-14 01:15:41"
+            "time": "2014-12-16 06:47:43"
         },
         {
             "name": "doctrine/annotations",
@@ -1839,6 +1839,7 @@
         "webfactory/doctrine-orm-test-infrastructure": 0
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.8"
     },
