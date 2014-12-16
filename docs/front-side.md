@@ -83,36 +83,47 @@ Front side is a jQuery plugin.
 Full list of options
 --------------------
 * **url**: string
+
   Backend script URL
 
 * **rowIdColumn**: string
+
   ID column name. If null there will be no row selectors
 
 * **mapper**: function
+
   A function that will transform input (row received from backend) to resulting row which will be .html()'ed to corresponding table &lt;td&gt;
 
 * **sortColumn**: string
+
   Initial sorting column. Could be null (table will not be sorted on start)
 
 * **sortDir**: 'asc' | 'desc'
+
   Initial sorting direction
 
 * **pageNumber**: integer
+
   Initial page number
 
 * **pageSize**: number
+
   Initial page size
 
 * **pageSizes**: array of integers
+
   Page sizes available to choose from. 0 is 'all the rows on single page'
 
 * **tableClass**: string
+
   CSS classes of the table
 
 * **loaderImage**: string
+
   Spinner image, initially 'img/loader.gif'
  
 * **strings**: object
+
   Text strings used by the plugin
 
   ```js
