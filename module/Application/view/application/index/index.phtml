@@ -6,6 +6,10 @@
     </div>
     <div class="row">
         <div class="col-md-3">
+            <h4><?= $this->translate('Last event') ?></h4>
+            <pre id="event1">&nbsp;</pre>
+            <br>
+            <br>
             <button id="get-selected-table1" class="btn btn-default">
                 Get selected
             </button>
@@ -23,6 +27,10 @@
     </div>
     <div class="row">
         <div class="col-md-3">
+            <h4><?= $this->translate('Last event') ?></h4>
+            <pre id="event2">&nbsp;</pre>
+            <br>
+            <br>
             <button id="get-selected-table2" class="btn btn-default">
                 Get selected
             </button>
@@ -75,5 +83,31 @@
             $('#selected2').text(selected.join(', '));
         else
             $('#selected2').text('Nothing selected');
+    });
+
+    $('#table1').on('dt.loading', function (e) {
+        $('#event1').text('Loading');
+    });
+    $('#table1').on('dt.loaded', function (e) {
+        $('#event1').text('Loaded');
+    });
+    $('#table1').on('dt.selected', function (e) {
+        $('#event1').text('Selected');
+    });
+    $('#table1').on('dt.deselected', function (e) {
+        $('#event1').text('Deselected');
+    });
+
+    $('#table2').on('dt.loading', function (e) {
+        $('#event2').text('Loading');
+    });
+    $('#table2').on('dt.loaded', function (e) {
+        $('#event2').text('Loaded');
+    });
+    $('#table2').on('dt.selected', function (e) {
+        $('#event2').text('Selected');
+    });
+    $('#table2').on('dt.deselected', function (e) {
+        $('#event2').text('Deselected');
     });
 </script>
