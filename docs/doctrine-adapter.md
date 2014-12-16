@@ -1,7 +1,7 @@
 Doctrine Adapter
 ----------------
 
-An entity we will create DynamicTable for: (Application\Entity\Sample)[https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Entity/Sample.php]
+An entity we will create DynamicTable for: [Application\Entity\Sample](https://github.com/basarevych/dynamic-table-demo/blob/master/module/Application/src/Application/Entity/Sample.php)
 
 Here is the table:
 
