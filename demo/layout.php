@@ -38,13 +38,8 @@
 <script>
     var table = $('#table').dynamicTable({
         url: 'table.php',
-        rowIdColumn: 'id',
+        row_id_column: 'id',
         mapper: function (row) {
-            if (row['string'] != null) {
-                var span = $('<span></span');
-                span.text(row['string']);
-                row['string'] = span.text();
-            }
             if (row['boolean'] != null) {
                 row['boolean'] = '<i class="glyphicon '
                     + (row['boolean'] ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger')

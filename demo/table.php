@@ -87,6 +87,8 @@ $table->setColumns([
 $table->setMapper(function ($row) {
     $result = $row;
 
+    $result['string'] = htmlentities($row['string']);
+
     if ($row['datetime'] !== null)
         $result['datetime'] = $row['datetime']->getTimestamp();
 

@@ -74,7 +74,7 @@ Front side is a jQuery plugin.
 
     var table1 = $('#table1').dynamicTable({
         url: '/path/to/table-backend.php',
-        rowIdColumn: 'id',
+        row_id_column: 'id',
         mapper: mapper,
     });
 </script>
@@ -86,7 +86,7 @@ Full list of options
 
   Backend script URL
 
-* **rowIdColumn**: string
+* **row_id_column**: string
 
   ID column name. If null there will be no row selectors
 
@@ -94,31 +94,31 @@ Full list of options
 
   A function that will transform input (row received from backend) to resulting row which will be .html()'ed to corresponding table &lt;td&gt;
 
-* **sortColumn**: string
+* **sort_column**: string
 
   Initial sorting column. Could be null (table will not be sorted on start)
 
-* **sortDir**: 'asc' | 'desc'
+* **sort_dir**: 'asc' | 'desc'
 
   Initial sorting direction
 
-* **pageNumber**: integer
+* **page_number**: integer
 
   Initial page number
 
-* **pageSize**: number
+* **page_size**: number
 
   Initial page size
 
-* **pageSizes**: array of integers
+* **page_sizes**: array of integers
 
   Page sizes available to choose from. 0 is 'all the rows on single page'
 
-* **tableClass**: string
+* **table_class**: string
 
   CSS classes of the table
 
-* **loaderImage**: string
+* **loader_image**: string
 
   Spinner image, initially 'img/loader.gif'
  
@@ -149,3 +149,12 @@ Full list of options
         DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm:ss',
     };
   ```
+
+Methods
+-------
+
+
+Events
+------
+
+

@@ -1,4 +1,4 @@
-/* dynamic-table - v0.0.1 - 2014-12-14
+/* dynamic-table - v0.0.1 - 2014-12-16
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 ;(function ($, window, document, undefined) {
@@ -10,15 +10,15 @@
         this.id = element.attr('id');
         this.element = element;
         this.options = {
-            rowIdColumn: null,
+            row_id_column: null,
             mapper: null,
-            sortColumn: null,
-            sortDir: 'asc',
-            pageNumber: 1,
-            pageSize: 15,
-            pageSizes: [ 15, 30, 50, 100, 0 ],
-            tableClass: 'table table-striped table-hover table-condensed',
-            loaderImage: 'img/loader.gif',
+            sort_column: null,
+            sort_dir: 'asc',
+            page_number: 1,
+            page_size: 15,
+            page_sizes: [ 15, 30, 50, 100, 0 ],
+            table_class: 'table table-striped table-hover table-condensed',
+            loader_image: 'img/loader.gif',
             strings: {
                 BANNER_LOADING: 'Loading... Please wait',
                 BANNER_EMPTY: 'Nothing found',
@@ -58,10 +58,10 @@
         init: function (options) {
             $.extend(this.options, options);
 
-            this.sortColumn = this.options.sortColumn;
-            this.sortDir = this.options.sortDir;
-            this.pageNumber = this.options.pageNumber;
-            this.pageSize = this.options.pageSize;
+            this.sortColumn = this.options.sort_column;
+            this.sortDir = this.options.sort_dir;
+            this.pageNumber = this.options.page_number;
+            this.pageSize = this.options.page_size;
 
             _createTable(this);
 
@@ -80,7 +80,7 @@
             );
         },
 
-        refresh: function (override) {
+        refresh: function (params) {
             var plugin = this;
             plugin.enable(false);
 
@@ -92,8 +92,8 @@
                 page_number: JSON.stringify(plugin.pageNumber),
                 page_size: JSON.stringify(plugin.pageSize),
             };
-            if (typeof override != 'undefined') {
-                $.each(override, function (key, value) {
+            if (typeof params != 'undefined') {
+                $.each(params, function (key, value) {
                     data[key] = JSON.stringify(value);
                 });
             }
@@ -228,7 +228,7 @@
                       .addClass('dynamic-table');
 
         var table = $('<table></table>');
-        table.attr('class', plugin.options.tableClass)
+        table.attr('class', plugin.options.table_class)
              .appendTo(plugin.element);
 
         $('<div></div>')
@@ -237,14 +237,14 @@
 
         $('<div></div>')
             .attr('class', 'overlay-loader')
-            .css('background-image', 'url(' + plugin.options.loaderImage + ')')
+            .css('background-image', 'url(' + plugin.options.loader_image + ')')
             .appendTo(plugin.element);
 
         var loader = $('<div></div>');
         loader.attr('class', 'table-loader')
               .css('text-align', 'center')
               .text(plugin.options.strings.BANNER_LOADING)
-              .html(loader.html() + '<br><img src="' + plugin.options.loaderImage + '"><br>')
+              .html(loader.html() + '<br><img src="' + plugin.options.loader_image + '"><br>')
               .appendTo(plugin.element);
     };
 
@@ -264,7 +264,7 @@
         tr.appendTo(thead);
 
         plugin.visibleColumns = 0;
-        if (plugin.options.rowIdColumn != null) {
+        if (plugin.options.row_id_column != null) {
             plugin.visibleColumns++;
 
             $('<th class="selector"><input type="checkbox"></th>')
@@ -692,7 +692,7 @@
             .attr('role', 'menu')
             .appendTo(dropdown);
 
-        $.each(plugin.options.pageSizes, function (index, value) {
+        $.each(plugin.options.page_sizes, function (index, value) {
             var li = $('<li></li>');
             li.attr('role', 'presentation')
               .appendTo(list);
@@ -1027,8 +1027,8 @@
         $.each(plugin.rows, function (index, row) {
             var tr = $('<tr></tr>');
 
-            if (plugin.options.rowIdColumn != null) {
-                var rowId = row[plugin.options.rowIdColumn];
+            if (plugin.options.row_id_column != null) {
+                var rowId = row[plugin.options.row_id_column];
 
                 tr.attr('data-row-id', rowId);
 

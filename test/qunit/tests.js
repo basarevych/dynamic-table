@@ -35,7 +35,7 @@ module(
  
 test("init()", function (assert) {
     var root = $('#table');
-    var table = root.dynamicTable({ url: 'someurl', rowIdColumn: 'id' });
+    var table = root.dynamicTable({ url: 'someurl', row_id_column: 'id' });
 
     assert.ok(root.find('table').length, "table created");
     assert.ok(root.find('table thead').length, "thead created");
@@ -247,7 +247,7 @@ test("toggleColumn()", function (assert) {
 
 test("toggleSelected()/getSelected()", function (assert) {
     var root = $('#table');
-    var table = root.dynamicTable({ url: 'someurl', rowIdColumn: 'id' });
+    var table = root.dynamicTable({ url: 'someurl', row_id_column: 'id' });
 
     var input = root.find('tbody.data tr[data-row-id=2] td.selector input');
     var selected = table.getSelected();
