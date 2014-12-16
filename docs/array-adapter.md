@@ -73,7 +73,7 @@ $adapter = new ArrayAdapter();
 $adapter->setData($data);       // <-- Feed our array to the adapter
 ```
 
-The last step is to create a mapper of source data row to resulting array row. Output format is [ 'column-id' => $cell_value ].
+The last step is to create a mapper of source data row to resulting array row. Output format is [ 'column-id' => $cell_value, ... ].
 
 ```php
 $mapper = function ($row) {
