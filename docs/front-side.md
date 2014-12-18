@@ -153,8 +153,118 @@ Full list of options
 Methods
 -------
 
+* **getSelected()**
+
+  This method will return array of IDs of selected rows.
+
+* **refresh(params)**
+
+  Without parameters **refresh()** will simply refresh the page.
+
+  **params** is an object with any of the following properties:
+
+  * **filters**
+
+    Example:
+
+    ```js
+    table.refresh({
+        filters: {
+            foo: {
+                like: 'bar',
+                null: true
+            },
+            bar: {
+                between: [3, 5]
+            },
+            baz: {
+                equal: 7
+            }
+        }
+    });
+    ```
+
+    The code above will refresh the page while requesting the following filters:
+
+      * Set filter FILTER_LIKE to 'bar' string on column **foo**
+      * Enable FILTER_NULL on column **foo**
+      * Set filter FILTER_BETWEEN to range from 3 to 5 on column **bar**
+      * Set filter FILTER_EQUAL to 7 on column **baz**
+
+  * **sort_column** and **sort_dir**
+
+    Example:
+
+    ```js
+    table.refresh({ sort_column: 'foo', sort_dir: 'desc' });
+    ```
+
+    The code above will refresh the page with sorting set to **foo** column, descending.
+
+  * **page_number**
+
+    Example:
+
+    ```js
+    table.refresh({ page_number: 3 });
+    ```
+
+    The code above will load page 3.
+
+  * **page_size**
+
+    Example:
+
+    ```js
+    table.refresh({ page_size: 200, page_number: 1 });
+    ```
+
+    The code above will set page size to 200 rows and load page 1.
+
+* **enable(flag)**
+
+  Enable (flag == true) or disable (flag == false) the table.
+
+* **setSize(size)**
+
+  Set page size. Will call **refrsh()** with appropriate parameters.
+
+* **setPage(page)**
+
+  Set page number. Will call **refresh()** with appropriate parameters.
+
+* **setFilters(id, filters)**
+
+  Apply **filters** to column **id**. Will call **refresh()** with appropriate parameters.
+
+* **toggleSort(id)**
+
+  Will set sorting to column **id**, ascending. If the sort column was already **id** then sort direction will be set to descending.
+
+* **toggleColumn(id)**
+
+  Toggle visibility of column **id**.
+
+* **toggleSelected(rowId)**
+
+  Toggle *selected* status of row **rowId**.
 
 Events
 ------
 
+* **dt.loading**
+
+  Triggered when table starts to load the page.
+
+* **dt.loaded**
+
+  Triggered when table has loaded and rendered the page.
+
+* **dt.selected**
+
+  Triggered when user selects a row.
+
+* **dt.deselected**
+
+  Triggered when user deselects a row.
 
