@@ -227,7 +227,7 @@ Methods
 
 * **setSize(size)**
 
-  Set page size. Will call **refrsh()** with appropriate parameters.
+  Set page size. Will call **refresh()** with appropriate parameters.
 
 * **setPage(page)**
 
