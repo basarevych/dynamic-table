@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "7a59a4896690b6ca203e99afc2f78727566783d3"
+                "reference": "07b2d038c8d4edb7677b6e683912c0febd954e7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/7a59a4896690b6ca203e99afc2f78727566783d3",
-                "reference": "7a59a4896690b6ca203e99afc2f78727566783d3",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/07b2d038c8d4edb7677b6e683912c0febd954e7b",
+                "reference": "07b2d038c8d4edb7677b6e683912c0febd954e7b",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "jquery",
                 "php"
             ],
-            "time": "2014-12-16 07:47:31"
+            "time": "2014-12-18 01:56:57"
         },
         {
             "name": "doctrine/annotations",
@@ -692,16 +692,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.4.6",
+            "version": "v2.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9"
+                "reference": "2bc4ff3cab2ae297bcd05f2e619d42e6a7ca9e68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9",
-                "reference": "bebacf79d8d4dae9168f0f9bc6811e6c2cb6a4d9",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/2bc4ff3cab2ae297bcd05f2e619d42e6a7ca9e68",
+                "reference": "2bc4ff3cab2ae297bcd05f2e619d42e6a7ca9e68",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-10-06 13:22:50"
+            "time": "2014-12-16 13:45:01"
         },
         {
             "name": "symfony/console",

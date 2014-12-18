@@ -1,4 +1,4 @@
-/* dynamic-table-demo - v0.0.1 - 2014-12-16
+/* dynamic-table-demo - v0.0.1 - 2014-12-18
    Copyright (c) 2014 Ross Basarevych; Licensed MIT */
 
 /*!
@@ -22060,24 +22060,24 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
             this.refresh({ sort_column: id, sort_dir: dir });
         },
 
-        toggleColumn: function (column) {
-            var props = this.columns[column];
-            var visible = (this.columns[column].visible = !props.visible);
+        toggleColumn: function (id) {
+            var props = this.columns[id];
+            var visible = (this.columns[id].visible = !props.visible);
 
             if (visible)
                 this.visibleColumns++;
             else
                 this.visibleColumns--;
 
-            this.element.find('thead th[data-column-id=' + column + ']')
+            this.element.find('thead th[data-column-id=' + id + ']')
                         .css('display', visible ? 'table-cell' : 'none');
-            this.element.find('tbody td[data-column-id=' + column + ']')
+            this.element.find('tbody td[data-column-id=' + id + ']')
                         .css('display', visible ? 'table-cell' : 'none');
             this.element.find('thead.empty td')
                         .prop('colspan', this.visibleColumns);
             this.element.find('tfoot td')
                         .prop('colspan', this.visibleColumns);
-            this.element.find('tfoot a[data-column-id=' + column + '] span.glyphicon')
+            this.element.find('tfoot a[data-column-id=' + id + '] span.glyphicon')
                         .attr('class', 'glyphicon glyphicon-ok ' + (visible ? '' : 'invisible'));
         },
 
