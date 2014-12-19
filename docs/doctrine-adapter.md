@@ -10,6 +10,7 @@ $table = new Table();
 
 $table->setColumns([
     'id' => [
+        'sql_id'    => 's.id',
         'title'     => 'ID',
         'type'      => Table::TYPE_INTEGER,
         'filters'   => [ Table::FILTER_EQUAL ],
@@ -17,6 +18,7 @@ $table->setColumns([
         'visible'   => false,
     ],
     'string' => [
+        'sql_id'    => 's.value_string',
         'title'     => 'String',
         'type'      => Table::TYPE_STRING,
         'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
@@ -24,6 +26,7 @@ $table->setColumns([
         'visible'   => true,
     ],
     'integer' => [
+        'sql_id'    => 's.value_integer',
         'title'     => 'Integer',
         'type'      => Table::TYPE_INTEGER,
         'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
@@ -31,6 +34,7 @@ $table->setColumns([
         'visible'   => true,
     ],
     'float' => [
+        'sql_id'    => 's.value_float',
         'title'     => 'Float',
         'type'      => Table::TYPE_FLOAT,
         'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
@@ -38,6 +42,7 @@ $table->setColumns([
         'visible'   => true,
     ],
     'boolean' => [
+        'sql_id'    => 's.value_boolean',
         'title'     => 'Boolean',
         'type'      => Table::TYPE_BOOLEAN,
         'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
@@ -45,6 +50,7 @@ $table->setColumns([
         'visible'   => true,
     ],
     'datetime' => [
+        'sql_id'    => 's.value_datetime',
         'title'     => 'DateTime',
         'type'      => Table::TYPE_DATETIME,
         'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
@@ -54,7 +60,9 @@ $table->setColumns([
 ]);
 ```
 
-Let's create DoctrineAdapter for it:
+Let's create DoctrineAdapter.
+
+**NOTE** DoctrineAdapter requires additional property on the column - **sql_id**. This is how Doctrine refers to an entity property. For example, we **select()**ed entity **s** in QueryBuilder, then its properties are named like "s.property_name", i.e. "s.value_string" is property "value_string" of entity "s".
 
 ```php
 use DynamicTable\Adapter\DoctrineAdapter;
