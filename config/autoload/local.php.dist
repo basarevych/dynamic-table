@@ -13,6 +13,16 @@ return [
                     'password' => 'dbpassword',
                     'dbname'   => 'dbname',
                 ],
+/*
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
+                'params' => [
+                    'host'     => 'localhost',
+                    'port'     => '5432',
+                    'user'     => 'dbuser',
+                    'password' => 'dbpassword',
+                    'dbname'   => 'dbname',
+                ],
+*/
             ],
         ],
     ],

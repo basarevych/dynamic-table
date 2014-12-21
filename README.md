@@ -5,43 +5,44 @@ This is just a [DynamicTable](https://github.com/basarevych/dynamic-table) proje
 
 Installation
 ------------
-1. Clone the repo
+
+1. Create project directory:
 
   ```shell
   > git clone https://github.com/basarevych/dynamic-table-demo
   ```
 
-2. Install dependencies
+2. Install dependencies in *production* mode
 
   ```shell
   > cd dynamic-table-demo
   > ./scripts/install-dependencies prod
   ```
 
-  Replace "prod" (production) argument with "dev" for development environment.
+  You need php only here, no node.js or npm on production server.
 
-3. Create server-local configs
+3. Create local (ignored by git) config files
 
-  Read the [README](config/autoload/README.md) if you don't know the difference between local/global config files.
+  Read the [README](../config/autoload/README.md) if you don't know the difference between local/global config files.
 
   ```shell
-  > cd config/autoload
+  > cd dynamic-table-demo/config/autoload
   > cp local.php.dist local.php
   > cp memcached.local.php.dist memcached.local.php
   ```
   **NOTE**: If you don't use Memcached simply do not create memcached.local.php. No cache will be used.
 
-  Now edit **local.php**, choose your DB driver, credentials, set other parameters. Edit **memcached.local.php** also.
+  Now edit the newly created files, choose your DB driver, credentials, set other parameters.
 
 4. Create and populate the database
 
-  Database schema (MySQL only at this time) is in **database** directory. Consult [README](database/README.md) file for specific commands.
+  Database schemas are in **database** directory. Consult [README](../database/README.md) there for specific commands on creating the database.
 
-5. Setup your webserver
+5. Create production mode web server configs.
 
   ```
   <VirtualHost *:80>
-    ServerName dynamic-table-demo.example.com
+    ServerName my-project.example.com
     DocumentRoot /path/to/dynamic-table-demo/public
     <Directory /path/to/dynamic-table-demo/public>
       DirectoryIndex index.php
@@ -50,20 +51,4 @@ Installation
       Allow from all
     </Directory>
   </VirtualHost>
-  ```
-
-  Or run development server (do not use in production)
-
-  ```shell
-  > cd dynamic-table-demo
-  > ./scripts/dev-server
-  ```
-
-  This will run PHP web server on port 8000.
-
-6. Run PHP unit tests (requires *development* environment dependencies)
-
-  ```shell
-  > cd dynamic-table-demo
-  > ./scripts/test-backend
   ```
