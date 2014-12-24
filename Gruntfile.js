@@ -7,9 +7,7 @@ module.exports = function(grunt) {
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
         banner: '/* <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-                '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-                '   Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-                ' Licensed <%= pkg.license %> */\n\n',
+                '<%= grunt.template.today("yyyy-mm-dd") %> */\n\n',
 
         // Task configuration.
         concat: {
@@ -28,7 +26,6 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/bootstrap/dist/css/bootstrap.css',
                     'bower_components/bootstrap/dist/css/bootstrap-theme.css',
-                    'bower_components/font-awesome/css/font-awesome.css',
                 ],
                 dest: 'public/css/vendor.css'
             },
