@@ -1,0 +1,55 @@
+<?php
+
+return [
+    'doctrine' => [
+        'connection' => [
+            // default connection name
+            'orm_default' => [
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => [
+                    'host'     => 'localhost',
+                    'port'     => '3306',
+                    'user'     => 'dbuser',
+                    'password' => 'dbpassword',
+                    'dbname'   => 'dbname',
+                ],
+/*
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
+                'params' => [
+                    'host'     => 'localhost',
+                    'port'     => '5432',
+                    'user'     => 'dbuser',
+                    'password' => 'dbpassword',
+                    'dbname'   => 'dbname',
+                ],
+*/
+            ],
+        ],
+    ],
+
+    'mail' => [
+        'transport' => 'smtp',      // 'sendmail' (PHP internal mail) or 'smtp'
+        // 'smtp' transport options:
+        'host'      => '127.0.0.1',
+        'port'      => 25
+    ],
+
+    'exceptions' => [
+        'display'       => true,    // Display exception details?
+        'forward' => [
+            'enabled'   => false,   // Forward exception via email?
+            'codes'     => [ 500 ],
+            'from'      => "root@localhost",        // Use real one
+            'to'        => "tester@example.com",    // Who will receive report
+            'subject'   => "MyProject Exception"    // The project name
+        ]
+    ],
+
+    'session' => [
+        'name'                => 'zf2skeleton',
+        'save_handler'        => 'files', // 'files' or 'memcached'
+        'save_path'           => realpath(__DIR__ . '/../../data/session'),
+        'remember_me_seconds' => 7 * 24 * 60 * 60,
+        'cookie_lifetime'     => 7 * 24 * 60 * 60,
+    ],
+];

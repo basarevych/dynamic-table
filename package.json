@@ -1,0 +1,22 @@
+{
+    "name": "dynamic-table-demo",
+    "description": "DynamicTable demo project",
+    "version": "0.0.1",
+    "license": "MIT",
+    "author": {
+        "name": "Ross Basarevych",
+        "email": "basarevych@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https:/github.com/basarevych/dynamic-table-demo.git"
+    },
+    "devDependencies": {
+        "bower": "~1.3.11",
+        "grunt": "~0.4.5",
+        "grunt-cli": "~0.1.13",
+        "grunt-contrib-concat": "~0.5.0",
+        "grunt-contrib-uglify": "~0.6.0",
+        "grunt-contrib-cssmin": "~0.10.0"
+    }
+}

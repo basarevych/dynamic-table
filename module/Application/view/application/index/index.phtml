@@ -1,0 +1,113 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-9">
+            <h3><?= $this->translate('Doctrine-backed Dynamic Table') ?></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h4><?= $this->translate('Last event') ?></h4>
+            <pre id="event1">&nbsp;</pre>
+            <br>
+            <br>
+            <button id="get-selected-table1" class="btn btn-default">
+                Get selected
+            </button>
+            <pre id="selected1">&nbsp;</pre>
+        </div>
+        <div class="col-md-9">
+            <div id="table1"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-9">
+            <h3><?= $this->translate('Array-backed Dynamic Table') ?></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h4><?= $this->translate('Last event') ?></h4>
+            <pre id="event2">&nbsp;</pre>
+            <br>
+            <br>
+            <button id="get-selected-table2" class="btn btn-default">
+                Get selected
+            </button>
+            <pre id="selected2">&nbsp;</pre>
+        </div>
+        <div class="col-md-9">
+            <div id="table2"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var mapper = function (row) {
+        if (row['boolean'] != null) {
+            row['boolean'] = '<span class="glyphicon glyphicon-'
+                + (row['boolean'] ? 'ok text-success' : 'remove text-danger')
+                + '"></span>';
+        }
+        if (row['datetime'] != null) {
+            var m = moment(row['datetime'] * 1000);
+            row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
+        }
+
+        return row;
+    };
+
+    var table1 = $('#table1').dynamicTable({
+        url: 'index/doctrine-table',
+        row_id_column: 'id',
+        mapper: mapper,
+    });
+
+    var table2 = $('#table2').dynamicTable({
+        url: 'index/array-table',
+        row_id_column: 'id',
+        mapper: mapper,
+    });
+
+    $('#get-selected-table1').on('click', function () {
+        var selected = table1.getSelected();
+        if (selected.length)
+            $('#selected1').text(selected.join(', '));
+        else
+            $('#selected1').text('Nothing selected');
+    });
+
+    $('#get-selected-table2').on('click', function () {
+        var selected = table2.getSelected();
+        if (selected.length)
+            $('#selected2').text(selected.join(', '));
+        else
+            $('#selected2').text('Nothing selected');
+    });
+
+    $('#table1').on('dt.loading', function (e) {
+        $('#event1').text('Loading');
+    });
+    $('#table1').on('dt.loaded', function (e) {
+        $('#event1').text('Loaded');
+    });
+    $('#table1').on('dt.selected', function (e) {
+        $('#event1').text('Selected');
+    });
+    $('#table1').on('dt.deselected', function (e) {
+        $('#event1').text('Deselected');
+    });
+
+    $('#table2').on('dt.loading', function (e) {
+        $('#event2').text('Loading');
+    });
+    $('#table2').on('dt.loaded', function (e) {
+        $('#event2').text('Loaded');
+    });
+    $('#table2').on('dt.selected', function (e) {
+        $('#event2').text('Selected');
+    });
+    $('#table2').on('dt.deselected', function (e) {
+        $('#event2').text('Deselected');
+    });
+</script>

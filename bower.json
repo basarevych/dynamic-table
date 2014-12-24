@@ -1,0 +1,18 @@
+{
+    "name": "dynamic-table-demo",
+    "description": "DynamicTable demo project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ross Basarevych",
+            "email": "basarevych@gmail.com"
+        }
+    ],
+    "version": "0.0.1",
+    "devDependencies": {
+        "jquery": "~2.1.1",
+        "moment": "~2.8.3",
+        "bootstrap": "~3.1.1",
+        "eonasdan-bootstrap-datetimepicker": "~3.1.3"
+    }
+}
