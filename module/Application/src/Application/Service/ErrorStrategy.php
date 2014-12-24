@@ -126,6 +126,16 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
             }
         }
 
+        $shared = $events->getSharedManager();
+        foreach ($shared->getEvents('Zend\Stdlib\DispatchableInterface') as $event) {
+            foreach ($shared->getListeners('Zend\Stdlib\DispatchableInterface', $event) as $listener) {
+                $callback = $listener->getCallback();
+                if ($callback[0] instanceof \Zend\Mvc\View\Http\ExceptionStrategy
+                        || $callback[0] instanceof \Zend\Mvc\View\Http\RouteNotFoundStrategy)
+                    $shared->detach('Zend\Stdlib\DispatchableInterface', $listener);
+            }
+        }
+
         $this->listeners[] = $events->attach(
             MvcEvent::EVENT_DISPATCH_ERROR,
             array($this, 'checkError'),
@@ -263,6 +273,8 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
                 // Do nothing, no working mail service present
             }
         }
+
+        return $model;
     }
 
     /**

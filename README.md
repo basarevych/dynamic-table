@@ -1,7 +1,7 @@
 DynamicTable demo page (ZF2)
 ============================
 
-This is just a [DynamicTable](https://github.com/basarevych/dynamic-table) project demo application.
+This is DynamicTable project demo application.
 
 Installation
 ------------
