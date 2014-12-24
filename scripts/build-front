@@ -4,4 +4,3 @@
 
 rm -rf public/fonts/*
 cp bower_components/bootstrap/fonts/glyphicons-* public/fonts/
-cp bower_components/font-awesome/fonts/fontawesome-* public/fonts/
