@@ -126,6 +126,21 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
             }
         }
 
+        $shared = $events->getSharedManager();
+        foreach ($shared->getEvents('Zend\Stdlib\DispatchableInterface') as $event) {
+            foreach ($shared->getListeners('Zend\Stdlib\DispatchableInterface', $event) as $listener) {
+                $callback = $listener->getCallback();
+                if ($callback[0] instanceof \Zend\Mvc\View\Http\ExceptionStrategy
+                        || $callback[0] instanceof \Zend\Mvc\View\Http\RouteNotFoundStrategy)
+                    $shared->detach('Zend\Stdlib\DispatchableInterface', $listener);
+            }
+        }
+
+        $this->listeners[] = $events->attach(
+            MvcEvent::EVENT_DISPATCH,
+            array($this, 'checkError'),
+            -99999
+        );
         $this->listeners[] = $events->attach(
             MvcEvent::EVENT_DISPATCH_ERROR,
             array($this, 'checkError'),
@@ -174,19 +189,23 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
         if (!$request instanceof HttpRequest)
             return;
 
-        switch ($error) {
-            case Application::ERROR_CONTROLLER_CANNOT_DISPATCH:
-                $ex = new NotFoundException('The requested controller was unable to dispatch the request', 404, $ex);
-                break;
-            case Application::ERROR_CONTROLLER_NOT_FOUND:
-                $ex = new NotFoundException('The requested controller could not be mapped to an existing controller class', 404, $ex);
-                break;
-            case Application::ERROR_CONTROLLER_INVALID:
-                $ex = new NotFoundException('The requested controller was not dispatchable', 404, $ex);
-                break;
-            case Application::ERROR_ROUTER_NO_MATCH:
-                $ex = new NotFoundException('The requested URL could not be matched by routing', 404, $ex);
-                break;
+        if ($error == Application::ERROR_EXCEPTION && $e->getName() == MvcEvent::EVENT_RENDER_ERROR) {
+            $ex = new NotFoundException('Render error', 404, $ex);
+        } else {
+            switch ($error) {
+                case Application::ERROR_CONTROLLER_CANNOT_DISPATCH:
+                    $ex = new NotFoundException('The requested controller was unable to dispatch the request', 404, $ex);
+                    break;
+                case Application::ERROR_CONTROLLER_NOT_FOUND:
+                    $ex = new NotFoundException('The requested controller could not be mapped to an existing controller class', 404, $ex);
+                    break;
+                case Application::ERROR_CONTROLLER_INVALID:
+                    $ex = new NotFoundException('The requested controller was not dispatchable', 404, $ex);
+                    break;
+                case Application::ERROR_ROUTER_NO_MATCH:
+                    $ex = new NotFoundException('The requested URL could not be matched by routing', 404, $ex);
+                    break;
+            }
         }
 
         if (! $ex instanceof \Exception)
@@ -263,6 +282,8 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
                 // Do nothing, no working mail service present
             }
         }
+
+        return $model;
     }
 
     /**

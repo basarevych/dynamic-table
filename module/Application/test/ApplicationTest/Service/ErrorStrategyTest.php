@@ -85,6 +85,20 @@ class ErrorStrategyTest extends AbstractControllerTestCase
             }
         }
 
+        $sharedManager = $eventManager->getSharedManager();
+        $id = 'Zend\Stdlib\DispatchableInterface';
+        foreach ($sharedManager->getEvents($id) as $event) {
+            foreach ($sharedManager->getListeners($id, $event) as $listener) {
+                $metadata = $listener->getMetadata();
+                $callback = $listener->getCallback();
+
+                if ($callback[0] instanceof ExceptionStrategy)
+                    $defaultExceptionPresent = true;
+                else if ($callback[0] instanceof RouteNotFoundStrategy)
+                    $defaultNotFoundPresent = true;
+            }
+        }
+
         $this->assertEquals(false, $defaultExceptionPresent, "Default exception strategy is not removed");
         $this->assertEquals(false, $defaultNotFoundPresent, "Default 404 strategy is not removed");
 
