@@ -30,4 +30,12 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
+
+    /**
+     * This action is called when requested action is not found
+     */
+    public function notFoundAction()
+    {
+        throw new \Application\Exception\NotFoundException('Action is not found');
+    }
 }
