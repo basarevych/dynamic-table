@@ -1,4 +1,4 @@
-/* dynamic-table-demo - v0.0.1 - 2014-12-24 */
+/* dynamic-table-demo - v0.0.1 - 2014-12-27 */
 
 /*!
  * jQuery JavaScript Library v2.1.3
@@ -22143,6 +22143,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.table_class)
+             .css('display', 'none')
              .appendTo(plugin.element);
 
         $('<div></div>')
@@ -22163,9 +22164,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     var _initTable = function (plugin) {
-        plugin.element.find('.table-loader')
-                      .remove();
-
         _initThead(plugin);
         _initTbody(plugin);
         _initTfoot(plugin);
@@ -22927,6 +22925,9 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
         });
 
         if (plugin.rows.length == 0) {
+            plugin.element.find('.table-loader').remove();
+            plugin.element.find('table').css('display', 'table');
+
             var tbodyData = plugin.element.find('tbody.data');
             tbodyData.css('display', 'none');
 
@@ -22982,6 +22983,9 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
             tr.appendTo(tbodyData);
         });
+
+        plugin.element.find('.table-loader').remove();
+        plugin.element.find('table').css('display', 'table');
 
         plugin.element.find('tbody.empty').css('display', 'none');
         plugin.element.find('tbody.data').replaceWith(tbodyData)

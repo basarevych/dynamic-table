@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "7d852a70bc5f3c1f39ce3f0394805bea7dfce5e8"
+                "reference": "fba5fe0c51a22f41966d66c29d82b24ebc5e83f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/7d852a70bc5f3c1f39ce3f0394805bea7dfce5e8",
-                "reference": "7d852a70bc5f3c1f39ce3f0394805bea7dfce5e8",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/fba5fe0c51a22f41966d66c29d82b24ebc5e83f8",
+                "reference": "fba5fe0c51a22f41966d66c29d82b24ebc5e83f8",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "jquery",
                 "php"
             ],
-            "time": "2014-12-24 10:18:37"
+            "time": "2014-12-27 13:34:39"
         },
         {
             "name": "doctrine/annotations",
@@ -1044,16 +1044,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "2.0.13",
+            "version": "2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5"
+                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5",
-                "reference": "0e7d2eec5554f869fa7a4ec2d21e4b37af943ea5",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ca158276c1200cc27f5409a5e338486bc0b4fc94",
+                "reference": "ca158276c1200cc27f5409a5e338486bc0b4fc94",
                 "shasum": ""
             },
             "require": {
@@ -1105,7 +1105,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-12-03 06:41:44"
+            "time": "2014-12-26 13:28:33"
         },
         {
             "name": "phpunit/php-file-iterator",
