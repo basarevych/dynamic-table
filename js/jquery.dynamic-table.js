@@ -231,6 +231,7 @@
 
         var table = $('<table></table>');
         table.attr('class', plugin.options.table_class)
+             .css('display', 'none')
              .appendTo(plugin.element);
 
         $('<div></div>')
@@ -251,9 +252,6 @@
     };
 
     var _initTable = function (plugin) {
-        plugin.element.find('.table-loader')
-                      .remove();
-
         _initThead(plugin);
         _initTbody(plugin);
         _initTfoot(plugin);
@@ -1015,6 +1013,9 @@
         });
 
         if (plugin.rows.length == 0) {
+            plugin.element.find('.table-loader').remove();
+            plugin.element.find('table').css('display', 'table');
+
             var tbodyData = plugin.element.find('tbody.data');
             tbodyData.css('display', 'none');
 
@@ -1070,6 +1071,9 @@
 
             tr.appendTo(tbodyData);
         });
+
+        plugin.element.find('.table-loader').remove();
+        plugin.element.find('table').css('display', 'table');
 
         plugin.element.find('tbody.empty').css('display', 'none');
         plugin.element.find('tbody.data').replaceWith(tbodyData)
