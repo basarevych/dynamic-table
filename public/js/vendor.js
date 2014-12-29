@@ -1,4 +1,4 @@
-/* dynamic-table-demo - v0.0.1 - 2014-12-27 */
+/* dynamic-table-demo - v0.0.1 - 2014-12-29 */
 
 /*!
  * jQuery JavaScript Library v2.1.3
@@ -21912,8 +21912,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 
 ;(function ($, window, document, undefined) {
 
-    var pluginName = "dynamicTable",
-        dataKey = "plugin_" + pluginName;
+    var pluginName = "dynamicTable";
 
     var Plugin = function (element, options) {
         this.id = element.attr('id');
@@ -22125,13 +22124,13 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
     };
 
     $.fn[pluginName] = function (options) {
-        var plugin = this.data(dataKey);
+        var plugin = this.data(pluginName);
         if (plugin instanceof Plugin) {
             if (typeof options !== 'undefined')
                 plugin.init(options);
         } else {
             plugin = new Plugin(this, options);
-            this.data(dataKey, plugin);
+            this.data(pluginName, plugin);
         }
 
         return plugin;

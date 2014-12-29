@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "fba5fe0c51a22f41966d66c29d82b24ebc5e83f8"
+                "reference": "8587f770ddd761d7b6b18daf9a4282a9d3d82ee8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/fba5fe0c51a22f41966d66c29d82b24ebc5e83f8",
-                "reference": "fba5fe0c51a22f41966d66c29d82b24ebc5e83f8",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/8587f770ddd761d7b6b18daf9a4282a9d3d82ee8",
+                "reference": "8587f770ddd761d7b6b18daf9a4282a9d3d82ee8",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "jquery",
                 "php"
             ],
-            "time": "2014-12-27 13:34:39"
+            "time": "2014-12-29 02:35:46"
         },
         {
             "name": "doctrine/annotations",
@@ -1291,16 +1291,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.4.0",
+            "version": "4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "bbe7bcb83b6ec1a9eaabbe1b70d4795027c53ee0"
+                "reference": "6a5e49a86ce5e33b8d0657abe145057fc513543a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bbe7bcb83b6ec1a9eaabbe1b70d4795027c53ee0",
-                "reference": "bbe7bcb83b6ec1a9eaabbe1b70d4795027c53ee0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6a5e49a86ce5e33b8d0657abe145057fc513543a",
+                "reference": "6a5e49a86ce5e33b8d0657abe145057fc513543a",
                 "shasum": ""
             },
             "require": {
@@ -1358,7 +1358,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-12-05 06:49:03"
+            "time": "2014-12-28 07:57:05"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
