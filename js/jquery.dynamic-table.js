@@ -1,7 +1,6 @@
 ;(function ($, window, document, undefined) {
 
-    var pluginName = "dynamicTable",
-        dataKey = "plugin_" + pluginName;
+    var pluginName = "dynamicTable";
 
     var Plugin = function (element, options) {
         this.id = element.attr('id');
@@ -213,13 +212,13 @@
     };
 
     $.fn[pluginName] = function (options) {
-        var plugin = this.data(dataKey);
+        var plugin = this.data(pluginName);
         if (plugin instanceof Plugin) {
             if (typeof options !== 'undefined')
                 plugin.init(options);
         } else {
             plugin = new Plugin(this, options);
-            this.data(dataKey, plugin);
+            this.data(pluginName, plugin);
         }
 
         return plugin;
