@@ -87,6 +87,14 @@ class IndexController extends AbstractActionController
     }
 
     /**
+     * This action is called when requested action is not found
+     */
+    public function notFoundAction()
+    {
+        throw new \Application\Exception\NotFoundException('Action is not found');
+    }
+
+    /**
      * Create Table object
      *
      * @return Table
