@@ -2,6 +2,8 @@
 
 return [
     'APP_TITLE' => 'ZF2 Skeleton',
+
+    // Errors
     'Please try again later' => 'Please try again later',
     'Invalid request parameters' => 'Invalid request parameters',
     'Authentication is required' => 'Authentication is required',

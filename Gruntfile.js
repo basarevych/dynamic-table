@@ -18,6 +18,7 @@ module.exports = function(grunt) {
             vendorjs: {
                 src: [
                     'bower_components/jquery/dist/jquery.js',
+                    'bower_components/moment/min/moment-with-locales.js',
                     'bower_components/bootstrap/dist/js/bootstrap.js',
                 ],
                 dest: 'public/js/vendor.js'
