@@ -1,62 +1,12 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h1><?= $this->translate('Entities &amp; Form Example') ?></h1>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <script>
-                function printDateTime(timestamp) {
-                    if (timestamp == null)
-                        return;
-
-                    var m = moment(timestamp * 1000);
-                    document.write(m.format('YYYY-MM-DD HH:mm:ss'));
-                }
-            </script>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th><?= $this->translate('String') ?></th>
-                        <th><?= $this->translate('Integer') ?></th>
-                        <th><?= $this->translate('Float') ?></th>
-                        <th><?= $this->translate('Boolean') ?></th>
-                        <th><?= $this->translate('DateTime') ?></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($this->entities as $entity): ?>
-                        <tr>
-                            <td><?= $entity->getId() ?></td>
-                            <td><?= $this->escapeHtml($entity->getValueString()) ?></td>
-                            <td><?= $entity->getValueInteger() ?></td>
-                            <td><?= $entity->getValueFloat() ?></td>
-                            <td><?= $this->translate($entity->getValueBoolean() ? 'true' : 'false') ?></td>
-                            <td>
-                                <script>
-                                    printDateTime(<?= ($dt = $entity->getValueDatetime()) ? $dt->getTimestamp() : 'null' ?>);
-                                </script>
-                            </td>
-                            <td>
-                            </td>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <p>Note on DateTime field</p>
-            <ul>
-                <li>Database field is always in UTC since we are using custom UtcDateTime Doctrine type</li>
-                <li>PHP timezone is whatever you set in 'date.timezone' variable of php.ini</li>
-                <li>Displayed timezone here on the client is the local browser timezone, because we are sending UNIX timestamps (UTC) over the network and convert them to string using moment.js</li>
-            </ul>
+            <h1>IndexControler/indexAction</h1>
+            <p>
+                <a href="<?= $this->basePath('/example') ?>">
+                    Open example controller
+                </a>
+            </p>
         </div>
     </div>
 </div>

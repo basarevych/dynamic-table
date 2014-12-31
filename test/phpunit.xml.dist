@@ -4,6 +4,7 @@
     <testsuites>
         <testsuite name="zf2-skeleton">
             <directory>../module/Application/test/ApplicationTest</directory>
+            <directory>../module/Example/test/ExampleTest</directory>
         </testsuite>
     </testsuites>
 </phpunit>

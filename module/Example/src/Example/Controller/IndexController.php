@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Application\Controller;
+namespace Example\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -16,7 +16,7 @@ use Zend\View\Model\JsonModel;
 /**
  * Index controller
  *
- * @category    Application
+ * @category    Example
  * @package     Controller
  */
 class IndexController extends AbstractActionController
@@ -26,7 +26,15 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-        return new ViewModel();
+        $sl = $this->getServiceLocator();
+        $em = $sl->get('Doctrine\ORM\EntityManager');
+
+        $entities = $em->getRepository('Application\Entity\Sample')
+                       ->findAll();
+
+        return new ViewModel([
+            'entities'  => $entities
+        ]);
     }
 
     /**
