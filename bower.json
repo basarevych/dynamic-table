@@ -12,6 +12,7 @@
     "devDependencies": {
         "jquery": "~2.1.1",
         "moment": "~2.8.3",
-        "bootstrap": "~3.1.1"
+        "bootstrap": "~3.1.1",
+        "eonasdan-bootstrap-datetimepicker": "~3.1.3"
     }
 }

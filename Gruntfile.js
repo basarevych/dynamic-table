@@ -20,6 +20,7 @@ module.exports = function(grunt) {
                     'bower_components/jquery/dist/jquery.js',
                     'bower_components/moment/min/moment-with-locales.js',
                     'bower_components/bootstrap/dist/js/bootstrap.js',
+                    'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
                 ],
                 dest: 'public/js/vendor.js'
             },
@@ -27,6 +28,7 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/bootstrap/dist/css/bootstrap.css',
                     'bower_components/bootstrap/dist/css/bootstrap-theme.css',
+                    'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
                 ],
                 dest: 'public/css/vendor.css'
             },

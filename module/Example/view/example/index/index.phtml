@@ -1,3 +1,47 @@
+<script>
+    function printDateTime(timestamp) {
+        if (timestamp == null)
+            return;
+
+        var m = moment(timestamp * 1000);
+        document.write(m.format('YYYY-MM-DD HH:mm:ss'));
+    }
+    function editEntityForm(id) {
+        $.ajax({
+            url: '<?= $this->basePath('/example/index/edit-form') ?>',
+            data: {
+                id: id
+            },
+            success: function (html) {
+                var modal = $('#modal-form');
+                modal.find('.modal-title').text('<?= $this->translate('Create entity') ?>');
+                modal.find('.modal-body').html(html);
+                modal.find('button[type=submit]').text('<?= $this->translate('Create') ?>');
+            }
+        });
+    }
+</script>
+
+<div id="modal-form" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    <?= $this->translate('Cancel') ?>
+                 </button>
+                <button type="submit" class="btn btn-primary" onclick="return false">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
@@ -7,15 +51,9 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <script>
-                function printDateTime(timestamp) {
-                    if (timestamp == null)
-                        return;
-
-                    var m = moment(timestamp * 1000);
-                    document.write(m.format('YYYY-MM-DD HH:mm:ss'));
-                }
-            </script>
+            <button class="btn btn-default" onclick="editEntityForm()">
+                <?= $this->translate('Create entity') ?>
+            </button>
             <table class="table table-striped">
                 <thead>
                     <tr>

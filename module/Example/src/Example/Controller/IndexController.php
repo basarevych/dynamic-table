@@ -12,6 +12,7 @@ namespace Example\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Example\Form\EditSampleForm;
 
 /**
  * Index controller
@@ -35,6 +36,32 @@ class IndexController extends AbstractActionController
         return new ViewModel([
             'entities'  => $entities
         ]);
+    }
+
+    /**
+     * Create/edit entity form action
+     */
+    public function editFormAction()
+    {
+        $request = $this->getRequest();
+        $form = new EditSampleForm();
+        $messages = [];
+
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $data = $form->getData();
+
+            }
+        }
+
+        $model = new ViewModel([
+            'form'      => $form,
+            'messages'  => $messages,
+        ]);
+        $model->setTerminal(true);
+        return $model;
     }
 
     /**

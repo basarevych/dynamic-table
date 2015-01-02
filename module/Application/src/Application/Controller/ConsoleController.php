@@ -51,8 +51,8 @@ class ConsoleController extends AbstractConsoleController
             $dt->add(new \DateInterval('PT10S'));
 
             $entity = new SampleEntity();
+            $entity->setValueString("string $i");
             if ($i != 3) {
-                $entity->setValueString("string $i");
                 $entity->setValueInteger($i);
                 $entity->setValueFloat($i / 100);
                 $entity->setValueBoolean($i % 2 == 0);
