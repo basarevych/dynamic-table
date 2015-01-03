@@ -47,10 +47,13 @@ class IndexController extends AbstractActionController
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
         $request = $this->getRequest();
+
+        $formSubmitted = false;
         $form = new EditSampleForm($em);
         $messages = [];
 
         if ($request->isPost()) {
+            $formSubmitted = true;
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -60,11 +63,36 @@ class IndexController extends AbstractActionController
         }
 
         $model = new ViewModel([
-            'form'      => $form,
-            'messages'  => $messages,
+            'formSubmitted' => $formSubmitted,
+            'form'          => $form,
+            'messages'      => $messages,
         ]);
         $model->setTerminal(true);
         return $model;
+    }
+
+    /**
+     * Validate entity form field action
+     */
+    public function validateEditFormAction()
+    {
+        $sl = $this->getServiceLocator();
+        $em = $sl->get('Doctrine\ORM\EntityManager');
+
+        $name = $this->params()->fromQuery('name');
+        $value = $this->params()->fromQuery('value');
+
+        $form = new EditSampleForm($em);
+        $form->setData([ $name => $value ]);
+        $form->isValid();
+
+        $control = $form->get($name);
+        $messages = $control->getMessages();
+
+        return new JsonModel([
+            'valid'     => (count($messages) == 0),
+            'messages'  => array_values($messages),
+        ]);
     }
 
     /**
