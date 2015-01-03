@@ -7,5 +7,6 @@ CREATE TABLE `sample` (
     `value_float` float NULL,
     `value_boolean` tinyint(1) NULL,
     `value_datetime` datetime NULL,
-    CONSTRAINT `sample_pk` PRIMARY KEY (`id`)
+    CONSTRAINT `sample_pk` PRIMARY KEY (`id`),
+    CONSTRAINT `sample_unique_string` UNIQUE (`value_string`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

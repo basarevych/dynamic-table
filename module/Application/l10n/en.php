@@ -31,4 +31,7 @@ return [
 
     // NotEmpty validator
     'Value is required and can\'t be empty' => 'Value is required and can\'t be empty',
+
+    // EntityNotExists validator
+    'Value is already in the database' => 'Value is already in the database',
 ];

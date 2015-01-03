@@ -43,8 +43,11 @@ class IndexController extends AbstractActionController
      */
     public function editFormAction()
     {
+        $sl = $this->getServiceLocator();
+        $em = $sl->get('Doctrine\ORM\EntityManager');
+
         $request = $this->getRequest();
-        $form = new EditSampleForm();
+        $form = new EditSampleForm($em);
         $messages = [];
 
         if ($request->isPost()) {

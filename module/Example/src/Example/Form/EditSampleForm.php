@@ -14,6 +14,8 @@ use Zend\Form\Element;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 use Zend\Filter;
+use Doctrine\ORM\EntityManager;
+use Application\Validator\EntityNotExists;
 
 /**
  * Create/Edit Sample entity form
@@ -31,13 +33,23 @@ class EditSampleForm extends Form
     protected $inputFilter = null;
 
     /**
+     * Doctrine EntityManager
+     *
+     * @var EntityManager
+     */
+    protected $em = null;
+
+    /**
      * Constructor
      *
-     * @param  null|int|string  $name    Optional name
-     * @param  array            $options Optional options
+     * @param EntityManager    $em
+     * @param null|int|string  $name    Optional name
+     * @param array            $options Optional options
      */
-    public function __construct($name = null, $options = array())
+    public function __construct($em, $name = null, $options = array())
     {
+        $this->em = $em;
+
         parent::__construct($name ? $name : 'edit-sample', $options);
         $this->setAttribute('method', 'post');
 
@@ -80,33 +92,49 @@ class EditSampleForm extends Form
         $filter = new InputFilter();
 
         $csrf = new Input('security');
-        $csrf->setRequired(true);
+        $csrf->setRequired(true)
+             ->setBreakOnFailure(false);
         $filter->add($csrf);
+
+        $params = [
+            'entityManager' => $this->em,
+            'entity'        => 'Application\Entity\Sample',
+            'property'      => 'value_string',
+        ];
+//        if (isset($data['id']))
+//            $params['ignoreId'] = $data['id'];
 
         $string = new Input('string');
         $string->setRequired(true)
+               ->setBreakOnFailure(false)
                ->getFilterChain()
                ->attach(new Filter\StringTrim());
+        $string->getValidatorChain()
+               ->attach(new EntityNotExists($params));
         $filter->add($string);
 
         $integer = new Input('integer');
         $integer->setRequired(false)
+                ->setBreakOnFailure(false)
                 ->getFilterChain()
                 ->attach(new Filter\StringTrim());
         $filter->add($integer);
 
         $float = new Input('float');
         $float->setRequired(false)
+              ->setBreakOnFailure(false)
               ->getFilterChain()
               ->attach(new Filter\StringTrim());
         $filter->add($float);
 
         $boolean = new Input('boolean');
-        $boolean->setRequired(true);
+        $boolean->setRequired(true)
+                ->setBreakOnFailure(false);
         $filter->add($boolean);
 
         $datetime = new Input('datetime');
         $datetime->setRequired(false)
+                 ->setBreakOnFailure(false)
                  ->getFilterChain()
                  ->attach(new Filter\StringTrim());
         $filter->add($datetime);

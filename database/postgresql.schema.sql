@@ -7,5 +7,6 @@ CREATE TABLE "sample" (
     "value_float" float NULL,
     "value_boolean" boolean NULL,
     "value_datetime" timestamp NULL,
-    PRIMARY KEY ("id")
+    CONSTRAINT "sample_pk" PRIMARY KEY ("id"),
+    CONSTRAINT "sample_unique_string" UNIQUE ("value_string")
 );
