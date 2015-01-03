@@ -83,11 +83,33 @@ class EditSampleForm extends Form
         $csrf->setRequired(true);
         $filter->add($csrf);
 
-        $login = new Input('login');
-        $login->setRequired(true)
+        $string = new Input('string');
+        $string->setRequired(true)
+               ->getFilterChain()
+               ->attach(new Filter\StringTrim());
+        $filter->add($string);
+
+        $integer = new Input('integer');
+        $integer->setRequired(false)
+                ->getFilterChain()
+                ->attach(new Filter\StringTrim());
+        $filter->add($integer);
+
+        $float = new Input('float');
+        $float->setRequired(false)
               ->getFilterChain()
               ->attach(new Filter\StringTrim());
-        $filter->add($login);
+        $filter->add($float);
+
+        $boolean = new Input('boolean');
+        $boolean->setRequired(true);
+        $filter->add($boolean);
+
+        $datetime = new Input('datetime');
+        $datetime->setRequired(false)
+                 ->getFilterChain()
+                 ->attach(new Filter\StringTrim());
+        $filter->add($datetime);
 
         $this->inputFilter = $filter;
         return $filter;

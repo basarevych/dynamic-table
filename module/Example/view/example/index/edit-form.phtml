@@ -10,7 +10,7 @@ $datetime = $form->get('datetime');
 
 ?>
 
-<form class="form-horizontal" name="<?= $form->getName() ?>"
+<form class="form-horizontal" name="<?= $form->getName() ?>" onsubmit="return false"
       method="<?= $form->getAttribute('method') ?>"
       action="<?= $this->basePath('/example/index/edit-form') ?>">
 
@@ -27,6 +27,9 @@ $datetime = $form->get('datetime');
     <div class="form-group <?= count($string->getMessages()) ? 'has-error' : '' ?>">
         <label class="col-sm-4 control-label" for="<?= $string->getName() ?>">
             <?= $this->escapeHtml($this->translate($string->getLabel())) ?>:
+            <span class="required-marker text-danger">
+                <?= $this->translate('REQUIRED FIELD') ?>
+            </span>
         </label>
         <div class="col-sm-8">
             <input type="text" class="form-control"
@@ -126,6 +129,17 @@ $datetime = $form->get('datetime');
 
 <script>
     var modal = $('#modal-form');
+
+    modal.find('button[type=submit]')
+         .off('click')
+         .one('click', function () {
+            modal.find('form').ajaxSubmit({
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+         });
+
     if (!modal.is(':visible'))
         modal.modal('show');
 </script>

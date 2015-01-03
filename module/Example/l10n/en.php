@@ -12,7 +12,5 @@ return [
     'false' => 'false',
 
     // Index forms
-    'Cancel' => 'Cancel',
-    'Create' => 'Create',
     'Create entity' => 'Create entity',
 ];

@@ -18,4 +18,17 @@ return [
     'File' => 'File',
     'Line' => 'Line',
     'Stack trace' => 'Stack trace',
+
+    // Forms
+    'REQUIRED FIELD' => 'REQUIRED FIELD',
+    'Cancel' => 'Cancel',
+    'Create' => 'Create',
+    'Save changes' => 'Save changes',
+    'Delete' => 'Delete',
+
+    // Csrf validator
+    'The form submitted did not originate from the expected site' => 'The form submitted did not originate from the expected site',
+
+    // NotEmpty validator
+    'Value is required and can\'t be empty' => 'Value is required and can\'t be empty',
 ];
