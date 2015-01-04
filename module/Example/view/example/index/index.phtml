@@ -1,3 +1,8 @@
+<?php
+
+$fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+
+?>
 <script>
     function printDateTime(timestamp) {
         if (timestamp == null)
@@ -71,8 +76,8 @@
                         <tr>
                             <td><?= $entity->getId() ?></td>
                             <td><?= $this->escapeHtml($entity->getValueString()) ?></td>
-                            <td><?= $entity->getValueInteger() ?></td>
-                            <td><?= $entity->getValueFloat() ?></td>
+                            <td><?= $fmt->format($entity->getValueInteger()) ?></td>
+                            <td><?= $fmt->format($entity->getValueFloat()) ?></td>
                             <td>
                                 <?php
                                     $b = $entity->getValueBoolean();

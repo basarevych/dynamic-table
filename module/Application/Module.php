@@ -56,7 +56,7 @@ class Module
             $translator->setLocale($locale);
             $translator->setFallbackLocale($fallback);
             locale_set_default($locale);
-            setlocale(LC_ALL, $locale . '.UTF-8')
+            setlocale(LC_ALL, $locale . '.UTF-8');
         }
 
         // Start session
