@@ -16,6 +16,18 @@ use Doctrine\ORM\EntityManager;
 /**
  * EntityNotExists validator
  *
+ * Usage:
+ *
+ * $params = [
+ *      'entityManager' => $em,                         // Doctrine EntityManager instance
+ *      'entity'        => 'Application\Entity\Sample', // The Entity
+ *      'property'      => 'value_string',              // The property to compare value to
+ *      'alwaysValidId' => 123,                         // [Optional] ID of always valid entity
+ * ];
+ * $validator = new EntityNotExists($params);
+ *
+ * 'alwaysValidId' is useful when editing entity, skip this option when creating.
+ *
  * @category    Application
  * @package     Validator
  */
@@ -57,13 +69,13 @@ class EntityNotExists extends AbstractValidator
     protected $property;
 
     /**
-     * Entity ID to be ignored
+     * Always valid entity ID
      *
      * Useful when renaming an entity
      *
      * @var integer
      */
-    protected $ignoreId;
+    protected $alwaysValidId;
 
     /**
      * Set entity manager
@@ -133,24 +145,24 @@ class EntityNotExists extends AbstractValidator
     }
 
     /**
-     * Set ID to be ignored
+     * Set ID of always valid entity
      *
-     * @oaram integer $ignoreId
+     * @oaram integer $id
      * @return EntityNotExists
      */
-    public function setIgnoreId($ignoreId)
+    public function setAlwaysValidId($id)
     {
-        $this->ignoreId = $ignoreId;
+        $this->alwaysValidId = $id;
 
         return $this;
     }
 
     /**
-     * Get ID to be ignored
+     * Get ID of always valid entity
      *
      * @return integer|null
      */
-    public function getIgnoreId()
+    public function getAlwaysValidId()
     {
         return $this->ignoreId;
     }
@@ -186,10 +198,10 @@ class EntityNotExists extends AbstractValidator
            ->where("e.$property = :value")
            ->setParameter('value', $value);
 
-        $ignoreId = $this->getIgnoreId();
-        if ($ignoreId !== null) {
+        $valid = $this->getAlwaysValidId();
+        if ($valid !== null) {
             $qb->andWhere('e.id <> :id')
-               ->setParameter('id', $ignoreId);
+               ->setParameter('id', $valid);
         }
 
         $check = $qb->getQuery()->getSingleScalarResult();

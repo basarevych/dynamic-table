@@ -16,6 +16,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\Filter;
 use Doctrine\ORM\EntityManager;
 use Application\Validator\EntityNotExists;
+use Application\Validator\IsFloat;
 
 /**
  * Create/Edit Sample entity form
@@ -40,17 +41,27 @@ class EditSampleForm extends Form
     protected $em = null;
 
     /**
+     * ID of the entity being edited (null when creating)
+     *
+     * @var integer
+     */
+    protected $id = null;
+
+
+    /**
      * Constructor
      *
-     * @param EntityManager    $em
-     * @param null|int|string  $name    Optional name
-     * @param array            $options Optional options
+     * @param EntityManager    $em          Doctrine EntityManager
+     * @param integer          $id          ID of the entity being edited (null when creating)
+     * @param null|int|string  $name        Optional name
+     * @param array            $options     Optional options
      */
-    public function __construct($em, $name = null, $options = array())
+    public function __construct($em, $id = null, $name = 'edit-sample', $options = array())
     {
         $this->em = $em;
+        $this->id = $id;
 
-        parent::__construct($name ? $name : 'edit-sample', $options);
+        parent::__construct($name, $options);
         $this->setAttribute('method', 'post');
 
         $csrf = new Element\Csrf('security');
@@ -101,8 +112,8 @@ class EditSampleForm extends Form
             'entity'        => 'Application\Entity\Sample',
             'property'      => 'value_string',
         ];
-//        if (isset($data['id']))
-//            $params['ignoreId'] = $data['id'];
+        if ($this->id)
+            $params['alwaysValidId'] = $this->id;
 
         $string = new Input('string');
         $string->setRequired(true)
@@ -125,6 +136,8 @@ class EditSampleForm extends Form
               ->setBreakOnFailure(false)
               ->getFilterChain()
               ->attach(new Filter\StringTrim());
+        $float->getValidatorChain()
+               ->attach(new IsFloat());
         $filter->add($float);
 
         $boolean = new Input('boolean');

@@ -73,7 +73,7 @@ $validation = [
                    name="<?= $integer->getName() ?>"
                    value="<?= $this->escapeHtml($integer->getValue()) ?>"
                    data-on-enter="$('#modal-form [name=float]').focus()">
-            <p class="help-block"></p>
+            <div class="help-block"></div>
         </div>
     </div>
 
@@ -86,7 +86,7 @@ $validation = [
                    name="<?= $float->getName() ?>"
                    value="<?= $this->escapeHtml($float->getValue()) ?>"
                    data-on-enter="$('#modal-form [name=boolean]').focus()">
-            <p class="help-block"></p>
+            <div class="help-block"></div>
         </div>
     </div>
 
@@ -125,7 +125,7 @@ $validation = [
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-            <p class="help-block"></p>
+            <div class="help-block"></div>
             <script>
                 $('#dt-<?= $datetime->getName() ?>').datetimepicker({
                     language: '<?= \Locale::getDefault() ?>'

@@ -51,9 +51,11 @@ class Module
 
         // Initialize locale
         $locale = $this->getPreferredLocale($serviceManager);
+$locale = 'ru_RU.UTF-8';
         if ($locale) {
             $translator->setLocale($locale);
             locale_set_default($locale);
+setlocale(LC_ALL, $locale);
         }
 
         // Start session
