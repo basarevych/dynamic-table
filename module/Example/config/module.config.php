@@ -35,8 +35,8 @@ return [
     ],
 
     'translator' => [
-        'locales' => [ 'en' ],
-        'default' => 'en',
+        'locales' => [ 'en_US' ],
+        'default' => 'en_US',
         'translation_file_patterns' => [
             [
                 'type'     => 'phpArray',
