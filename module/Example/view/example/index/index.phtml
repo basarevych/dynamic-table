@@ -1,6 +1,13 @@
 <?php
 
-$fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+function formatNumber($number)
+{
+    if ($number === null)
+        return '';
+
+    $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+    return $fmt->format($number);
+}
 
 ?>
 <script>
@@ -76,8 +83,8 @@ $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
                         <tr>
                             <td><?= $entity->getId() ?></td>
                             <td><?= $this->escapeHtml($entity->getValueString()) ?></td>
-                            <td><?= $fmt->format($entity->getValueInteger()) ?></td>
-                            <td><?= $fmt->format($entity->getValueFloat()) ?></td>
+                            <td><?= formatNumber($entity->getValueInteger()) ?></td>
+                            <td><?= formatNumber($entity->getValueFloat()) ?></td>
                             <td>
                                 <?php
                                     $b = $entity->getValueBoolean();
@@ -100,7 +107,14 @@ $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
 
     <div class="row">
         <div class="col-lg-12">
-            <p>Note on DateTime field</p>
+            <h4>Note on number fields</h4>
+            <p>Integer and float fields are printed according to current locale (thousand and decimal points)</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Note on DateTime field</h4>
             <ul>
                 <li>Database field is always in UTC since we are using custom UtcDateTime Doctrine type</li>
                 <li>PHP timezone is whatever you set in 'date.timezone' variable of php.ini</li>

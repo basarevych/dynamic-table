@@ -152,6 +152,6 @@ class Module
             }
         }
 
-        return $this->getDefautLocale($sl);
+        return $this->getDefaultLocale($sl);
     }
 }

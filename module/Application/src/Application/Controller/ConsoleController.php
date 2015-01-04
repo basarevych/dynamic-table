@@ -53,7 +53,7 @@ class ConsoleController extends AbstractConsoleController
             $entity = new SampleEntity();
             $entity->setValueString("string $i");
             if ($i != 3) {
-                $entity->setValueInteger($i);
+                $entity->setValueInteger($i * $i * 100);
                 $entity->setValueFloat($i / 100);
                 $entity->setValueBoolean($i % 2 == 0);
                 $entity->setValueDatetime(clone $dt);
