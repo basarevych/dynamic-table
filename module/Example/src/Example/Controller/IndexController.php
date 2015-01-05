@@ -59,6 +59,7 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
+                var_dump($data);
             }
         }
 

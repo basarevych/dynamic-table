@@ -164,7 +164,7 @@ class EntityNotExists extends AbstractValidator
      */
     public function getAlwaysValidId()
     {
-        return $this->ignoreId;
+        return $this->alwaysValidId;
     }
 
     /**

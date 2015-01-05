@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManager;
 use Application\Validator\EntityNotExists;
 use Application\Validator\IsInteger;
 use Application\Validator\IsFloat;
+use Application\Filter\LocaleFormattedNumber;
 
 /**
  * Create/Edit Sample entity form
@@ -128,7 +129,8 @@ class EditSampleForm extends Form
         $integer->setRequired(false)
                 ->setBreakOnFailure(false)
                 ->getFilterChain()
-                ->attach(new Filter\StringTrim());
+                ->attach(new Filter\StringTrim())
+                ->attach(new LocaleFormattedNumber());
         $integer->getValidatorChain()
                 ->attach(new IsInteger());
         $filter->add($integer);
@@ -137,7 +139,8 @@ class EditSampleForm extends Form
         $float->setRequired(false)
               ->setBreakOnFailure(false)
               ->getFilterChain()
-              ->attach(new Filter\StringTrim());
+              ->attach(new Filter\StringTrim())
+              ->attach(new LocaleFormattedNumber());
         $float->getValidatorChain()
                ->attach(new IsFloat());
         $filter->add($float);
