@@ -16,6 +16,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\Filter;
 use Doctrine\ORM\EntityManager;
 use Application\Validator\EntityNotExists;
+use Application\Validator\IsInteger;
 use Application\Validator\IsFloat;
 
 /**
@@ -46,7 +47,6 @@ class EditSampleForm extends Form
      * @var integer
      */
     protected $id = null;
-
 
     /**
      * Constructor
@@ -129,6 +129,8 @@ class EditSampleForm extends Form
                 ->setBreakOnFailure(false)
                 ->getFilterChain()
                 ->attach(new Filter\StringTrim());
+        $integer->getValidatorChain()
+                ->attach(new IsInteger());
         $filter->add($integer);
 
         $float = new Input('float');
