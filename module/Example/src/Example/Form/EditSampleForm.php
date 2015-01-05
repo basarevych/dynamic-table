@@ -14,6 +14,7 @@ use Zend\Form\Element;
 use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 use Zend\Filter;
+use Zend\Validator;
 use Doctrine\ORM\EntityManager;
 use Application\Validator\EntityNotExists;
 use Application\Validator\IsInteger;
@@ -150,11 +151,17 @@ class EditSampleForm extends Form
                 ->setBreakOnFailure(false);
         $filter->add($boolean);
 
+        $params = [
+            'format' => 'Y-m-d H:i:s P',
+        ];
+
         $datetime = new Input('datetime');
         $datetime->setRequired(false)
                  ->setBreakOnFailure(false)
                  ->getFilterChain()
                  ->attach(new Filter\StringTrim());
+        $datetime->getValidatorChain()
+                 ->attach(new Validator\Date($params));
         $filter->add($datetime);
 
         $this->inputFilter = $filter;
