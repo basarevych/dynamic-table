@@ -32,6 +32,10 @@ class LocaleFormattedNumber extends AbstractFilter
     public function filter($value)
     {
         $fmt = new NumberFormatter(Locale::getDefault(), NumberFormatter::DECIMAL);
-        return $fmt->parse($value);
+        $parse = $fmt->parse($value);
+        if ($parse !== false)
+            return $parse;
+
+        return $value;
     }
 }
