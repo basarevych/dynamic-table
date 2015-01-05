@@ -87,8 +87,10 @@ class EditSampleForm extends Form
                 ->setValue(-1);
         $this->add($boolean);
 
-        $datetime = new Element\Text('datetime');
+        $datetime = new Element\DateTime('datetime');
         $datetime->setLabel('DateTime');
+        $datetime->setFormat("Y-m-d H:i:s P");
+        $datetime->setAttribute('step', 'any');
         $this->add($datetime);
     }
 
@@ -152,15 +154,13 @@ class EditSampleForm extends Form
         $filter->add($boolean);
 
         $params = [
-            'format' => 'Y-m-d H:i:s P',
+            'format' => $this->get('datetime')->getFormat()
         ];
 
         $datetime = new Input('datetime');
         $datetime->setRequired(false)
                  ->setBreakOnFailure(false)
-                 ->getFilterChain()
-                 ->attach(new Filter\StringTrim());
-        $datetime->getValidatorChain()
+                 ->getValidatorChain()
                  ->attach(new Validator\Date($params));
         $filter->add($datetime);
 
