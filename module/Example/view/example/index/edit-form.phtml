@@ -1,5 +1,12 @@
 <?php
 
+if ($this->returnScript) {
+    echo "<script>" . PHP_EOL;
+    echo $this->returnScript . PHP_EOL;
+    echo "</script>" . PHP_EOL;
+    return;
+}
+
 $form = $this->form;
 
 $security = $form->get('security');

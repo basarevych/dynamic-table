@@ -12,6 +12,7 @@ namespace Example\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Application\Entity\Sample as SampleEntity;
 use Example\Form\EditSampleForm;
 
 /**
@@ -48,6 +49,7 @@ class IndexController extends AbstractActionController
 
         $request = $this->getRequest();
 
+        $returnScript = null;
         $formSubmitted = false;
         $form = new EditSampleForm($em);
         $messages = [];
@@ -59,11 +61,28 @@ class IndexController extends AbstractActionController
             if ($form->isValid()) {
                 $data = $form->getData();
 
-                var_dump($data);
+                $date = null;
+                if (strlen($data['datetime']) > 0) {
+                    $format = $form->get('datetime')->getFormat();
+                    $date = \DateTime::createFromFormat($format, $data['datetime']);
+                }
+
+                $entity = new SampleEntity();
+                $entity->setValueString($data['string']);
+                $entity->setValueInteger(empty($data['integer']) ? null : $data['integer']);
+                $entity->setValueFloat(empty($data['float']) ? null : $data['float']);
+                $entity->setValueBoolean($data['boolean'] == -1 ? null : $data['boolean']);
+                $entity->setValueDatetime($date);
+
+                $em->persist($entity);
+                $em->flush();
+
+                $returnScript = "$('#modal-form').modal('hide'); window.location.reload()";
             }
         }
 
         $model = new ViewModel([
+            'returnScript'  => $returnScript,
             'formSubmitted' => $formSubmitted,
             'form'          => $form,
             'messages'      => $messages,
