@@ -62,7 +62,7 @@ class IndexController extends AbstractActionController
                 $data = $form->getData();
 
                 $date = null;
-                if (strlen($data['datetime']) > 0) {
+                if (!empty($data['datetime'])) {
                     $format = $form->get('datetime')->getFormat();
                     $date = \DateTime::createFromFormat($format, $data['datetime']);
                 }

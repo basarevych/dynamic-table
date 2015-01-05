@@ -63,9 +63,10 @@ $validation = [
             </span>
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate"
+            <input type="text" class="form-control"
                    name="<?= $string->getName() ?>"
                    value="<?= $this->escapeHtml($string->getValue()) ?>"
+                   data-on-blur="validateField('<?= $string->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=integer]').focus()">
             <div class="help-block"></div>
         </div>
@@ -76,9 +77,10 @@ $validation = [
             <?= $this->escapeHtml($this->translate($integer->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate"
+            <input type="text" class="form-control"
                    name="<?= $integer->getName() ?>"
                    value="<?= $this->escapeHtml($integer->getValue()) ?>"
+                   data-on-blur="validateField('<?= $integer->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=float]').focus()">
             <div class="help-block"></div>
         </div>
@@ -89,9 +91,10 @@ $validation = [
             <?= $this->escapeHtml($this->translate($float->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate"
+            <input type="text" class="form-control"
                    name="<?= $float->getName() ?>"
                    value="<?= $this->escapeHtml($float->getValue()) ?>"
+                   data-on-blur="validateField('<?= $float->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=boolean]').focus()">
             <div class="help-block"></div>
         </div>
@@ -123,10 +126,11 @@ $validation = [
         </label>
         <div class="col-sm-8">
             <div class="input-group date" id="dt-<?= $datetime->getName() ?>">
-                <input type="text" class="form-control validate"
+                <input type="text" class="form-control"
                        name="<?= $datetime->getName() ?>"
                        value="<?= $this->escapeHtml($datetime->getValue()) ?>"
                        data-date-format="YYYY-MM-DD HH:mm:ss Z"
+                       data-on-blur="validateField('<?= $datetime->getName() ?>', $(this).val())"
                        data-on-enter="$('#modal-form button[type=submit]').focus().click()">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -143,52 +147,6 @@ $validation = [
 </form>
 
 <script>
-    var validation = <?= json_encode($validation) ?>;
-    var modal = $('#modal-form');
-
-    modal.find('.validate')
-         .on('blur', function () {
-            var input = $(this);
-            validateField(input.attr('name'), input.val());
-         });
-
-    modal.find('[data-on-enter]')
-         .on('keypress', function (e) {
-            if (e.keyCode == 13) {
-                eval($(this).attr('data-on-enter'));
-                return false;
-            }
-         });
-
-    modal.find('button[type=submit]')
-         .off('click')
-         .one('click', function () {
-            modal.find('form').ajaxSubmit({
-                success: function (data) {
-                    modal.find('.modal-body').html(data);
-                }
-            });
-         });
-
-    <?php foreach ($validation as $name => $params): ?>
-        updateField('<?= $name ?>');
-    <?php endforeach ?>
-
-    if (!modal.is(':visible'))
-        modal.modal('show');
-
-    var parents = modal.find('.has-error');
-    if (parents.length == 0) 
-        parents = modal;
-    parents.find('.form-control, input')
-          .each(function () {
-            var el = $(this);
-            if (el.is(':visible') && !el.prop('disabled') && !el.prop('readonly')) {
-                el.focus();
-                return false;
-            }
-          });
-
     function validateField(name, value) {
         var timestamp = new Date().getTime();
         $.getJSON(
@@ -231,4 +189,36 @@ $validation = [
             helpBlock.append(ul);
         }
     }
+
+    var validation = <?= json_encode($validation) ?>;
+    var modal = $('#modal-form');
+
+    modal.find('button[type=submit]')
+         .off('click')
+         .one('click', function () {
+            modal.find('form').ajaxSubmit({
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+         });
+
+    <?php foreach ($validation as $name => $params): ?>
+        updateField('<?= $name ?>');
+    <?php endforeach ?>
+
+    if (!modal.is(':visible'))
+        modal.modal('show');
+
+    var parents = modal.find('.has-error');
+    if (parents.length == 0) 
+        parents = modal;
+    parents.find('.form-control, input')
+          .each(function () {
+            var el = $(this);
+            if (el.is(':visible') && !el.prop('disabled') && !el.prop('readonly')) {
+                el.focus();
+                return false;
+            }
+          });
 </script>
