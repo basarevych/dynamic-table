@@ -1,8 +1,8 @@
 <?php
 
-if ($this->returnScript) {
+if ($this->script) {    // Run script and return (no form is displayed)
     echo "<script>" . PHP_EOL;
-    echo $this->returnScript . PHP_EOL;
+    echo $this->script . PHP_EOL;
     echo "</script>" . PHP_EOL;
     return;
 }
@@ -15,29 +15,6 @@ $integer = $form->get('integer');
 $float = $form->get('float');
 $boolean = $form->get('boolean');
 $datetime = $form->get('datetime');
-
-$validation = [
-    'string' => [
-        'valid' => $this->formSubmitted ? (count($string->getMessages()) == 0) : true,
-        'timestamp' => 0,
-        'messages' => array_values($string->getMessages()),
-    ],
-    'integer' => [
-        'valid' => $this->formSubmitted ? (count($integer->getMessages()) == 0) : true,
-        'timestamp' => 0,
-        'messages' => array_values($integer->getMessages()),
-    ],
-    'float' => [
-        'valid' => $this->formSubmitted ? (count($float->getMessages()) == 0) : true,
-        'timestamp' => 0,
-        'messages' => array_values($float->getMessages()),
-    ],
-    'datetime' => [
-        'valid' => $this->formSubmitted ? (count($datetime->getMessages()) == 0) : true,
-        'timestamp' => 0,
-        'messages' => array_values($datetime->getMessages()),
-    ],
-];
 
 ?>
 
@@ -55,7 +32,8 @@ $validation = [
         </div>
     <?php endforeach ?>
 
-    <div class="form-group">
+    <?php $valid = count($string->getMessages()) == 0 ?>
+    <div class="form-group <?= $valid ?: 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $string->getName() ?>">
             <?= $this->escapeHtml($this->translate($string->getLabel())) ?>:
             <span class="required-marker text-danger">
@@ -63,40 +41,63 @@ $validation = [
             </span>
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control"
+            <input type="text" class="form-control validate"
                    name="<?= $string->getName() ?>"
                    value="<?= $this->escapeHtml($string->getValue()) ?>"
-                   data-on-blur="validateField('<?= $string->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=integer]').focus()">
-            <div class="help-block"></div>
+            <div class="help-block">
+                <?php if (!$valid): ?>
+                    <ul>
+                    <?php foreach ($string->getMessages() as $msg): ?>
+                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <?php $valid = count($integer->getMessages()) == 0 ?>
+    <div class="form-group <?= $valid ?: 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $integer->getName() ?>">
             <?= $this->escapeHtml($this->translate($integer->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control"
+            <input type="text" class="form-control validate"
                    name="<?= $integer->getName() ?>"
                    value="<?= $this->escapeHtml($integer->getValue()) ?>"
-                   data-on-blur="validateField('<?= $integer->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=float]').focus()">
-            <div class="help-block"></div>
+            <div class="help-block">
+                <?php if (!$valid): ?>
+                    <ul>
+                    <?php foreach ($integer->getMessages() as $msg): ?>
+                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
+    <?php $valid = count($float->getMessages()) == 0 ?>
+    <div class="form-group <?= $valid ?: 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $float->getName() ?>">
             <?= $this->escapeHtml($this->translate($float->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control"
+            <input type="text" class="form-control validate"
                    name="<?= $float->getName() ?>"
                    value="<?= $this->escapeHtml($float->getValue()) ?>"
-                   data-on-blur="validateField('<?= $float->getName() ?>', $(this).val())"
                    data-on-enter="$('#modal-form [name=boolean]').focus()">
-            <div class="help-block"></div>
+            <div class="help-block">
+                <?php if (!$valid): ?>
+                    <ul>
+                    <?php foreach ($float->getMessages() as $msg): ?>
+                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
         </div>
     </div>
 
@@ -120,23 +121,31 @@ $validation = [
         </div>
     </div>
 
-    <div class="form-group">
+    <?php $valid = count($datetime->getMessages()) == 0 ?>
+    <div class="form-group <?= $valid ?: 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $datetime->getName() ?>">
             <?= $this->escapeHtml($this->translate($datetime->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
             <div class="input-group date" id="dt-<?= $datetime->getName() ?>">
-                <input type="text" class="form-control"
+                <input type="text" class="form-control validate"
                        name="<?= $datetime->getName() ?>"
                        value="<?= $this->escapeHtml($datetime->getValue()) ?>"
                        data-date-format="YYYY-MM-DD HH:mm:ss Z"
-                       data-on-blur="validateField('<?= $datetime->getName() ?>', $(this).val())"
-                       data-on-enter="$('#modal-form button[type=submit]').focus().click()">
+                       data-on-enter="$('#modal-form #submit-form').focus().click()">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-            <div class="help-block"></div>
+            <div class="help-block">
+                <?php if (!$valid): ?>
+                    <ul>
+                    <?php foreach ($datetime->getMessages() as $msg): ?>
+                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                    <?php endforeach ?>
+                    </ul>
+                <?php endif ?>
+            </div>
             <script>
                 $('#dt-<?= $datetime->getName() ?>').datetimepicker({
                     language: '<?= \Locale::getDefault() ?>'
@@ -147,78 +156,33 @@ $validation = [
 </form>
 
 <script>
-    function validateField(name, value) {
-        var timestamp = new Date().getTime();
-        $.getJSON(
-            '<?= $this->basePath('/example/index/validate-edit-form') ?>',
-            {
-                name: name,
-                value: value,
-            },
-            function (data) {
-                if (timestamp < validation[name]['timestamp'])
-                    return;
-
-                validation[name] = {
-                    valid: data.valid,
-                    timestamp: timestamp,
-                    messages: data.messages
-                };
-                updateField(name);
-            }
-        );
-    }
-
-    function updateField(name) {
-        var input = modal.find('[name=' + name + ']');
-        var group = input.closest('.form-group');
-        var helpBlock = group.find('div.help-block');
-
-        group.removeClass('has-error');
-        helpBlock.empty();
-
-        if (!validation[name]['valid']) {
-            group.addClass('has-error');
-
-            var ul = $('<ul></ul>');
-            $.each(validation[name]['messages'], function (index, item) {
-                $('<li></li>')
-                    .text(item)
-                    .appendTo(ul);
-            });
-            helpBlock.append(ul);
-        }
-    }
-
-    var validation = <?= json_encode($validation) ?>;
     var modal = $('#modal-form');
 
-    modal.find('button[type=submit]')
-         .off('click')
-         .one('click', function () {
-            modal.find('form').ajaxSubmit({
-                success: function (data) {
-                    modal.find('.modal-body').html(data);
-                }
-            });
+    modal.find('.validate')
+         .off('focusout')
+         .on('focusout', function () {
+            $(this).data('dirty', true);    // Mark to be validated
          });
 
-    <?php foreach ($validation as $name => $params): ?>
-        updateField('<?= $name ?>');
-    <?php endforeach ?>
+    modal.find('.cancel-validation')
+         .off('focusin')
+         .on('focusin', function () {
+            return false;                   // Stop the bubble
+         });
+
+    modal.on('focusin', function () {
+        modal.find('.validate')
+             .each(function (index, element) {
+                var el = $(element);
+                if (el.data('dirty')) {     // Validate dirty fields
+                    el.data('dirty', false);
+                    validateFormField(el);  // See /js/app.js
+                }
+             });
+    });
 
     if (!modal.is(':visible'))
         modal.modal('show');
 
-    var parents = modal.find('.has-error');
-    if (parents.length == 0) 
-        parents = modal;
-    parents.find('.form-control, input')
-          .each(function () {
-            var el = $(this);
-            if (el.is(':visible') && !el.prop('disabled') && !el.prop('readonly')) {
-                el.focus();
-                return false;
-            }
-          });
+    setFormFocus(modal.find('form'));       // See /js/app.js
 </script>

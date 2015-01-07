@@ -47,15 +47,32 @@ class IndexController extends AbstractActionController
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $request = $this->getRequest();
-
-        $returnScript = null;
-        $formSubmitted = false;
+        $script = null;
         $form = new EditSampleForm($em);
         $messages = [];
 
-        if ($request->isPost()) {
-            $formSubmitted = true;
+        // Handle validate request
+        if ($this->params()->fromQuery('query') == 'validate') {
+            $name = $this->params()->fromQuery('name');
+            $value = $this->params()->fromQuery('value');
+
+            $form->setData([ $name => $value ]);
+            $form->isValid();
+
+            $control = $form->get($name);
+            $messages = $control->getMessages();
+
+            return new JsonModel([
+                'valid'     => (count($messages) == 0),
+                'messages'  => array_values($messages),
+            ]);
+        }
+
+        $request = $this->getRequest();
+        $isPost = $request->isPost();
+
+        // Handle form submission
+        if ($isPost) {
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -77,15 +94,15 @@ class IndexController extends AbstractActionController
                 $em->persist($entity);
                 $em->flush();
 
-                $returnScript = "$('#modal-form').modal('hide'); window.location.reload()";
+                $script = "$('#modal-form').modal('hide'); window.location.reload()";
             }
         }
 
         $model = new ViewModel([
-            'returnScript'  => $returnScript,
-            'formSubmitted' => $formSubmitted,
-            'form'          => $form,
-            'messages'      => $messages,
+            'isPost'    => $isPost,
+            'script'    => $script,
+            'form'      => $form,
+            'messages'  => $messages,
         ]);
         $model->setTerminal(true);
         return $model;

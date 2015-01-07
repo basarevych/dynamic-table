@@ -28,7 +28,7 @@ function formatNumber($number)
                 var modal = $('#modal-form');
                 modal.find('.modal-title').text('<?= $this->translate('Create entity') ?>');
                 modal.find('.modal-body').html(html);
-                modal.find('button[type=submit]').text('<?= $this->translate('Create') ?>');
+                modal.find('#submit-form').text('<?= $this->translate('Create') ?>');
             }
         });
     }
@@ -38,21 +38,33 @@ function formatNumber($number)
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">
+                <button type="button" class="cancel-validation btn btn-default" data-dismiss="modal">
                     <?= $this->translate('Cancel') ?>
-                 </button>
-                <button type="submit" class="btn btn-primary">
+                </button>
+                <button id="submit-form" type="button" class="cancel-validation btn btn-primary">
+                    <?= $this->translate('Submit') ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var modal = $('#modal-form');
+    $('#submit-form')
+        .on('click', function () {
+            modal.find('form').ajaxSubmit({
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+        });
+</script>
 
 <div class="container">
     <div class="row">
