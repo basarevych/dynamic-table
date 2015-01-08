@@ -69,6 +69,11 @@ class EditSampleForm extends Form
         $csrf = new Element\Csrf('security');
         $this->add($csrf);
 
+        if ($this->id) {
+            $id = new Element\Hidden('id');
+            $this->add($id);
+        }
+
         $string = new Element\Text('string');
         $string->setLabel('String');
         $this->add($string);
@@ -110,6 +115,11 @@ class EditSampleForm extends Form
         $csrf->setRequired(true)
              ->setBreakOnFailure(false);
         $filter->add($csrf);
+
+        $id = new Input('id');
+        $id->setRequired(true)
+           ->setBreakOnFailure(false);
+        $filter->add($id);
 
         $params = [
             'entityManager' => $this->em,

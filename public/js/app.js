@@ -32,7 +32,7 @@ function setFormFocus(form) {
 }
 
 /*
-    Validate a field (server-side).
+    Validate a form field (server-side).
 
     We expect the form to be created like this:
     <form action="the/action/here">
@@ -54,8 +54,13 @@ function setFormFocus(form) {
     {
         query: 'validate',
         name: 'my-input',
-        value: 'the current value of the input'
+        value: 'the current value of the input',
+        hidden: {
+            security: 'scrf value',
+            id: 123
+        }
     }
+    'hidden' field here is all the form input[type=hidden].
 
     When the field is valid the server should respond with json data:
     {
@@ -78,12 +83,20 @@ function validateFormField(element) {
     var value = element.val();
     var timestamp = new Date().getTime();
 
+    var hidden = {};
+    form.find('[type=hidden]')
+        .each(function (index, el) {
+            el = $(el);
+            hidden[el.attr('name')] = el.val();
+        });
+
     $.ajax({
         url: form.attr('action'),
         data: {
             query: 'validate',
             name: name,
             value: value,
+            hidden: hidden
         },
         success: function (data) {
             var validation = form.data('validation-' + name);
@@ -130,7 +143,7 @@ function validateFormField(element) {
 }
 
 /*
-    This function will install event handlers for the form:
+    This function will install event handlers for the modal ajax form:
     * 'submit' buttons will ajaxSubmit() the form
     * Fields with class 'validate-me' will be validated on focus change
     * If focus is set to 'cancel-validation' class element, validation will not run

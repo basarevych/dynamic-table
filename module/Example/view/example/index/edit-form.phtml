@@ -10,6 +10,7 @@ if ($this->script) {    // Run script and return (no form is displayed)
 $form = $this->form;
 
 $security = $form->get('security');
+$id = $form->has('id') ? $form->get('id') : null;
 $string = $form->get('string');
 $integer = $form->get('integer');
 $float = $form->get('float');
@@ -25,6 +26,12 @@ $datetime = $form->get('datetime');
     <input type="hidden"
            name="<?= $security->getName() ?>"
            value="<?= $security->getValue() ?>">
+
+    <?php if ($id): ?>
+        <input type="hidden"
+               name="<?= $id->getName() ?>"
+               value="<?= $id->getValue() ?>">
+    <?php endif ?>
 
     <?php foreach (array_merge($this->messages, $security->getMessages()) as $msg): ?>
         <div class="alert alert-danger">

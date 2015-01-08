@@ -6,6 +6,7 @@ function formatNumber($number)
         return '';
 
     $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+    $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 6);
     return $fmt->format($number);
 }
 
@@ -26,9 +27,17 @@ function formatNumber($number)
             },
             success: function (html) {
                 var modal = $('#modal-form');
-                modal.find('.modal-title').text('<?= $this->translate('Create entity') ?>');
+                modal.find('.modal-title').text(
+                    typeof id == 'undefined'
+                        ? '<?= $this->translate('Create entity') ?>'
+                        : '<?= $this->translate('Edit entity') ?>'
+                );
+                modal.find('#submit-form').text(
+                    typeof id == 'undefined'
+                        ? '<?= $this->translate('Create') ?>'
+                        : '<?= $this->translate('Save changes') ?>'
+                );
                 modal.find('.modal-body').html(html);
-                modal.find('#submit-form').text('<?= $this->translate('Create') ?>');
             }
         });
     }

@@ -13,4 +13,5 @@ return [
 
     // Index forms
     'Create entity' => 'Create entity',
+    'Edit entity' => 'Edit entity',
 ];

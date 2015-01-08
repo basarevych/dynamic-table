@@ -12,6 +12,7 @@ namespace Example\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Application\Exception\NotFoundException;
 use Application\Entity\Sample as SampleEntity;
 use Example\Form\EditSampleForm;
 
@@ -47,16 +48,16 @@ class IndexController extends AbstractActionController
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $script = null;
-        $form = new EditSampleForm($em);
-        $messages = [];
-
         // Handle validate request
         if ($this->params()->fromQuery('query') == 'validate') {
             $name = $this->params()->fromQuery('name');
             $value = $this->params()->fromQuery('value');
+            $hidden = $this->params()->fromQuery('hidden');
 
-            $form->setData([ $name => $value ]);
+            $data = array_merge([ $name => $value ], $hidden);
+
+            $form = new EditSampleForm($em, $hidden['id']);
+            $form->setData($data);
             $form->isValid();
 
             $control = $form->get($name);
@@ -68,11 +69,23 @@ class IndexController extends AbstractActionController
             ]);
         }
 
-        $request = $this->getRequest();
-        $isPost = $request->isPost();
+        $entity = null;
+        $id = $this->params()->fromQuery('id');
+        if (!$id)
+            $id = $this->params()->fromPost('id');
+        if ($id) {
+            $entity = $em->getRepository('Application\Entity\Sample')
+                         ->find($id);
+            if (!$entity)
+                throw new NotFoundException('Wrong ID');
+        }
 
-        // Handle form submission
-        if ($isPost) {
+        $script = null;
+        $form = new EditSampleForm($em, $id);
+        $messages = [];
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {  // Handle form submission
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
@@ -84,7 +97,9 @@ class IndexController extends AbstractActionController
                     $date = \DateTime::createFromFormat($format, $data['datetime']);
                 }
 
-                $entity = new SampleEntity();
+                if (!$entity)
+                    $entity = new SampleEntity();
+
                 $entity->setValueString($data['string']);
                 $entity->setValueInteger(empty($data['integer']) ? null : $data['integer']);
                 $entity->setValueFloat(empty($data['float']) ? null : $data['float']);
@@ -96,10 +111,28 @@ class IndexController extends AbstractActionController
 
                 $script = "$('#modal-form').modal('hide'); window.location.reload()";
             }
+        } else if ($entity) {       // Load initial form values
+            $boolean = -1;
+            if (($b = $entity->getValueBoolean()) !== null)
+                $boolean = $b ? 1 : 0;
+
+            $datetime = "";
+            if (($dt = $entity->getValueDatetime()) !== null) {
+                $format = $form->get('datetime')->getFormat();
+                $datetime = $dt->format($format);
+            }
+
+            $form->setData([
+                'id'        => $entity->getId(),
+                'string'    => $entity->getValueString(),
+                'integer'   => $entity->getValueInteger(),
+                'float'     => $entity->getValueFloat(),
+                'boolean'   => $boolean,
+                'datetime'  => $datetime
+            ]);
         }
 
         $model = new ViewModel([
-            'isPost'    => $isPost,
             'script'    => $script,
             'form'      => $form,
             'messages'  => $messages,
