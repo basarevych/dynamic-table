@@ -46,7 +46,7 @@ class ConsoleController extends AbstractConsoleController
         $repo = $em->getRepository('Application\Entity\Sample');
         $repo->removeAll();
 
-        $dt = new \DateTime("2010-05-11 13:00:00");
+        $dt = new \DateTime();
         for ($i = 1; $i <= 10; $i++) {
             $dt->add(new \DateInterval('PT10S'));
 

@@ -16,8 +16,8 @@ function formatNumber($number)
         if (timestamp == null)
             return;
 
-        var m = moment(timestamp * 1000);
-        document.write(m.format('YYYY-MM-DD HH:mm:ss'));
+        var local = moment.unix(timestamp).toDate();
+        document.write(moment(local).format('YYYY-MM-DD HH:mm:ss Z'));
     }
     function editEntityForm(id) {
         $.ajax({
