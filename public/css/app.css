@@ -3,3 +3,19 @@
     vertical-align: super;
     font-size: 65%;
 }
+
+.icon-list li {
+    padding: 0 0 5px 20px;
+    display: block;
+    position: relative;
+}
+.icon-list li:before {
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    font-size: 80%;
+}
+.error-list li:before {
+    content: '\e090';
+}

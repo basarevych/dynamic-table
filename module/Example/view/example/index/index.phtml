@@ -109,7 +109,15 @@ function formatNumber($number)
                                     printDateTime(<?= ($dt = $entity->getValueDatetime()) ? $dt->getTimestamp() : 'null' ?>);
                                 </script>
                             </td>
-                            <td>
+                            <td style="width: 1px; white-space: nowrap;">
+                                <button type="button" class="btn btn-default btn-xs"
+                                        onclick="editEntityForm(<?= $entity->getId() ?>)">
+                                    <?= $this->translate('Edit') ?>
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs"
+                                        onclick="deleteEntityForm(<?= $entity->getId() ?>)">
+                                    <?= $this->translate('Delete') ?>
+                                </button>
                             </td>
                     <?php endforeach ?>
                 </tbody>

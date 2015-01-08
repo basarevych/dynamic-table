@@ -114,7 +114,7 @@ function validateFormField(element) {
                 group.addClass('has-error');
 
                 var newBlock = $('<div class="help-block"></div>');
-                var ul = $('<ul></ul>');
+                var ul = $('<ul class="list-unstyled icon-list error-list"></ul>');
                 $.each(validation['messages'], function (index, item) {
                     $('<li></li>')
                         .text(item)
