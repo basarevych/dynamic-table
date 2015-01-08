@@ -4,6 +4,8 @@ namespace ExampleTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use Zend\Dom\Document;
+use Zend\Dom\Query;
+use Zend\Http\Request as HttpRequest;
 use PHPUnit_Framework_ExpectationFailedException;
 use Webfactory\Doctrine\ORMTestInfrastructure\ORMInfrastructure;
 use Application\Entity\Sample as SampleEntity;
@@ -16,6 +18,8 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
+        \Locale::setDefault('en_US');
+
         $this->setApplicationConfig(require 'config/application.config.php');
 
         parent::setUp();
@@ -64,6 +68,133 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*printDateTime\(' . $dt->getTimestamp() . '\);\s*$/m');
         $this->assertQuery('button[onclick="editEntityForm(1)"]');
         $this->assertQuery('button[onclick="deleteEntityForm(1)"]');
+    }
+
+    public function testEditFormActionCanBeAccessed()
+    {
+        $this->dispatch('/example/index/edit-form');
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('example');
+        $this->assertControllerName('example\controller\index');
+        $this->assertControllerClass('IndexController');
+        $this->assertMatchedRouteName('example');
+    }
+
+    public function testEditFormActionCreatesEntity()
+    {
+        $this->dispatch('/example/index/edit-form');
+        $this->assertResponseStatusCode(200);
+
+        $response = $this->getResponse();
+        $dom = new Query($response->getContent());
+        $result = $dom->execute('input[name="security"]');
+        $security = count($result) ? $result[0]->getAttribute('value') : null;
+
+        $dtString = '2010-10-10 15:00:00 +02:00';
+        $postParams = [
+            'security'  => $security,
+            'string'    => 'new string',
+            'integer'   => '9,000',
+            'float'     => '0.42',
+            'boolean'   => 1,
+            'datetime'  => $dtString
+        ];
+
+        $this->dispatch('/example/index/edit-form', HttpRequest::METHOD_POST, $postParams);
+        $this->assertResponseStatusCode(200);
+
+        $all = $this->repository->findAll();
+
+        $this->assertEquals(1, count($all), "Entity was not created");
+        $this->assertEquals('new string', $all[0]->getValueString(), "String field is invalid");
+        $this->assertEquals(9000, $all[0]->getValueInteger(), "Integer field is invalid");
+        $this->assertEquals(0.42, $all[0]->getValueFloat(), "Float field is invalid");
+        $this->assertEquals(true, $all[0]->getValueBoolean(), "Boolean field is invalid");
+        $this->assertEquals(new \DateTime($dtString), $all[0]->getValueDatetime(), "DateTimefield is invalid");
+    }
+
+    public function testEditFormActionModifiesEntity()
+    {
+        $a = new SampleEntity();
+        $a->setValueString('old');
+
+        $this->infrastructure->import([ $a ]);
+
+        $this->dispatch('/example/index/edit-form?id=' . $a->getId());
+        $this->assertResponseStatusCode(200);
+
+        $response = $this->getResponse();
+        $dom = new Query($response->getContent());
+        $result = $dom->execute('input[name="security"]');
+        $security = count($result) ? $result[0]->getAttribute('value') : null;
+
+        $dtString = '2010-10-10 15:00:00 +02:00';
+        $postParams = [
+            'security'  => $security,
+            'id'        => $a->getId(),
+            'string'    => 'new string',
+            'integer'   => '9,000',
+            'float'     => '0.42',
+            'boolean'   => 1,
+            'datetime'  => $dtString
+        ];
+
+        $this->dispatch('/example/index/edit-form', HttpRequest::METHOD_POST, $postParams);
+        $this->assertResponseStatusCode(200);
+
+        $all = $this->repository->findAll();
+
+        $this->assertEquals(1, count($all), "Entity was not found");
+        $this->assertEquals('new string', $all[0]->getValueString(), "String field is invalid");
+        $this->assertEquals(9000, $all[0]->getValueInteger(), "Integer field is invalid");
+        $this->assertEquals(0.42, $all[0]->getValueFloat(), "Float field is invalid");
+        $this->assertEquals(true, $all[0]->getValueBoolean(), "Boolean field is invalid");
+        $this->assertEquals(new \DateTime($dtString), $all[0]->getValueDatetime(), "DateTimefield is invalid");
+    }
+
+    public function testDeleteFormActionCanBeAccessed()
+    {
+        $a = new SampleEntity();
+        $a->setValueString('old');
+
+        $this->infrastructure->import([ $a ]);
+
+        $this->dispatch('/example/index/delete-form?id=' . $a->getId());
+        $this->assertResponseStatusCode(200);
+
+        $this->assertModuleName('example');
+        $this->assertControllerName('example\controller\index');
+        $this->assertControllerClass('IndexController');
+        $this->assertMatchedRouteName('example');
+    }
+
+    public function testDeleteFormActionDeletesEntity()
+    {
+        $a = new SampleEntity();
+        $a->setValueString('old');
+
+        $this->infrastructure->import([ $a ]);
+
+        $this->dispatch('/example/index/delete-form?id=' . $a->getId());
+        $this->assertResponseStatusCode(200);
+
+        $response = $this->getResponse();
+        $dom = new Query($response->getContent());
+        $result = $dom->execute('input[name="security"]');
+        $security = count($result) ? $result[0]->getAttribute('value') : null;
+
+        $postParams = [
+            'security'  => $security,
+            'id'        => $a->getId(),
+        ];
+
+        $this->dispatch('/example/index/delete-form', HttpRequest::METHOD_POST, $postParams);
+        $this->assertResponseStatusCode(200);
+
+        $all = $this->repository->findAll();
+
+        $this->assertEquals(0, count($all), "Entity was not deleted");
     }
 
     private function assertQueryContentRegexAtLeastOnce($path, $pattern, $useXpath = false)

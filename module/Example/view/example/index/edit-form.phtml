@@ -40,7 +40,7 @@ $datetime = $form->get('datetime');
     <?php endforeach ?>
 
     <?php $valid = count($string->getMessages()) == 0 ?>
-    <div class="form-group <?= $valid ?: 'has-error' ?>">
+    <div class="form-group <?= $valid ? '' : 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $string->getName() ?>">
             <?= $this->escapeHtml($this->translate($string->getLabel())) ?>:
             <span class="required-marker text-danger">
@@ -65,7 +65,7 @@ $datetime = $form->get('datetime');
     </div>
 
     <?php $valid = count($integer->getMessages()) == 0 ?>
-    <div class="form-group <?= $valid ?: 'has-error' ?>">
+    <div class="form-group <?= $valid ? '' : 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $integer->getName() ?>">
             <?= $this->escapeHtml($this->translate($integer->getLabel())) ?>:
         </label>
@@ -87,7 +87,7 @@ $datetime = $form->get('datetime');
     </div>
 
     <?php $valid = count($float->getMessages()) == 0 ?>
-    <div class="form-group <?= $valid ?: 'has-error' ?>">
+    <div class="form-group <?= $valid ? '' : 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $float->getName() ?>">
             <?= $this->escapeHtml($this->translate($float->getLabel())) ?>:
         </label>
@@ -129,7 +129,7 @@ $datetime = $form->get('datetime');
     </div>
 
     <?php $valid = count($datetime->getMessages()) == 0 ?>
-    <div class="form-group <?= $valid ?: 'has-error' ?>">
+    <div class="form-group <?= $valid ? '' : 'has-error' ?>">
         <label class="col-sm-4 control-label" for="<?= $datetime->getName() ?>">
             <?= $this->escapeHtml($this->translate($datetime->getLabel())) ?>:
         </label>

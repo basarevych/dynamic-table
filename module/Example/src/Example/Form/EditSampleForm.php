@@ -116,10 +116,12 @@ class EditSampleForm extends Form
              ->setBreakOnFailure(false);
         $filter->add($csrf);
 
-        $id = new Input('id');
-        $id->setRequired(true)
-           ->setBreakOnFailure(false);
-        $filter->add($id);
+        if ($this->id) {
+            $id = new Input('id');
+            $id->setRequired(true)
+               ->setBreakOnFailure(false);
+            $filter->add($id);
+        }
 
         $params = [
             'entityManager' => $this->em,
