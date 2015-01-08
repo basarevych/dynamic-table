@@ -1,13 +1,14 @@
 <?php
 
-function formatNumber($number)
-{
-    if ($number === null)
-        return '';
+if (!function_exists('formatNumber')) { // make phpunit happy
+    function formatNumber($number) {
+        if ($number === null)
+            return '';
 
-    $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
-    $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 6);
-    return $fmt->format($number);
+        $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+        $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 6);
+        return $fmt->format($number);
+    }
 }
 
 ?>
