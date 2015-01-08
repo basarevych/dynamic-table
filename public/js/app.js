@@ -32,6 +32,8 @@ function setFormFocus(form) {
 }
 
 /*
+    Validate a field (server-side).
+
     We expect the form to be created like this:
     <form action="the/action/here">
         <div class="form-group">
@@ -48,7 +50,7 @@ function setFormFocus(form) {
     The following will validate the field and display errors in the help-block div:
     validateFormField($('#my-input'));
         
-    Validation request is sent as GET to form 'action' attribute with the following data:
+    Validation request is sent as GET to form 'action' address with the following data:
     {
         query: 'validate',
         name: 'my-input',
@@ -124,5 +126,48 @@ function validateFormField(element) {
                 helpBlock.replaceWith(newBlock);
             }
         },
+    });
+}
+
+/*
+    This function will install event handlers for the form:
+    * 'submit' buttons will ajaxSubmit() the form
+    * Fields with class 'validate-me' will be validated on focus change
+    * If focus is set to 'cancel-validation' class element, validation will not run
+*/
+function initModalForm(modal)
+{
+    modal.find('button[type=submit]')
+        .off('click')
+        .on('click', function () {
+            modal.find('form').ajaxSubmit({ // jQuery form plugin
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+        });
+
+    modal.find('.validate-me')
+         .off('focusout')
+         .on('focusout', function () {
+            $(this).data('dirty', true);    // On loosing focus mark field to be validated
+         });
+
+    modal.find('.cancel-validation')
+         .off('focusin')
+         .on('focusin', function () {
+            return false;                   // Stop the bubble
+         });
+
+    // Validate dirty fields on focus change
+    modal.on('focusin', function () {
+        modal.find('.validate-me')
+             .each(function (index, element) {
+                var el = $(element);
+                if (el.data('dirty')) {
+                    el.data('dirty', false);
+                    validateFormField(el);
+                }
+             });
     });
 }

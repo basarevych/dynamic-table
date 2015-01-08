@@ -47,24 +47,13 @@ function formatNumber($number)
                 <button type="button" class="cancel-validation btn btn-default" data-dismiss="modal">
                     <?= $this->translate('Cancel') ?>
                 </button>
-                <button id="submit-form" type="button" class="cancel-validation btn btn-primary">
+                <button type="submit" class="cancel-validation btn btn-primary">
                     <?= $this->translate('Submit') ?>
                 </button>
             </div>
         </div>
     </div>
 </div>
-<script>
-    var modal = $('#modal-form');
-    $('#submit-form')
-        .on('click', function () {
-            modal.find('form').ajaxSubmit({
-                success: function (data) {
-                    modal.find('.modal-body').html(data);
-                }
-            });
-        });
-</script>
 
 <div class="container">
     <div class="row">
