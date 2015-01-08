@@ -20,7 +20,7 @@ use Zend\Validator\AbstractValidator;
  * @category    Application
  * @package     Validator
  */
-class IsFloat extends AbstractValidator
+class Float extends AbstractValidator
 {
     /**
      * @const NOT_FLOAT

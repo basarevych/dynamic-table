@@ -34,4 +34,14 @@ return [
 
     // EntityNotExists validator
     'Value is already in the database' => 'Value is already in the database',
+
+    // Float validator
+    'Value is not a float number' => 'Value is not a float number',
+
+    // Integer validator
+    'Value is not an integer number' => 'Value is not an integer number',
+
+    // Date validator
+    'The input does not appear to be a valid date' => 'The input does not appear to be a valid date',
+    'The input does not fit the date format \'%format%\'' => 'The input does not fit the date format \'%format%\'',
 ];

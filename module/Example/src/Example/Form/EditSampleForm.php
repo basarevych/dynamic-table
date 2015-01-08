@@ -17,8 +17,8 @@ use Zend\Filter;
 use Zend\Validator;
 use Doctrine\ORM\EntityManager;
 use Application\Validator\EntityNotExists;
-use Application\Validator\IsInteger;
-use Application\Validator\IsFloat;
+use Application\Validator\Integer;
+use Application\Validator\Float;
 use Application\Filter\LocaleFormattedNumber;
 
 /**
@@ -135,7 +135,7 @@ class EditSampleForm extends Form
                 ->attach(new Filter\StringTrim())
                 ->attach(new LocaleFormattedNumber());
         $integer->getValidatorChain()
-                ->attach(new IsInteger());
+                ->attach(new Integer());
         $filter->add($integer);
 
         $float = new Input('float');
@@ -145,7 +145,7 @@ class EditSampleForm extends Form
               ->attach(new Filter\StringTrim())
               ->attach(new LocaleFormattedNumber());
         $float->getValidatorChain()
-               ->attach(new IsFloat());
+               ->attach(new Float());
         $filter->add($float);
 
         $boolean = new Input('boolean');

@@ -20,7 +20,7 @@ use Zend\Validator\AbstractValidator;
  * @category    Application
  * @package     Validator
  */
-class IsInteger extends AbstractValidator
+class Integer extends AbstractValidator
 {
     /**
      * @const NOT_INTEGER
