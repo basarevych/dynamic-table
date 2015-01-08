@@ -19,6 +19,7 @@ function formatNumber($number)
         var local = moment.unix(timestamp).toDate();
         document.write(moment(local).format('YYYY-MM-DD HH:mm:ss Z'));
     }
+
     function editEntityForm(id) {
         $.ajax({
             url: '<?= $this->basePath('/example/index/edit-form') ?>',
@@ -32,11 +33,26 @@ function formatNumber($number)
                         ? '<?= $this->translate('Create entity') ?>'
                         : '<?= $this->translate('Edit entity') ?>'
                 );
-                modal.find('#submit-form').text(
+                modal.find('button[type=submit]').text(
                     typeof id == 'undefined'
                         ? '<?= $this->translate('Create') ?>'
                         : '<?= $this->translate('Save changes') ?>'
                 );
+                modal.find('.modal-body').html(html);
+            }
+        });
+    }
+
+    function deleteEntityForm(id) {
+        $.ajax({
+            url: '<?= $this->basePath('/example/index/delete-form') ?>',
+            data: {
+                id: id
+            },
+            success: function (html) {
+                var modal = $('#modal-form');
+                modal.find('.modal-title').text('<?= $this->translate('Delete entity') ?>');
+                modal.find('button[type=submit]').text('<?= $this->translate('Delete') ?>');
                 modal.find('.modal-body').html(html);
             }
         });

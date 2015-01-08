@@ -14,6 +14,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Application\Exception\NotFoundException;
 use Application\Entity\Sample as SampleEntity;
+use Application\Form\ConfirmForm;
 use Example\Form\EditSampleForm;
 
 /**
@@ -142,27 +143,49 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Validate entity form field action
+     * Delete entity form action
      */
-    public function validateEditFormAction()
+    public function deleteFormAction()
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $name = $this->params()->fromQuery('name');
-        $value = $this->params()->fromQuery('value');
+        $entity = null;
+        $id = $this->params()->fromQuery('id');
+        if (!$id)
+            $id = $this->params()->fromPost('id');
 
-        $form = new EditSampleForm($em);
-        $form->setData([ $name => $value ]);
-        $form->isValid();
+        $entity = $em->getRepository('Application\Entity\Sample')
+                     ->find($id);
+        if (!$entity)
+            throw new NotFoundException('Wrong ID');
 
-        $control = $form->get($name);
-        $messages = $control->getMessages();
+        $script = null;
+        $form = new ConfirmForm();
+        $messages = [];
 
-        return new JsonModel([
-            'valid'     => (count($messages) == 0),
-            'messages'  => array_values($messages),
+        $request = $this->getRequest();
+        if ($request->isPost()) {  // Handle form submission
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $em->remove($entity);
+                $em->flush();
+
+                $script = "$('#modal-form').modal('hide'); window.location.reload()";
+            }
+        } else if ($entity) {       // Load initial form values
+            $form->setData([ 'id' => $entity->getId() ]);
+        }
+
+        $model = new ViewModel([
+            'name'      => $entity->getValueString(),
+            'script'    => $script,
+            'form'      => $form,
+            'messages'  => $messages,
         ]);
+        $model->setTerminal(true);
+        return $model;
     }
 
     /**

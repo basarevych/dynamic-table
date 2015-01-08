@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Example\Form;
+namespace Application\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
@@ -17,12 +17,12 @@ use Zend\Filter;
 use Zend\Validator;
 
 /**
- * Simple form with no elements
+ * Confirmation dialog form
  *
  * @category    Admin
  * @package     Form
  */
-class NoticeForm extends Form
+class ConfirmForm extends Form
 {
     /**
      * The input filter
@@ -44,6 +44,9 @@ class NoticeForm extends Form
 
         $csrf = new Element\Csrf('security');
         $this->add($csrf);
+
+        $id = new Element\Hidden('id');
+        $this->add($id);
     }
 
     /**
@@ -62,6 +65,11 @@ class NoticeForm extends Form
         $csrf->setRequired(true)
              ->setBreakOnFailure(false);
         $filter->add($csrf);
+
+        $id = new Input('id');
+        $id->setRequired(true)
+           ->setBreakOnFailure(false);
+        $filter->add($id);
 
         $this->inputFilter = $filter;
         return $filter;

@@ -14,4 +14,6 @@ return [
     // Index forms
     'Create entity' => 'Create entity',
     'Edit entity' => 'Edit entity',
+    'Delete entity' => 'Delete entity',
+    'CONFIRM_SAMPLE_DELETE' => 'Do you confirm deletion of entity "%s"?',
 ];
