@@ -26,6 +26,7 @@ class SampleTest extends PHPUnit_Framework_TestCase
     public function testRemoveAll()
     {
         $a = new SampleEntity();
+        $a->setValueString('foo');
 
         $this->infrastructure->import([ $a ]);
 

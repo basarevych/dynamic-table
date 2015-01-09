@@ -50,8 +50,8 @@
                 + '"></span>';
         }
         if (row['datetime'] != null) {
-            var m = moment(row['datetime'] * 1000);
-            row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
+            var m = moment.unix(row['datetime']).local();
+            row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss Z');
         }
 
         return row;

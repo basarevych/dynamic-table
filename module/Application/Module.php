@@ -51,9 +51,12 @@ class Module
 
         // Initialize locale
         $locale = $this->getPreferredLocale($serviceManager);
+        $fallback = $this->getDefaultLocale($serviceManager);
         if ($locale) {
             $translator->setLocale($locale);
+            $translator->setFallbackLocale($fallback);
             locale_set_default($locale);
+            setlocale(LC_ALL, $locale . '.UTF-8');
         }
 
         // Start session
@@ -104,6 +107,23 @@ class Module
     }
 
     /**
+     * Returns defaut locale
+     *
+     * @param ServiceLocatorInterface $sl
+     * @return string
+     */
+    protected function getDefaultLocale($sl)
+    {
+        $config = $sl->get('Config');
+        if (!isset($config['translator']))
+            throw new \Exception('No "translator" section in the config');
+        if (!isset($config['translator']['default']))
+            throw new \Exception('No "default" section in translator config');
+
+        return $config['translator']['default'];
+    }
+
+    /**
      * Detects current locale using HTTP Accept-Language
      *
      * @param ServiceLocatorInterface $sl
@@ -116,8 +136,6 @@ class Module
             throw new \Exception('No "translator" section in the config');
         if (!isset($config['translator']['locales']))
             throw new \Exception('No "locales" section in translator config');
-        if (!isset($config['translator']['default']))
-            throw new \Exception('No "default" section in translator config');
 
         $supportedLocales = array_unique($config['translator']['locales']);
         $request = $sl->get('Request');
@@ -134,6 +152,6 @@ class Module
             }
         }
 
-        return $config['translator']['default'];
+        return $this->getDefaultLocale($sl);
     }
 }

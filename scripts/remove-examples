@@ -1,0 +1,19 @@
+#!/bin/sh
+
+echo "=> Deleting Example module directory"
+rm -rf module/Example
+
+echo "=> Updating application.config.php"
+sed -i '' "/'Example'/d" config/application.config.php
+
+echo "=> Removing Sample entity and repository"
+rm -f "module/Application/src/Application/Entity/Sample.php"
+rm -f "module/Application/src/Application/Repository/Sample.php"
+rm -f "module/Application/test/ApplicationTest/Repository/SampleTest.php"
+
+echo "=> Updating PHPUnit config"
+sed -i '' "/'ExampleTest'/d" test/Bootstrap.php
+sed -i '' "/module\/Example\/test\/ExampleTest/d" test/phpunit.xml.dist
+
+echo
+echo "All done. Remove database schema and rewrite console action populate-db yourself"

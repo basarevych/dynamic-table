@@ -250,12 +250,4 @@ class IndexController extends AbstractActionController
         $table->setAdapter($adapter);
         $table->setMapper($mapper);
     }
-
-    /**
-     * This action is called when requested action is not found
-     */
-    public function notFoundAction()
-    {
-        throw new \Application\Exception\NotFoundException('Action is not found');
-    }
 }
