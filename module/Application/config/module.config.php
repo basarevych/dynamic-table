@@ -9,7 +9,7 @@ return [
     ],
 
     'view_manager' => [
-        'doctype'                  => 'HTML5',
+        'doctype' => 'HTML5',
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
