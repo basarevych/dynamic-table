@@ -17,8 +17,8 @@ if (!function_exists('formatNumber')) { // make phpunit happy
         if (timestamp == null)
             return;
 
-        var local = moment.unix(timestamp).toDate();
-        document.write(moment(local).format('YYYY-MM-DD HH:mm:ss Z'));
+        var local = moment.unix(timestamp).local();
+        document.write(local.format('YYYY-MM-DD HH:mm:ss Z'));
     }
 
     function editEntityForm(id) {
