@@ -13,6 +13,11 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
+        if (!class_exists('Application\Entity\Sample')) {
+            $this->markTestSkipped('Sample entity test is removed');
+            return;
+        }
+
         $this->infrastructure = new ORMInfrastructure([
             '\Application\Entity\Sample',
         ]);
@@ -22,6 +27,11 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
 
     public function testOnExistingEntity()
     {
+        if (!class_exists('Application\Entity\Sample')) {
+            $this->markTestSkipped('Sample entity test is removed');
+            return;
+        }
+
         $a = new SampleEntity($em);
         $a->setValueString('foo');
 
@@ -49,6 +59,11 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
 
     public function testOnNonExistingEntity()
     {
+        if (!class_exists('Application\Entity\Sample')) {
+            $this->markTestSkipped('Sample entity test is removed');
+            return;
+        }
+
         $validator = new EntityNotExists([
             'entityManager' => $this->em,
             'entity'        => 'Application\Entity\Sample',

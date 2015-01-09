@@ -24,11 +24,13 @@ class ConsoleControllerTest extends AbstractConsoleControllerTestCase
         $moduleManager = $this->getApplicationServiceLocator()->get('ModuleManager');
         $moduleManager->loadModules();
 
-        $this->infrastructure = new ORMInfrastructure([
-            '\Application\Entity\Sample',
-        ]);
-        $this->repository = $this->infrastructure->getRepository('Application\Entity\Sample');
-        $this->em = $this->infrastructure->getEntityManager();
+        if (class_exists('Application\Entity\Sample')) {
+            $this->infrastructure = new ORMInfrastructure([
+                '\Application\Entity\Sample',
+            ]);
+            $this->repository = $this->infrastructure->getRepository('Application\Entity\Sample');
+            $this->em = $this->infrastructure->getEntityManager();
+        }
 
         $sl = $this->getApplicationServiceLocator();
         $sl->setAllowOverride(true);
@@ -48,6 +50,11 @@ class ConsoleControllerTest extends AbstractConsoleControllerTestCase
 
     public function testPopulateDbActionCanBeAccessed()
     {
+        if (!class_exists('Application\Entity\Sample')) {
+            $this->markTestSkipped('Sample entity test is removed');
+            return;
+        }
+
         $this->dispatch('populate-db');
         $this->assertResponseStatusCode(0);
 
@@ -59,6 +66,11 @@ class ConsoleControllerTest extends AbstractConsoleControllerTestCase
 
     public function testPopulateDbActionCreatesEntities()
     {
+        if (!class_exists('Application\Entity\Sample')) {
+            $this->markTestSkipped('Sample entity test is removed');
+            return;
+        }
+
         $this->dispatch('populate-db');
 
         $all = $this->repository->findAll();
