@@ -51,17 +51,14 @@ class IndexController extends AbstractActionController
 
         // Handle validate request
         if ($this->params()->fromQuery('query') == 'validate') {
-            $name = $this->params()->fromQuery('name');
-            $value = $this->params()->fromQuery('value');
-            $hidden = $this->params()->fromQuery('hidden');
+            $field = $this->params()->fromQuery('field');
+            $data = $this->params()->fromQuery('form');
 
-            $data = array_merge([ $name => $value ], $hidden);
-
-            $form = new EditSampleForm($em, $hidden['id']);
+            $form = new EditSampleForm($em, @$data['id']);
             $form->setData($data);
             $form->isValid();
 
-            $control = $form->get($name);
+            $control = $form->get($field);
             $messages = $control->getMessages();
 
             return new JsonModel([
