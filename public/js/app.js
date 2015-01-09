@@ -53,14 +53,15 @@ function setFormFocus(form) {
     Validation request is sent as GET to form 'action' address with the following data:
     {
         query: 'validate',
-        name: 'my-input',
-        value: 'the current value of the input',
-        hidden: {
-            security: 'scrf value',
-            id: 123
+        field: 'my-input',
+        form: {
+            'security': 'scrf value',
+            'my-input': 'the value',
+            'id': '123',
+            // ... rest of the form controls
         }
     }
-    'hidden' field here is all the form input[type=hidden].
+    'field' field is the name of the control to be validated, 'form' field is all the form controls.
 
     When the field is valid the server should respond with json data:
     {
@@ -90,13 +91,17 @@ function validateFormField(element) {
             hidden[el.attr('name')] = el.val();
         });
 
+    var data = {};
+    $.each(form.serializeArray(), function (index, item) {
+        data[item['name']] = item['value'];
+    });
+
     $.ajax({
         url: form.attr('action'),
         data: {
             query: 'validate',
-            name: name,
-            value: value,
-            hidden: hidden
+            field: name,
+            form: data
         },
         success: function (data) {
             var validation = form.data('validation-' + name);
