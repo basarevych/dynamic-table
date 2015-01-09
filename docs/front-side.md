@@ -65,7 +65,7 @@ Front side is a jQuery plugin.
                 + '"></span>';
         }
         if (row['datetime'] != null) {  // DateTime is transmitted as UNIX timestamp
-            var m = moment(row['datetime'] * 1000);
+            var m = moment.unix(row['datetime']).local();
             row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
         }
 
