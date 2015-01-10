@@ -15,11 +15,17 @@ echo "=> Updating PHPUnit config"
 sed -i '' "/'ExampleTest'/d" test/Bootstrap.php
 sed -i '' "/module\/Example\/test\/ExampleTest/d" test/phpunit.xml.dist
 
-echo "=> Emptying app.js and app.css"
-rm public/js/app.js
-touch public/js/app.js
-rm public/css/app.css
-touch public/css/app.css
+echo
+echo -n "==> Do you want to clear app.js and app.css? [y/n] "
+read input
+
+if [ "$input" = "y" ]; then
+    echo "=> Emptying app.js and app.css"
+    rm public/js/app.js
+    touch public/js/app.js
+    rm public/css/app.css
+    touch public/css/app.css
+fi
 
 echo
 echo "All done. Remove database schema and rewrite console action populate-db yourself"
