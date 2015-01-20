@@ -29,6 +29,49 @@
     </head>
     <body>
 
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#layout-navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="javascript:void(0)"><?= $this->translate('APP_TITLE') ?></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="layout-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <?php $short = substr($this->locale['current'], 0, 2); ?>
+                            <img src="<?= $this->basePath('/img/flags/' . $short . '.gif') ?>">
+                            <?= $short ?>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <?php foreach ($this->locale['available'] as $locale): ?>
+                                <li>
+                                    <a href="javascript:void(0)" onclick="$.cookie('locale', '<?= $locale ?>'); window.location.reload()">
+                                        <span class="glyphicon glyphicon-ok <?= $this->locale['cookie'] == $locale ?: 'invisible' ?>"></span>
+                                        <?= $this->translate($locale) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach ?>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:void(0)" onclick="$.removeCookie('locale'); window.location.reload()">
+                                    <span class="glyphicon glyphicon-ok <?= $this->locale['cookie'] == '' ?: 'invisible' ?>"></span>
+                                    <?= $this->translate('Autodetect') ?>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 <?= $this->content; ?>
 
 <?= $this->inlineScript() ?>

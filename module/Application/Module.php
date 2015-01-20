@@ -37,6 +37,7 @@ class Module
         $serviceManager = $e->getApplication()->getServiceManager();
         $translator     = $serviceManager->get('translator');
         $session        = $serviceManager->get('Session');
+        $config         = $serviceManager->get('Config');
 
         // Attach global strategies
         $serviceManager->get('ErrorStrategy')->attach($eventManager);
@@ -58,6 +59,14 @@ class Module
             locale_set_default($locale);
             setlocale(LC_ALL, $locale . '.UTF-8');
         }
+
+        $cookie = $serviceManager->get('Request')->getHeaders()->get('Cookie');
+        $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
+        $viewModel->locale = [
+            'current'   => $locale,
+            'cookie'    => $cookie->offsetExists('locale') ? $cookie->locale : '',
+            'available' => array_unique($config['translator']['locales']),
+        ];
 
         // Start session
         $session->start();
@@ -138,6 +147,14 @@ class Module
             throw new \Exception('No "locales" section in translator config');
 
         $supportedLocales = array_unique($config['translator']['locales']);
+
+        $cookie = $sl->get('Request')->getHeaders()->get('Cookie');
+        if ($cookie->offsetExists('locale')) {
+            $requested = $cookie->locale;
+            if (in_array($requested, $supportedLocales))
+                return $requested;
+        }
+
         $request = $sl->get('Request');
         if ($request instanceof HttpRequest) {
             $headers = $request->getHeaders();

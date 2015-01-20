@@ -19,6 +19,7 @@ module.exports = function(grunt) {
                 src: [
                     'bower_components/jquery/dist/jquery.js',
                     'bower_components/jquery-form/jquery.form.js',
+                    'bower_components/jquery.cookie/jquery.cookie.js',
                     'bower_components/moment/min/moment-with-locales.js',
                     'bower_components/bootstrap/dist/js/bootstrap.js',
                     'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
