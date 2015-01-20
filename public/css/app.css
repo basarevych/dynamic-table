@@ -1,3 +1,11 @@
+body {
+    padding-top: 60px;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
 .required-marker {
     display: block;
     vertical-align: super;

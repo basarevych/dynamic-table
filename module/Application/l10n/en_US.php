@@ -1,7 +1,10 @@
 <?php
 
 return [
+    // Layouts
     'APP_TITLE' => 'ZF2 Skeleton',
+    'en_US' => 'English (en_US)',
+    'Autodetect' => 'Autodetect',
 
     // Errors
     'Please try again later' => 'Please try again later',
