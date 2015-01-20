@@ -64,7 +64,7 @@ class Module
         $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
         $viewModel->locale = [
             'current'   => $locale,
-            'cookie'    => $cookie->offsetExists('locale') ? $cookie->locale : '',
+            'cookie'    => ($cookie && $cookie->offsetExists('locale')) ? $cookie->locale : '',
             'available' => array_unique($config['translator']['locales']),
         ];
 
@@ -149,7 +149,7 @@ class Module
         $supportedLocales = array_unique($config['translator']['locales']);
 
         $cookie = $sl->get('Request')->getHeaders()->get('Cookie');
-        if ($cookie->offsetExists('locale')) {
+        if ($cookie && $cookie->offsetExists('locale')) {
             $requested = $cookie->locale;
             if (in_array($requested, $supportedLocales))
                 return $requested;
