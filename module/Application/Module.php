@@ -60,7 +60,11 @@ class Module
             setlocale(LC_ALL, $locale . '.UTF-8');
         }
 
-        $cookie = $serviceManager->get('Request')->getHeaders()->get('Cookie');
+        $cookie = null;
+        $request = $serviceManager->get('Request');
+        if ($request instanceof HttpRequest)
+            $cookie = $request->getHeaders()->get('Cookie');
+
         $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
         $viewModel->locale = [
             'current'   => $locale,
@@ -148,16 +152,17 @@ class Module
 
         $supportedLocales = array_unique($config['translator']['locales']);
 
-        $cookie = $sl->get('Request')->getHeaders()->get('Cookie');
-        if ($cookie && $cookie->offsetExists('locale')) {
-            $requested = $cookie->locale;
-            if (in_array($requested, $supportedLocales))
-                return $requested;
-        }
-
         $request = $sl->get('Request');
         if ($request instanceof HttpRequest) {
             $headers = $request->getHeaders();
+
+            $cookie = $headers->get('Cookie');
+            if ($cookie && $cookie->offsetExists('locale')) {
+                $requested = $cookie->locale;
+                if (in_array($requested, $supportedLocales))
+                    return $requested;
+            }
+
             $accept = $headers->get('Accept-Language');
             if ($accept) {
                 $requested = $accept->getPrioritized();
