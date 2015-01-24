@@ -11,6 +11,16 @@ $(document).on('keypress', '[data-on-enter]', function (e) {
 });
 
 /*
+    Example: <input data-on-blur="alert($(this).val())">
+
+    0.5 s delayed alert when focus leaves the input
+*/
+$(document).on('blur', '[data-on-blur]', function (e) {
+    var code = $(this).attr('data-on-blur');
+    setTimeout(function () { eval(code); }, 500);
+});
+
+/*
     This will initiate focus for the form
 */
 function setFormFocus(form) {
@@ -150,8 +160,6 @@ function validateFormField(element) {
 /*
     This function will install event handlers for the modal ajax form:
     * 'submit' buttons will ajaxSubmit() the form
-    * Fields with class 'validate-me' will be validated on focus change
-    * If focus is set to 'cancel-validation' class element, validation will not run
 */
 function initModalForm(modal)
 {
@@ -164,28 +172,4 @@ function initModalForm(modal)
                 }
             });
         });
-
-    modal.find('.validate-me')
-         .off('focusout')
-         .on('focusout', function () {
-            $(this).data('dirty', true);    // On loosing focus mark field to be validated
-         });
-
-    modal.find('.cancel-validation')
-         .off('focusin')
-         .on('focusin', function () {
-            return false;                   // Stop the bubble
-         });
-
-    // Validate dirty fields on focus change
-    modal.on('focusin', function () {
-        modal.find('.validate-me')
-             .each(function (index, element) {
-                var el = $(element);
-                if (el.data('dirty')) {
-                    el.data('dirty', false);
-                    validateFormField(el);
-                }
-             });
-    });
 }

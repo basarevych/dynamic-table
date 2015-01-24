@@ -48,10 +48,11 @@ $datetime = $form->get('datetime');
             </span>
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate-me"
+            <input type="text" class="form-control"
                    name="<?= $string->getName() ?>"
                    value="<?= $this->escapeHtml($string->getValue()) ?>"
-                   data-on-enter="$('#modal-form [name=integer]').focus()">
+                   data-on-blur="validateFormField($('#modal-form [name=<?= $string->getName() ?>]'))"
+                   data-on-enter="$('#modal-form [name=<?= $integer->getName() ?>]').focus()">
             <div class="help-block">
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
@@ -70,10 +71,11 @@ $datetime = $form->get('datetime');
             <?= $this->escapeHtml($this->translate($integer->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate-me"
+            <input type="text" class="form-control"
                    name="<?= $integer->getName() ?>"
                    value="<?= $this->escapeHtml($integer->getValue()) ?>"
-                   data-on-enter="$('#modal-form [name=float]').focus()">
+                   data-on-blur="validateFormField($('#modal-form [name=<?= $integer->getName() ?>]'))"
+                   data-on-enter="$('#modal-form [name=<?= $float->getName() ?>]').focus()">
             <div class="help-block">
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
@@ -92,10 +94,11 @@ $datetime = $form->get('datetime');
             <?= $this->escapeHtml($this->translate($float->getLabel())) ?>:
         </label>
         <div class="col-sm-8">
-            <input type="text" class="form-control validate-me"
+            <input type="text" class="form-control"
                    name="<?= $float->getName() ?>"
                    value="<?= $this->escapeHtml($float->getValue()) ?>"
-                   data-on-enter="$('#modal-form [name=boolean]').focus()">
+                   data-on-blur="validateFormField($('#modal-form [name=<?= $float->getName() ?>]'))"
+                   data-on-enter="$('#modal-form [name=<?= $boolean->getName() ?>]').focus()">
             <div class="help-block">
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
@@ -120,7 +123,7 @@ $datetime = $form->get('datetime');
                                name="<?= $boolean->getName() ?>"
                                value="<?= $this->escapeHtml($value) ?>"
                                <?= $boolean->getValue() == $value ? 'checked="checked"' : '' ?>
-                               data-on-enter="$('#modal-form [name=datetime]').focus()">
+                               data-on-enter="$('#modal-form [name=<?= $datetime->getName() ?>]').focus()">
                         <?= $this->escapeHtml($this->translate($label)) ?>
                     </label>
                 </div>
@@ -135,10 +138,11 @@ $datetime = $form->get('datetime');
         </label>
         <div class="col-sm-8">
             <div class="input-group date" id="dt-<?= $datetime->getName() ?>">
-                <input type="text" class="form-control validate-me"
+                <input type="text" class="form-control"
                        name="<?= $datetime->getName() ?>"
                        value="<?= $this->escapeHtml($datetime->getValue()) ?>"
                        data-date-format="YYYY-MM-DD HH:mm:ss Z"
+                       data-on-blur="validateFormField($('#modal-form [name=<?= $datetime->getName() ?>]'))"
                        data-on-enter="$('#modal-form button[type=submit]').focus().click()">
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
