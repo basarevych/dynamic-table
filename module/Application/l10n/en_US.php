@@ -47,4 +47,7 @@ return [
     // Date validator
     'The input does not appear to be a valid date' => 'The input does not appear to be a valid date',
     'The input does not fit the date format \'%format%\'' => 'The input does not fit the date format \'%format%\'',
+
+    // ValuesMatch validator
+    'The two values do not match' => 'The two values do not match',
 ];
