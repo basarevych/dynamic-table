@@ -1,5 +1,5 @@
 /*
-    Example: <input data-on-enter="alert($(this).val())">
+    Example: <input data-on-enter="alert('foobar')">
 
     When the user presses Enter key they will see an alert
 */
@@ -11,7 +11,7 @@ $(document).on('keypress', '[data-on-enter]', function (e) {
 });
 
 /*
-    Example: <input data-on-blur="alert($(this).val())">
+    Example: <input data-on-blur="alert('foobar')">
 
     0.5 s delayed alert when focus leaves the input
 */
