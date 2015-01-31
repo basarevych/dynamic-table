@@ -1,3 +1,34 @@
 #!/bin/sh
 
-php -S 0.0.0.0:8000 -t public public/index.php
+run_command() {
+    $@
+    if [ $? -ne 0 ]; then
+        at_exit
+        exit
+    fi
+}
+
+at_exit() {
+    kill -- -$$
+}
+
+trap at_exit SIGINT
+
+if [ "x$1" != "x" -a "x$1" != "x--watch" ]; then
+    echo "Usage: $0 [--watch]"
+    exit 1
+fi
+
+run_command php -S 0.0.0.0:8000 -t public.dev public.dev/index.php &
+
+if [ "x$1" == "x--watch" ]; then
+    cd front
+    run_command ./node_modules/.bin/grunt watch &
+fi
+
+sleep 3
+echo
+echo "Press any key to exit"
+
+read key
+at_exit

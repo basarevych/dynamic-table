@@ -25,5 +25,6 @@ fi
 
 run_command php composer.phar self-update
 run_command php composer.phar update
+cd front
 run_command npm install
 run_command node_modules/.bin/bower install
