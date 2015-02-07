@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
     <head>
         <meta charset="utf-8">
         <title>Dynamic Table</title>
@@ -16,6 +16,9 @@
         <script src="vendor/bootstrap.min.js"></script>
         <script src="vendor/bootstrap-datetimepicker.min.js"></script>
         <script src="jquery.dynamic-table.js"></script>
+
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+        <script src="app.js"></script>
     </head>
     <body>
 
@@ -34,8 +37,14 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <h3>Array-backed Dynamic Table</h3>
+            <h3>Plain jQuery Dynamic Table</h3>
             <div id="table"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12" ng-controller="ctrl">
+            <h3>AngularJS Dynamic Table</h3>
+            <dynamic-table id="table2" url="table.php" row-id-column="id" mapper="mapper"></dynamic-table>
         </div>
     </div>
 </div>

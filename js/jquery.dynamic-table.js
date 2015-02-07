@@ -1,3 +1,5 @@
+/* dynamic-table - Copyright (c) 2015 Ross Basarevych; Licensed MIT */
+
 ;(function ($, window, document, undefined) {
 
     var pluginName = "dynamicTable";

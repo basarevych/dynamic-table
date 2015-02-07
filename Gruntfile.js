@@ -12,28 +12,36 @@ module.exports = function(grunt) {
                 ' Licensed <%= pkg.license %> */\n\n',
 
         // Task configuration.
-        concat: {
-            options: {
-                banner: '<%= banner %>',
-                stripBanners: true
-            },
-            js: {
-                src: ['js/**/*.js'],
-                dest: 'dist/jquery.<%= pkg.name %>.js'
-            },
-            css: {
-                src: ['css/**/*.css'],
-                dest: 'dist/jquery.<%= pkg.name %>.css'
-            },
+        copy: {
+            main: {
+                files: [
+                    {
+                        src: 'js/jquery.<%= pkg.name %>.js',
+                        dest: 'dist/jquery.<%= pkg.name %>.js'
+                    },
+                    {
+                        src: 'css/jquery.<%= pkg.name %>.css',
+                        dest: 'dist/jquery.<%= pkg.name %>.css'
+                    },
+                    {
+                        src: 'js/angularjs.<%= pkg.name %>.js',
+                        dest: 'dist/angularjs.<%= pkg.name %>.js'
+                    },
+                ]
+            }
         },
 
         uglify: {
             options: {
                 banner: '<%= banner %>'
             },
-            dist: {
-                src: '<%= concat.js.dest %>',
+            jquery: {
+                src: 'dist/jquery.<%= pkg.name %>.js',
                 dest: 'dist/jquery.<%= pkg.name %>.min.js'
+            },
+            angularjs: {
+                src: 'dist/angularjs.<%= pkg.name %>.js',
+                dest: 'dist/angularjs.<%= pkg.name %>.min.js'
             },
         },
 
@@ -42,7 +50,7 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>'
             },
             dist: {
-                src: '<%= concat.css.dest %>',
+                src: 'dist/jquery.<%= pkg.name %>.css',
                 dest: 'dist/jquery.<%= pkg.name %>.min.css'
             }
         },
@@ -54,10 +62,10 @@ module.exports = function(grunt) {
 
     // These plugins provide necessary tasks.
     grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     // Default task.
-    grunt.registerTask('default', ['qunit', 'concat', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['qunit', 'copy', 'uglify', 'cssmin']);
 };
