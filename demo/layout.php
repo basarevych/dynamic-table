@@ -18,6 +18,7 @@
         <script src="jquery.dynamic-table.js"></script>
 
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+        <script src="angularjs.dynamic-table.js"></script>
         <script src="app.js"></script>
     </head>
     <body>
@@ -44,7 +45,7 @@
     <div class="row">
         <div class="col-lg-12" ng-controller="ctrl">
             <h3>AngularJS Dynamic Table</h3>
-            <dynamic-table id="table2" url="table.php" row-id-column="id" mapper="mapper"></dynamic-table>
+            <div id="table2" dynamic-table="table1Ctrl"></div>
         </div>
     </div>
 </div>
