@@ -16,15 +16,15 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: 'js/jquery.<%= pkg.name %>.js',
+                        src: 'src/jquery.<%= pkg.name %>.js',
                         dest: 'dist/jquery.<%= pkg.name %>.js'
                     },
                     {
-                        src: 'css/jquery.<%= pkg.name %>.css',
+                        src: 'src/jquery.<%= pkg.name %>.css',
                         dest: 'dist/jquery.<%= pkg.name %>.css'
                     },
                     {
-                        src: 'js/angularjs.<%= pkg.name %>.js',
+                        src: 'src/angularjs.<%= pkg.name %>.js',
                         dest: 'dist/angularjs.<%= pkg.name %>.js'
                     },
                 ]
