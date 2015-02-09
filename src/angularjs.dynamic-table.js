@@ -37,11 +37,19 @@ dtModule.provider('dynamicTable', function () {
         },
     };
 
-    this.$get = [ function () {
+    this.$get = [ '$filter', function ($filter) {
+        if (translationFilter) {
+            var strings = defaultOptions.strings;
+            $.each(strings, function (key, value) {
+                defaultOptions.strings[key] = $filter(translationFilter)(key);
+            });
+        }
+
         var Service = function (options) {
             this.element = null,
             this.plugin = null,
             this.options = options;
+            this.mergedOptions = options;
 
             this.init = function (element) {
                 if (this.plugin)
@@ -49,6 +57,7 @@ dtModule.provider('dynamicTable', function () {
 
                 var mergedOptions = defaultOptions;
                 $.extend(mergedOptions, options);
+                this.mergedOptions = mergedOptions;
 
                 this.element = element;
                 this.plugin = element.dynamicTable(mergedOptions);
