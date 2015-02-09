@@ -17,4 +17,4 @@ Your project must meet the [requirements](docs/requirements.md).
 
 Dynamic Table consists of two parts:
  * [server-side](docs/server-side.md) - set of PHP classes
- * and [front-side](docs/front-side.md) - jQuery plugin
+ * and [front-side](docs/front-side.md) - jQuery plugin and AngularJS wrapper for the plugin
