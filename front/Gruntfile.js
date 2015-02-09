@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                     'bower_components/moment/min/moment-with-locales.js',
                     'bower_components/bootstrap/dist/js/bootstrap.js',
                     'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
-                    '../vendor/basarevych/dynamic-table/js/jquery.dynamic-table.js',
+                    '../vendor/basarevych/dynamic-table/src/jquery.dynamic-table.js',
                 ],
                 dest: '../public.dev/js/vendor.js'
             },
@@ -86,7 +86,7 @@ module.exports = function(grunt) {
                     'bower_components/bootstrap/dist/css/bootstrap.css',
                     'bower_components/bootstrap/dist/css/bootstrap-theme.css',
                     'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
-                    '../vendor/basarevych/dynamic-table/css/jquery.dynamic-table.css',
+                    '../vendor/basarevych/dynamic-table/src/jquery.dynamic-table.css',
                 ],
                 dest: '../public.dev/css/vendor.css'
             },
