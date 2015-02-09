@@ -37,7 +37,7 @@ dtModule.provider('dynamicTable', function () {
         },
     };
 
-    this.$get = [ '$filter', function ($filter) {
+    this.$get = [ '$filter', '$rootScope', function ($filter, $rootScope) {
         if (translationFilter) {
             var strings = defaultOptions.strings;
             $.each(strings, function (key, value) {
@@ -48,8 +48,8 @@ dtModule.provider('dynamicTable', function () {
         var Service = function (options) {
             this.element = null,
             this.plugin = null,
+            this.event = null,
             this.options = options;
-            this.mergedOptions = options;
 
             this.init = function (element) {
                 if (this.plugin)
@@ -57,10 +57,28 @@ dtModule.provider('dynamicTable', function () {
 
                 var mergedOptions = defaultOptions;
                 $.extend(mergedOptions, options);
-                this.mergedOptions = mergedOptions;
+                this.options = mergedOptions;
 
                 this.element = element;
-                this.plugin = element.dynamicTable(mergedOptions);
+                this.plugin = element.dynamicTable(this.options);
+
+                var service = this;
+                element.on('dt.loading', function (e) {
+                    service.event = 'loading';
+                    $rootScope.$digest();
+                });
+                element.on('dt.loaded', function (e) {
+                    service.event = 'loaded';
+                    $rootScope.$digest();
+                });
+                element.on('dt.selected', function (e) {
+                    service.event = 'selected';
+                    $rootScope.$digest();
+                });
+                element.on('dt.deselected', function (e) {
+                    service.event = 'deselected';
+                    $rootScope.$digest();
+                });
             };
         };
  

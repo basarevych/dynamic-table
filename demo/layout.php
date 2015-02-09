@@ -21,19 +21,19 @@
         <script src="angularjs.dynamic-table.js"></script>
         <script src="app.js"></script>
     </head>
-    <body>
+    <body ng-controller="ctrl">
 
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
-            <button class="btn btn-default" onclick="$('#selected').text('Selected: ' + table.getSelected().join(', '))">
+            <button class="btn btn-default" onclick="$('#selected1').text('Selected: ' + table.getSelected().join(', '))">
                 Get selected
             </button>
-            <pre id="selected">&nbsp;</pre>
+            <pre id="selected1">&nbsp;</pre>
         </div>
         <div class="col-lg-6">
             <div>Last Event:</div>
-            <pre id="event">&nbsp;</pre>
+            <pre id="event1">&nbsp;</pre>
         </div>
     </div>
     <div class="row">
@@ -42,11 +42,23 @@
             <div id="table"></div>
         </div>
     </div>
+    <div class="row"><hr></div>
     <div class="row">
-        <div class="col-lg-12" ng-controller="ctrl">
+        <div class="col-lg-6">
+            <button class="btn btn-default" ng-click="getSelected()">
+                Get selected
+            </button>
+            <pre ng-bind="selected2">&nbsp;</pre>
+        </div>
+        <div class="col-lg-6">
+            <div>Last Event:</div>
+            <pre ng-bind="event2">&nbsp;</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <h3>AngularJS Dynamic Table</h3>
-            <div id="table2" dynamic-table="table1Ctrl"></div>
-            <div id="table3" dynamic-table="table2Ctrl"></div>
+            <div id="table2" dynamic-table="table2Ctrl"></div>
         </div>
     </div>
 </div>
@@ -71,16 +83,16 @@
     });
 
     $('#table').on('dt.loading', function (e) {
-        $('#event').text('Loading');
+        $('#event1').text('Loading');
     });
     $('#table').on('dt.loaded', function (e) {
-        $('#event').text('Loaded');
+        $('#event1').text('Loaded');
     });
     $('#table').on('dt.selected', function (e) {
-        $('#event').text('Selected');
+        $('#event1').text('Selected');
     });
     $('#table').on('dt.deselected', function (e) {
-        $('#event').text('Deselected');
+        $('#event1').text('Deselected');
     });
 </script>
 
