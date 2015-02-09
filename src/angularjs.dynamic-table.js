@@ -97,10 +97,12 @@ dtModule.directive('dynamicTable',
         return {
             restrict: 'A',
             scope: {
-                id: '@',
                 ctrl: '=dynamicTable',
             },
             link: function(scope, element, attrs) {
+                if (typeof attrs['id'] == 'undefined')
+                    console.log('DynamicTable expects id attribute to be set');
+
                 scope.ctrl.init(element);
             }
         };
