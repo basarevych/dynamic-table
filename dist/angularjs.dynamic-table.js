@@ -59,23 +59,23 @@ dtModule.provider('dynamicTable', function () {
                 $.extend(mergedOptions, options);
                 this.options = mergedOptions;
 
-                this.element = element;
-                this.plugin = element.dynamicTable(this.options);
+                this.element = $(element);
+                this.plugin = this.element.dynamicTable(this.options);
 
                 var service = this;
-                element.on('dt.loading', function (e) {
+                this.element.on('dt.loading', function (e) {
                     service.event = 'loading';
                     $rootScope.$digest();
                 });
-                element.on('dt.loaded', function (e) {
+                this.element.on('dt.loaded', function (e) {
                     service.event = 'loaded';
                     $rootScope.$digest();
                 });
-                element.on('dt.selected', function (e) {
+                this.element.on('dt.selected', function (e) {
                     service.event = 'selected';
                     $rootScope.$digest();
                 });
-                element.on('dt.deselected', function (e) {
+                this.element.on('dt.deselected', function (e) {
                     service.event = 'deselected';
                     $rootScope.$digest();
                 });
@@ -97,10 +97,12 @@ dtModule.directive('dynamicTable',
         return {
             restrict: 'A',
             scope: {
-                id: '@',
                 ctrl: '=dynamicTable',
             },
             link: function(scope, element, attrs) {
+                if (typeof attrs['id'] == 'undefined')
+                    console.log('DynamicTable expects id attribute to be set');
+
                 scope.ctrl.init(element);
             }
         };

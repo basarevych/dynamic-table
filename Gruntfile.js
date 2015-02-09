@@ -58,6 +58,27 @@ module.exports = function(grunt) {
         qunit: {
             files: ['test/qunit/**/*.html']
         },
+
+        karma: {
+            unit: {
+                configFile: 'test/karma.conf.js',
+                singleRun: true,
+                autoWatch: false,
+                options: {
+                    files: [
+                        'bower_components/jquery/dist/jquery.js',
+                        'bower_components/moment/min/moment-with-locales.js',
+                        'bower_components/bootstrap/dist/js/bootstrap.js',
+                        'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                        'bower_components/angular/angular.js',
+                        'bower_components/angular-mocks/angular-mocks.js',
+                        'src/jquery.<%= pkg.name %>.js',
+                        'src/angularjs.<%= pkg.name %>.js',
+                        'test/karma/**/*.js',
+                    ],
+                }
+            }
+        },
     });
 
     // These plugins provide necessary tasks.
@@ -65,7 +86,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-karma');
 
     // Default task.
-    grunt.registerTask('default', ['qunit', 'copy', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['qunit', 'karma', 'copy', 'uglify', 'cssmin']);
 };

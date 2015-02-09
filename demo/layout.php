@@ -15,9 +15,9 @@
         <script src="vendor/moment-with-locales.min.js"></script>
         <script src="vendor/bootstrap.min.js"></script>
         <script src="vendor/bootstrap-datetimepicker.min.js"></script>
-        <script src="jquery.dynamic-table.js"></script>
+        <script src="vendor/angular.min.js"></script>
 
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+        <script src="jquery.dynamic-table.js"></script>
         <script src="angularjs.dynamic-table.js"></script>
         <script src="app.js"></script>
     </head>
