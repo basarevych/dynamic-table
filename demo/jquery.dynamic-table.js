@@ -1,1 +1,1 @@
-../js/jquery.dynamic-table.js
+../src/jquery.dynamic-table.js

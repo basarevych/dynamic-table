@@ -46,6 +46,7 @@
         <div class="col-lg-12" ng-controller="ctrl">
             <h3>AngularJS Dynamic Table</h3>
             <div id="table2" dynamic-table="table1Ctrl"></div>
+            <div id="table3" dynamic-table="table2Ctrl"></div>
         </div>
     </div>
 </div>

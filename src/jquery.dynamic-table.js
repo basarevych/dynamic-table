@@ -18,25 +18,25 @@
             table_class: 'table table-striped table-hover table-condensed',
             loader_image: 'img/loader.gif',
             strings: {
-                BANNER_LOADING: 'Loading... Please wait',
-                BANNER_EMPTY: 'Nothing found',
-                BUTTON_PAGE_SIZE: 'Page size',
-                BUTTON_COLUMNS: 'Columns',
-                BUTTON_REFRESH: 'Refresh',
-                BUTTON_OK: 'OK',
-                BUTTON_CLEAR: 'Clear',
-                BUTTON_CANCEL: 'Cancel',
-                TITLE_FILTER_WINDOW: 'Filter',
-                LABEL_PAGE_OF_1: 'Page',
-                LABEL_PAGE_OF_2: 'of {0}',
-                LABEL_FILTER_LIKE: 'Strings like',
-                LABEL_FILTER_EQUAL: 'Values equal to',
-                LABEL_FILTER_BETWEEN_START: 'Values greater than or equal to',
-                LABEL_FILTER_BETWEEN_END: 'Values less than or equal to',
-                LABEL_FILTER_NULL: 'Include rows with empty value in this column',
-                LABEL_TRUE: 'True',
-                LABEL_FALSE: 'False',
-                DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm:ss',
+                DT_BANNER_LOADING: 'Loading... Please wait',
+                DT_BANNER_EMPTY: 'Nothing found',
+                DT_BUTTON_PAGE_SIZE: 'Page size',
+                DT_BUTTON_COLUMNS: 'Columns',
+                DT_BUTTON_REFRESH: 'Refresh',
+                DT_BUTTON_OK: 'OK',
+                DT_BUTTON_CLEAR: 'Clear',
+                DT_BUTTON_CANCEL: 'Cancel',
+                DT_TITLE_FILTER_WINDOW: 'Filter',
+                DT_LABEL_PAGE_OF_1: 'Page',
+                DT_LABEL_PAGE_OF_2: 'of #',
+                DT_LABEL_FILTER_LIKE: 'Strings like',
+                DT_LABEL_FILTER_EQUAL: 'Values equal to',
+                DT_LABEL_FILTER_BETWEEN_START: 'Values greater than or equal to',
+                DT_LABEL_FILTER_BETWEEN_END: 'Values less than or equal to',
+                DT_LABEL_FILTER_NULL: 'Include rows with empty value in this column',
+                DT_LABEL_TRUE: 'True',
+                DT_LABEL_FALSE: 'False',
+                DT_DATE_TIME_FORMAT: 'YYYY-MM-DD HH:mm:ss',
             },
         };
         this.columns = [];
@@ -247,7 +247,7 @@
         var loader = $('<div></div>');
         loader.attr('class', 'table-loader')
               .css('text-align', 'center')
-              .text(plugin.options.strings.BANNER_LOADING)
+              .text(plugin.options.strings.DT_BANNER_LOADING)
               .html(loader.html() + '<br><img src="' + plugin.options.loader_image + '"><br>')
               .appendTo(plugin.element);
     };
@@ -348,7 +348,7 @@
 
             $('<h3></h3>')
                 .attr('class', 'popover-title')
-                .text(plugin.options.strings.TITLE_FILTER_WINDOW)
+                .text(plugin.options.strings.DT_TITLE_FILTER_WINDOW)
                 .appendTo(popover);
 
             var formWrapper = $('<div></div>');
@@ -365,7 +365,7 @@
                      .appendTo(form);
 
                 $('<label></label>')
-                    .text(plugin.options.strings.LABEL_FILTER_LIKE + ':')
+                    .text(plugin.options.strings.DT_LABEL_FILTER_LIKE + ':')
                     .appendTo(group);
 
                 $('<input></input>')
@@ -388,7 +388,7 @@
 
                     var label = $('<label></label>');
                     label.html(radio)
-                         .html(label.html() + plugin.options.strings.LABEL_FALSE)
+                         .html(label.html() + plugin.options.strings.DT_LABEL_FALSE)
                          .appendTo(group);
 
                     var group = $('<div></div>');
@@ -402,7 +402,7 @@
 
                     var label = $('<label></label>');
                     label.html(radio)
-                         .html(label.html() + plugin.options.strings.LABEL_TRUE)
+                         .html(label.html() + plugin.options.strings.DT_LABEL_TRUE)
                         .appendTo(group);
                 } else if (props.type == 'datetime') {
                     var group = $('<div></div>');
@@ -410,7 +410,7 @@
                          .appendTo(form);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_EQUAL + ':')
                         .appendTo(group);
 
                     var inputGroup = $('<div></div>');
@@ -420,7 +420,7 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'equal')
-                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
+                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -441,7 +441,7 @@
                          .appendTo(form);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_EQUAL + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_EQUAL + ':')
                         .appendTo(group);
 
                     $('<input></input>')
@@ -459,7 +459,7 @@
                          .appendTo(form);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_BETWEEN_START + ':')
                         .appendTo(group);
 
                     var inputGroup = $('<div></div>');
@@ -469,7 +469,7 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'between-start')
-                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
+                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -490,7 +490,7 @@
                          .appendTo(form);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_BETWEEN_END + ':')
                         .appendTo(group);
 
                     var inputGroup = $('<div></div>');
@@ -500,7 +500,7 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'between-end')
-                         .attr('data-date-format', plugin.options.strings.DATE_TIME_FORMAT)
+                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -521,7 +521,7 @@
                          .appendTo(form);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_START + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_BETWEEN_START + ':')
                         .appendTo(group);
 
                     $('<input></input>')
@@ -531,7 +531,7 @@
                         .appendTo(group);
 
                     $('<label></label>')
-                        .text(plugin.options.strings.LABEL_FILTER_BETWEEN_END + ':')
+                        .text(plugin.options.strings.DT_LABEL_FILTER_BETWEEN_END + ':')
                         .appendTo(group);
 
                     $('<input></input>')
@@ -550,7 +550,7 @@
                 $('<label></label>')
                     .html(
                         '<input type="checkbox" data-filter="null">'
-                        + plugin.options.strings.LABEL_FILTER_NULL
+                        + plugin.options.strings.DT_LABEL_FILTER_NULL
                     )
                     .appendTo(group);
             }
@@ -558,7 +558,7 @@
             $('<button></button>')
                 .attr('type', 'submit')
                 .attr('class', 'btn btn-primary')
-                .text(plugin.options.strings.BUTTON_OK)
+                .text(plugin.options.strings.DT_BUTTON_OK)
                 .on('click', function () {
                     popover.css('display', 'none');
                     var data = {};
@@ -623,7 +623,7 @@
 
             $('<button></button>')
                 .attr('class', 'btn btn-default')
-                .text(plugin.options.strings.BUTTON_CLEAR)
+                .text(plugin.options.strings.DT_BUTTON_CLEAR)
                 .on('click', function () {
                     popover.css('display', 'none');
                     plugin.setFilters(id, {});
@@ -634,7 +634,7 @@
 
             $('<button></button>')
                 .attr('class', 'btn btn-default')
-                .text(plugin.options.strings.BUTTON_CANCEL)
+                .text(plugin.options.strings.DT_BUTTON_CANCEL)
                 .on('click', function () {
                     popover.css('display', 'none');
                 })
@@ -687,7 +687,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.BUTTON_PAGE_SIZE + ' <span class="caret"></span>')
+            .html(plugin.options.strings.DT_BUTTON_PAGE_SIZE + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -729,7 +729,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default dropdown-toggle')
             .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.BUTTON_COLUMNS + ' <span class="caret"></span>')
+            .html(plugin.options.strings.DT_BUTTON_COLUMNS + ' <span class="caret"></span>')
             .appendTo(dropdown);
 
         var list = $('<ul></ul>');
@@ -854,7 +854,7 @@
         $('<button></button>')
             .attr('class', 'btn btn-default')
             .attr('data-action', 'refresh')
-            .text(plugin.options.strings.BUTTON_REFRESH)
+            .text(plugin.options.strings.DT_BUTTON_REFRESH)
             .on('click', function () {
                 var input = plugin.element.find('tfoot input.pagination-input');
                 plugin.refresh({ page_number: input.val() });
@@ -934,10 +934,10 @@
                       .val(plugin.pageNumber);
 
         plugin.element.find('tfoot .pagination-before')
-            .text(plugin.options.strings.LABEL_PAGE_OF_1.replace('{0}', plugin.totalPages))
+            .text(plugin.options.strings.DT_LABEL_PAGE_OF_1.replace('#', plugin.totalPages))
 
         plugin.element.find('tfoot .pagination-after')
-            .text(plugin.options.strings.LABEL_PAGE_OF_2.replace('{0}', plugin.totalPages))
+            .text(plugin.options.strings.DT_LABEL_PAGE_OF_2.replace('#', plugin.totalPages))
 
         plugin.element.find('thead button.filter')
                       .removeClass('btn-primary')
@@ -1021,7 +1021,7 @@
             tbodyData.css('display', 'none');
 
             var tbodyEmpty = plugin.element.find('tbody.empty');
-            tbodyEmpty.find('td').text(plugin.options.strings.BANNER_EMPTY);
+            tbodyEmpty.find('td').text(plugin.options.strings.DT_BANNER_EMPTY);
             tbodyEmpty.css('display', 'table-row-group');
 
             return;
