@@ -279,7 +279,22 @@ Front-side - AngularJS wrapper for the plugin
   var app = angular.module('app', [ 'dynamicTable' ]);
   ```
 
-2. Instantiate table controller with the help of the **dynamicTable** service:
+2. Configure the service (optional):
+
+  ```js
+    app.config(
+        [ 'dynamicTableProvider',
+        function (dynamicTableProvider) {
+            dynamicTableProvider.setTranslationFilter('foobar');
+        } ]
+    );
+  ```
+
+  By default dynamicTable text strings are all English. You can translate them to another language by specifying *translation filter*.
+
+  If you use angular-translate replace 'foobar' with 'translate', and if you use angular-globalize-wrapper set it to 'glMessage'.
+
+3. Instantiate table controller with the help of the **dynamicTable** service:
 
   ```js
     app.controller('ctrl',
@@ -306,13 +321,13 @@ Front-side - AngularJS wrapper for the plugin
 
   **dynamicTable** service returns a function which expects jQuery plugin parameters object as its argument.
 
-3. Use **dynamic-table** directive in your template:
+4. Use **dynamic-table** directive in your template:
 
   ```html
   <div id="my-table" dynamic-table="tableCtrl"></div>
   ```
 
-4. Watch for plugin events if you need to:
+5. Watch for plugin events if you need to:
 
   ```js
     $scope.$watch('tableCtrl.event', function () {
@@ -325,7 +340,7 @@ Front-side - AngularJS wrapper for the plugin
     });
   ```
 
-5. You can get the plugin instance and use it directly:
+6. You can get the plugin instance and use it directly:
 
   ```js
     var thePlugin = $scope.tableCtrl.pugin;
