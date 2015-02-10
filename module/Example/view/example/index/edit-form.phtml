@@ -141,7 +141,6 @@ $datetime = $form->get('datetime');
                 <input type="text" class="form-control"
                        name="<?= $datetime->getName() ?>"
                        value="<?= $this->escapeHtml($datetime->getValue()) ?>"
-                       data-date-format="YYYY-MM-DD HH:mm:ss Z"
                        data-on-blur="validateFormField($('#modal-form [name=<?= $datetime->getName() ?>]'))"
                        data-on-enter="$('#modal-form button[type=submit]').focus().click()">
                 <span class="input-group-addon">
@@ -159,7 +158,8 @@ $datetime = $form->get('datetime');
             </div>
             <script>
                 $('#dt-<?= $datetime->getName() ?>').datetimepicker({
-                    language: '<?= \Locale::getDefault() ?>'
+                    format: "YYYY-MM-DD HH:mm:ss Z",
+                    locale: '<?= \Locale::getDefault() ?>'
                 });
             </script>
         </div>
