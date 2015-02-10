@@ -420,7 +420,6 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'equal')
-                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -433,7 +432,7 @@
                         .appendTo(span);
 
                     var dtPicker = inputGroup.datetimepicker({
-                        useSeconds: true,
+                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
                     var group = $('<div></div>');
@@ -469,7 +468,6 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'between-start')
-                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -482,7 +480,7 @@
                         .appendTo(span);
 
                     var dtPicker1 = inputGroup.datetimepicker({
-                        useSeconds: true,
+                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
 
                     var group = $('<div></div>');
@@ -500,7 +498,6 @@
                     var input = $('<input type="text">');
                     input.attr('class', 'form-control')
                          .attr('data-filter', 'between-end')
-                         .attr('data-date-format', plugin.options.strings.DT_DATE_TIME_FORMAT)
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
@@ -513,7 +510,7 @@
                         .appendTo(span);
 
                     var dtPicker2 = inputGroup.datetimepicker({
-                        useSeconds: true,
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
                     var group = $('<div></div>');
@@ -577,7 +574,7 @@
                                 data.equal = false;
                         } else if (props.type == 'datetime') {
                             var equal = form.find('input[data-filter=equal]');
-                            var value = dtPicker.data('DateTimePicker').getDate();
+                            var value = dtPicker.data('DateTimePicker').date();
                             if (equal.val().trim().length > 0 && value != null)
                                 data.equal = value.unix();
                         } else {
@@ -589,9 +586,9 @@
                     if (props.filters.indexOf('between') != -1) {
                         if (props.type == 'datetime') {
                             var startInput = form.find('input[data-filter=between-start]');
-                            var startValue = dtPicker1.data('DateTimePicker').getDate();
+                            var startValue = dtPicker1.data('DateTimePicker').date();
                             var endInput = form.find('input[data-filter=between-end]');
-                            var endValue = dtPicker2.data('DateTimePicker').getDate();
+                            var endValue = dtPicker2.data('DateTimePicker').date();
 
                             var value1 = null;
                             if (startInput.val().trim().length > 0 && startValue != null)
@@ -973,7 +970,7 @@
                         th.find('input[data-filter=equal-false]').prop('checked', true);
                 } else if (props.type == 'datetime') {
                     var dtPicker = th.find('input[data-filter=equal]').closest('.input-group');
-                    dtPicker.data('DateTimePicker').setDate(moment(equal * 1000));
+                    dtPicker.data('DateTimePicker').date(moment(equal * 1000));
                 } else {
                     th.find('input[data-filter=equal]').val(equal);
                 }
@@ -985,11 +982,11 @@
                 if (props.type == 'datetime') {
                     if (between[0] != null) {
                         var dtPicker1 = th.find('input[data-filter=between-start]').closest('.input-group');
-                        dtPicker1.data('DateTimePicker').setDate(moment(between[0] * 1000));
+                        dtPicker1.data('DateTimePicker').date(moment(between[0] * 1000));
                     }
                     if (between[1] != null) {
                         var dtPicker2 = th.find('input[data-filter=between-end]').closest('.input-group');
-                        dtPicker2.data('DateTimePicker').setDate(moment(between[1] * 1000));
+                        dtPicker2.data('DateTimePicker').date(moment(between[1] * 1000));
                     }
                 } else {
                     if (between[0] != null)
