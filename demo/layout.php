@@ -66,6 +66,7 @@
 <script>
     var table = $('#table').dynamicTable({
         url: 'table.php',
+        locale: 'ru',
         row_id_column: 'id',
         mapper: function (row) {
             if (row['boolean'] != null) {

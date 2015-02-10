@@ -102,7 +102,6 @@ $query = @$_GET['query'];
 switch ($query) {
 case 'describe':
     $data = $table->describe();
-    $data['locale'] = 'ru';
     break;
 case 'data':
     $data = $table->setPageParams($_GET)->fetch();

@@ -72,7 +72,6 @@
                     if (data.success !== true)
                         return;
                     
-                    plugin.locale = data.locale;
                     plugin.columns = data.columns;
                     _initTable(plugin);
                     plugin.refresh();
@@ -434,7 +433,7 @@
                         .appendTo(span);
 
                     var dtPicker = inputGroup.datetimepicker({
-                        locale: plugin.locale,
+                        locale: plugin.options.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
@@ -483,7 +482,7 @@
                         .appendTo(span);
 
                     var dtPicker1 = inputGroup.datetimepicker({
-                        locale: plugin.locale,
+                        locale: plugin.options.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
 
@@ -514,7 +513,7 @@
                         .appendTo(span);
 
                     var dtPicker2 = inputGroup.datetimepicker({
-                        locale: plugin.locale,
+                        locale: plugin.options.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {

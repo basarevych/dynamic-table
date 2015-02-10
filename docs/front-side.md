@@ -87,6 +87,10 @@ Full list of options
 
   Backend script URL
 
+* **locale**: string
+
+  DateTime picker locale (optional)
+
 * **row_id_column**: string
 
   ID column name. If null there will be no row selectors
