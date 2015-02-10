@@ -7,13 +7,10 @@ Your final web page must include latest versions of:
  * bootstrap
  * eonasdan datetime picker
 
-Here is the "dependencies" section of bower.json:
+Add dependencies to your bower.json:
 
 ```
-"jquery": "~2.1.1",
-"moment": "~2.8.3",
-"bootstrap": "~3.1.1",
-"eonasdan-bootstrap-datetimepicker": "~3.1.3"
+./node_modules/.bin/bower install jquery moment bootstrap eonasdan-bootstrap-datetimepicker --save
 ```
 
 DynamicTable itself is not distributed via bower, use composer to install it. Here is "require" section of composer.json:
