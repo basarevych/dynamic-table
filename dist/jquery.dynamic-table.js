@@ -8,6 +8,7 @@
         this.id = element.attr('id');
         this.element = element;
         this.options = {
+            locale: null,
             row_id_column: null,
             mapper: null,
             sort_column: null,
@@ -71,6 +72,7 @@
                     if (data.success !== true)
                         return;
                     
+                    plugin.locale = data.locale;
                     plugin.columns = data.columns;
                     _initTable(plugin);
                     plugin.refresh();
@@ -432,7 +434,8 @@
                         .appendTo(span);
 
                     var dtPicker = inputGroup.datetimepicker({
-                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
+                        locale: plugin.options.locale,
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
                     var group = $('<div></div>');
@@ -480,7 +483,8 @@
                         .appendTo(span);
 
                     var dtPicker1 = inputGroup.datetimepicker({
-                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
+                        locale: plugin.options.locale,
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
 
                     var group = $('<div></div>');
@@ -510,6 +514,7 @@
                         .appendTo(span);
 
                     var dtPicker2 = inputGroup.datetimepicker({
+                        locale: plugin.options.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
