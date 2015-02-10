@@ -434,7 +434,7 @@
                         .appendTo(span);
 
                     var dtPicker = inputGroup.datetimepicker({
-                        locale: plugin.options.locale,
+                        locale: plugin.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
@@ -483,7 +483,7 @@
                         .appendTo(span);
 
                     var dtPicker1 = inputGroup.datetimepicker({
-                        locale: plugin.options.locale,
+                        locale: plugin.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
 
@@ -514,7 +514,7 @@
                         .appendTo(span);
 
                     var dtPicker2 = inputGroup.datetimepicker({
-                        locale: plugin.options.locale,
+                        locale: plugin.locale,
                         format: plugin.options.strings.DT_DATE_TIME_FORMAT
                     });
                 } else {
