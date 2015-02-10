@@ -894,7 +894,7 @@
     };
 
     var _enableOverlay = function (plugin, enable) {
-        var tbody = plugin.element.find('tbody.data');
+        var tbody = plugin.element.find(plugin.rows.length > 0 ? 'tbody.data' : 'tbody.empty');
         var pos = tbody.position();
         $.each([ '.overlay-back', '.overlay-loader' ], function (index, value) {
             var overlay = plugin.element.find(value);
