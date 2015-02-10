@@ -61,7 +61,7 @@ return [
     ],
 
     'translator' => [
-        'locales' => [ 'en_US' ],
+        'locales' => [ 'en_US', 'ru_RU' ],
         'default' => 'en_US',
         'translation_file_patterns' => [
             [

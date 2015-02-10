@@ -11,7 +11,7 @@
             <br>
             <br>
             <button id="get-selected-table1" class="btn btn-default">
-                Get selected
+                <?= $this->translate('Get selected') ?>
             </button>
             <pre id="selected1">&nbsp;</pre>
         </div>
@@ -32,7 +32,7 @@
             <br>
             <br>
             <button id="get-selected-table2" class="btn btn-default">
-                Get selected
+                <?= $this->translate('Get selected') ?>
             </button>
             <pre id="selected2">&nbsp;</pre>
         </div>
@@ -57,16 +57,42 @@
         return row;
     };
 
+    var strings = {
+        DT_BANNER_LOADING: '<?= $this->translate('DT_BANNER_LOADING') ?>',
+        DT_BANNER_EMPTY: '<?= $this->translate('DT_BANNER_EMPTY') ?>',
+        DT_BUTTON_PAGE_SIZE: '<?= $this->translate('DT_BUTTON_PAGE_SIZE') ?>',
+        DT_BUTTON_COLUMNS: '<?= $this->translate('DT_BUTTON_COLUMNS') ?>',
+        DT_BUTTON_REFRESH: '<?= $this->translate('DT_BUTTON_REFRESH') ?>',
+        DT_BUTTON_OK: '<?= $this->translate('DT_BUTTON_OK') ?>',
+        DT_BUTTON_CLEAR: '<?= $this->translate('DT_BUTTON_CLEAR') ?>',
+        DT_BUTTON_CANCEL: '<?= $this->translate('DT_BUTTON_CANCEL') ?>',
+        DT_TITLE_FILTER_WINDOW: '<?= $this->translate('DT_TITLE_FILTER_WINDOW') ?>',
+        DT_LABEL_PAGE_OF_1: '<?= $this->translate('DT_LABEL_PAGE_OF_1') ?>',
+        DT_LABEL_PAGE_OF_2: '<?= $this->translate('DT_LABEL_PAGE_OF_2') ?>',
+        DT_LABEL_FILTER_LIKE: '<?= $this->translate('DT_LABEL_FILTER_LIKE') ?>',
+        DT_LABEL_FILTER_EQUAL: '<?= $this->translate('DT_LABEL_FILTER_EQUAL') ?>',
+        DT_LABEL_FILTER_BETWEEN_START: '<?= $this->translate('DT_LABEL_FILTER_BETWEEN_START') ?>',
+        DT_LABEL_FILTER_BETWEEN_END: '<?= $this->translate('DT_LABEL_FILTER_BETWEEN_END') ?>',
+        DT_LABEL_FILTER_NULL: '<?= $this->translate('DT_LABEL_FILTER_NULL') ?>',
+        DT_LABEL_TRUE: '<?= $this->translate('DT_LABEL_TRUE') ?>',
+        DT_LABEL_FALSE: '<?= $this->translate('DT_LABEL_FALSE') ?>',
+        DT_DATE_TIME_FORMAT: '<?= $this->translate('DT_DATE_TIME_FORMAT') ?>',
+    };
+
     var table1 = $('#table1').dynamicTable({
         url: 'index/doctrine-table',
+        locale: '<?= substr(\Locale::getDefault(), 0, 2) ?>',
         row_id_column: 'id',
         mapper: mapper,
+        strings: strings,
     });
 
     var table2 = $('#table2').dynamicTable({
         url: 'index/array-table',
+        locale: '<?= substr(\Locale::getDefault(), 0, 2) ?>',
         row_id_column: 'id',
         mapper: mapper,
+        strings: strings,
     });
 
     $('#get-selected-table1').on('click', function () {
@@ -74,7 +100,7 @@
         if (selected.length)
             $('#selected1').text(selected.join(', '));
         else
-            $('#selected1').text('Nothing selected');
+            $('#selected1').text('<?= $this->translate('Nothing selected') ?>');
     });
 
     $('#get-selected-table2').on('click', function () {
@@ -82,7 +108,7 @@
         if (selected.length)
             $('#selected2').text(selected.join(', '));
         else
-            $('#selected2').text('Nothing selected');
+            $('#selected2').text('<?= $this->translate('Nothing selected') ?>');
     });
 
     $('#table1').on('dt.loading', function (e) {
