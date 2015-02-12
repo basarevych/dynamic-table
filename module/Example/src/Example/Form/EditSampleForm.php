@@ -129,7 +129,7 @@ class EditSampleForm extends Form
             'property'      => 'value_string',
         ];
         if ($this->id)
-            $params['alwaysValidId'] = $this->id;
+            $params['ignoreId'] = $this->id;
 
         $string = new Input('string');
         $string->setRequired(true)

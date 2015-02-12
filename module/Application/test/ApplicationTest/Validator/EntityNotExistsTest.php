@@ -4,8 +4,8 @@ namespace ApplicationTest\Validator;
 
 use PHPUnit_Framework_TestCase;
 use Webfactory\Doctrine\ORMTestInfrastructure\ORMInfrastructure;
-use Application\Entity\Sample as SampleEntity;
 use Application\Validator\EntityNotExists;
+use ApplicationTest\Validator\EntityNotExistsEntity as Entity;
 
 class EntityNotExistsTest extends PHPUnit_Framework_TestCase
 {
@@ -13,34 +13,26 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        if (!class_exists('Application\Entity\Sample')) {
-            $this->markTestSkipped('Sample entity test is removed');
-            return;
-        }
-
         $this->infrastructure = new ORMInfrastructure([
-            '\Application\Entity\Sample',
+            'ApplicationTest\Validator\EntityNotExistsEntity',
         ]);
-        $this->repository = $this->infrastructure->getRepository('Application\Entity\Sample');
+        $this->repository = $this->infrastructure->getRepository(
+            'ApplicationTest\Validator\EntityNotExistsEntity'
+        );
         $this->em = $this->infrastructure->getEntityManager();
     }
 
     public function testOnExistingEntity()
     {
-        if (!class_exists('Application\Entity\Sample')) {
-            $this->markTestSkipped('Sample entity test is removed');
-            return;
-        }
-
-        $a = new SampleEntity($em);
-        $a->setValueString('foo');
+        $a = new Entity();
+        $a->setValue('foo');
 
         $this->infrastructure->import([ $a ]);
 
         $validator = new EntityNotExists([
             'entityManager' => $this->em,
-            'entity'        => 'Application\Entity\Sample',
-            'property'      => 'value_string',
+            'entity'        => 'ApplicationTest\Validator\EntityNotExistsEntity',
+            'property'      => 'value',
         ]);
 
         $result = $validator->isValid('foo');
@@ -48,9 +40,9 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
 
         $validator = new EntityNotExists([
             'entityManager' => $this->em,
-            'entity'        => 'Application\Entity\Sample',
-            'property'      => 'value_string',
-            'alwaysValidId' => 1
+            'entity'        => 'ApplicationTest\Validator\EntityNotExistsEntity',
+            'property'      => 'value',
+            'ignoreId'      => 1
         ]);
 
         $result = $validator->isValid('foo');
@@ -59,18 +51,18 @@ class EntityNotExistsTest extends PHPUnit_Framework_TestCase
 
     public function testOnNonExistingEntity()
     {
-        if (!class_exists('Application\Entity\Sample')) {
-            $this->markTestSkipped('Sample entity test is removed');
-            return;
-        }
+        $a = new Entity();
+        $a->setValue('foo');
+
+        $this->infrastructure->import([ $a ]);
 
         $validator = new EntityNotExists([
             'entityManager' => $this->em,
-            'entity'        => 'Application\Entity\Sample',
-            'property'      => 'value_string',
+            'entity'        => 'ApplicationTest\Validator\EntityNotExistsEntity',
+            'property'      => 'value',
         ]);
 
-        $result = $validator->isValid('foo');
+        $result = $validator->isValid('bar');
         $this->assertEquals(true, $result, "Check non-existing entity");
     }
 }

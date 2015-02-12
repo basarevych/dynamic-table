@@ -22,11 +22,11 @@ use Doctrine\ORM\EntityManager;
  *      'entityManager' => $em,                         // Doctrine EntityManager instance
  *      'entity'        => 'Application\Entity\Sample', // The Entity
  *      'property'      => 'value_string',              // The property to compare value to
- *      'alwaysValidId' => 123,                         // [Optional] ID of always valid entity
+ *      'ignoreId'      => [ 123 ],                     // [Optional] IDs of records to be ignored
  * ];
  * $validator = new EntityNotExists($params);
  *
- * 'alwaysValidId' is useful when editing entity, skip this option when creating.
+ * 'ignoreId' is useful when editing entity, skip this option when creating.
  *
  * @category    Application
  * @package     Validator
@@ -69,13 +69,11 @@ class EntityNotExists extends AbstractValidator
     protected $property;
 
     /**
-     * Always valid entity ID
+     * IDs of records to ignore
      *
-     * Useful when renaming an entity
-     *
-     * @var integer
+     * @var integer|array
      */
-    protected $alwaysValidId;
+    protected $ignoreId;
 
     /**
      * Set entity manager
@@ -145,26 +143,26 @@ class EntityNotExists extends AbstractValidator
     }
 
     /**
-     * Set ID of always valid entity
+     * Set IDs to be ignored
      *
-     * @oaram integer $id
+     * @oaram integer|array $id
      * @return EntityNotExists
      */
-    public function setAlwaysValidId($id)
+    public function setIgnoreId($id)
     {
-        $this->alwaysValidId = $id;
+        $this->ignoreId = $id;
 
         return $this;
     }
 
     /**
-     * Get ID of always valid entity
+     * Get ignored ID
      *
-     * @return integer|null
+     * @return integer|array|null
      */
-    public function getAlwaysValidId()
+    public function getIgnoreId()
     {
-        return $this->alwaysValidId;
+        return $this->ignoreId;
     }
 
     /**
@@ -198,10 +196,12 @@ class EntityNotExists extends AbstractValidator
            ->where("e.$property = :value")
            ->setParameter('value', $value);
 
-        $valid = $this->getAlwaysValidId();
-        if ($valid !== null) {
-            $qb->andWhere('e.id <> :id')
-               ->setParameter('id', $valid);
+        $ignore = $this->getIgnoreId();
+        if ($ignore !== null) {
+            if (!is_array($ignore))
+                $ignore = [ $ignore ];
+            $qb->andWhere('e.id NOT IN (:id)')
+               ->setParameter('id', $ignore);
         }
 
         $check = $qb->getQuery()->getSingleScalarResult();
