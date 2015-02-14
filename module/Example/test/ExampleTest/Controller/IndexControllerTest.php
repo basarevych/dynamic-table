@@ -17,10 +17,6 @@ class QueryMock {
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
 {
-    protected $infrastructure;
-    protected $repository;
-    protected $em;
-
     public function setUp()
     {
         \Locale::setDefault('en_US');

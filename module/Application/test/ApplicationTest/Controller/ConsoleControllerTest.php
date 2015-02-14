@@ -6,15 +6,30 @@ use Zend\Test\PHPUnit\Controller\AbstractConsoleControllerTestCase;
 
 class ConsoleControllerTest extends AbstractConsoleControllerTestCase
 {
-    protected $infrastructure;
-    protected $repository;
-    protected $em;
-
     public function setUp()
     {
         $this->setApplicationConfig(require 'config/application.config.php');
 
         parent::setUp();
+
+        $sl = $this->getApplicationServiceLocator();
+
+        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+                         ->disableOriginalConstructor()
+                         ->setMethods([ 'getRepository', 'persist', 'flush' ])
+                         ->getMock();
+
+        $this->repository = $this->getMockBuilder('Application\Repository\Sample')
+                                 ->disableOriginalConstructor()
+                                 ->setMethods([ 'removeAll' ])
+                                 ->getMock();
+
+        $this->em->expects($this->any())
+                 ->method('getRepository')
+                 ->will($this->returnValue($this->repository));
+
+        $sl->setAllowOverride(true);
+        $sl->setService('Doctrine\ORM\EntityManager', $this->em);
     }
 
     public function testCronActionCanBeAccessed()
