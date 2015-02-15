@@ -26,6 +26,7 @@ return [
     // IndexController
     'Last event' => 'Последнее событие',
     'Get selected' => 'Получить выбранные',
+    'All records on all the pages' => 'Все записи на всех страницах',
     'Nothing selected' => 'Ничего не выбрано',
     'Doctrine-backed Dynamic Table' => 'Dynamic Table для Doctrine',
     'Array-backed Dynamic Table' => 'Dynamic Table для массивов',
@@ -40,6 +41,8 @@ return [
     'DT_BUTTON_CLEAR' => 'Очистить',
     'DT_BUTTON_CANCEL' => 'Отмена',
     'DT_TITLE_FILTER_WINDOW' => 'Фильтр',
+    'DT_LABEL_CURRENT_PAGE' => 'Текущая страница',
+    'DT_LABEL_ALL_PAGES' => 'Все страницы',
     'DT_LABEL_PAGE_OF_1' => 'Страница',
     'DT_LABEL_PAGE_OF_2' => 'из #',
     'DT_LABEL_FILTER_LIKE' => 'Строки, похожие на',

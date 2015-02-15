@@ -26,6 +26,7 @@ return [
     // IndexController
     'Last event' => 'Last event',
     'Get selected' => 'Get selected',
+    'All records on all the pages' => 'All records on all the pages',
     'Nothing selected' => 'Nothing selected',
     'Doctrine-backed Dynamic Table' => 'Doctrine-backed Dynamic Table',
     'Array-backed Dynamic Table' => 'Array-backed Dynamic Table',
@@ -40,6 +41,8 @@ return [
     'DT_BUTTON_CLEAR' => 'Clear',
     'DT_BUTTON_CANCEL' => 'Cancel',
     'DT_TITLE_FILTER_WINDOW' => 'Filter',
+    'DT_LABEL_CURRENT_PAGE' => 'Current page',
+    'DT_LABEL_ALL_PAGES' => 'All pages',
     'DT_LABEL_PAGE_OF_1' => 'Page',
     'DT_LABEL_PAGE_OF_2' => 'of #',
     'DT_LABEL_FILTER_LIKE' => 'Strings like',

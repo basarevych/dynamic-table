@@ -67,6 +67,8 @@
         DT_BUTTON_CLEAR: '<?= $this->translate('DT_BUTTON_CLEAR') ?>',
         DT_BUTTON_CANCEL: '<?= $this->translate('DT_BUTTON_CANCEL') ?>',
         DT_TITLE_FILTER_WINDOW: '<?= $this->translate('DT_TITLE_FILTER_WINDOW') ?>',
+        DT_LABEL_CURRENT_PAGE: '<?= $this->translate('DT_LABEL_CURRENT_PAGE') ?>',
+        DT_LABEL_ALL_PAGES: '<?= $this->translate('DT_LABEL_ALL_PAGES') ?>',
         DT_LABEL_PAGE_OF_1: '<?= $this->translate('DT_LABEL_PAGE_OF_1') ?>',
         DT_LABEL_PAGE_OF_2: '<?= $this->translate('DT_LABEL_PAGE_OF_2') ?>',
         DT_LABEL_FILTER_LIKE: '<?= $this->translate('DT_LABEL_FILTER_LIKE') ?>',
@@ -97,7 +99,9 @@
 
     $('#get-selected-table1').on('click', function () {
         var selected = table1.getSelected();
-        if (selected.length)
+        if (selected === 'all')
+            $('#selected1').text('<?= $this->translate('All records on all the pages') ?>');
+        else if (selected.length)
             $('#selected1').text(selected.join(', '));
         else
             $('#selected1').text('<?= $this->translate('Nothing selected') ?>');
@@ -105,7 +109,9 @@
 
     $('#get-selected-table2').on('click', function () {
         var selected = table2.getSelected();
-        if (selected.length)
+        if (selected === 'all')
+            $('#selected2').text('<?= $this->translate('All records on all the pages') ?>');
+        else if (selected.length)
             $('#selected2').text(selected.join(', '));
         else
             $('#selected2').text('<?= $this->translate('Nothing selected') ?>');
