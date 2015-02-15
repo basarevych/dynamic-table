@@ -26,7 +26,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
-            <button class="btn btn-default" onclick="$('#selected1').text('Selected: ' + table.getSelected().join(', '))">
+            <button class="btn btn-default" onclick="getSelected()">
                 Get selected
             </button>
             <pre id="selected1">&nbsp;</pre>
@@ -95,6 +95,18 @@
     $('#table').on('dt.deselected', function (e) {
         $('#event1').text('Deselected');
     });
+
+    function getSelected() {
+        var s = table.getSelected();
+        if (s === 'all') {
+            $('#selected1').text('All records on all the pages');
+            return;
+        }
+        if (s.length)
+            $('#selected1').text('Selected: ' + s.join(', '));
+        else
+            $('#selected1').text('Nothing selected');
+    }
 </script>
 
 

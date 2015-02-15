@@ -23,6 +23,11 @@
 .dynamic-table .selector {
     width: 1px;
 }
+.dynamic-table .all-selector-menu {
+    display: none;
+    position: absolute;
+    padding: 3px 10px;
+}
 .dynamic-table .sort-asc, .dynamic-table .sort-desc {
     margin-left: 0.5em;
 }

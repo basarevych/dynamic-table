@@ -26,7 +26,15 @@ app.controller('ctrl',
         $scope.selected2 = null;
 
         $scope.getSelected = function () {
-            $scope.selected2 = 'Selected: ' + $scope.table2Ctrl.plugin.getSelected().join(', ');
+            var s = $scope.table2Ctrl.plugin.getSelected();
+            if (s === 'all') {
+                $scope.selected2 = 'All records on all the pages';
+                return;
+            }
+            if (s.length)
+                $scope.selected2 = 'Selected: ' + s.join(', ');
+            else
+                $scope.selected2 = 'Nothing selected';
         };
 
         $scope.$watch('table2Ctrl.event', function () {

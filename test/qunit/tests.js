@@ -266,6 +266,15 @@ test("toggleSelected()/getSelected()", function (assert) {
     var selected = table.getSelected();
     assert.equal(input.prop('checked'), false, "Switched off again");
     assert.equal(selected.length, 0, "Empty array again");
+
+    table.toggleSelected(1);
+    table.toggleSelected(2);
+    table.toggleSelected(3);
+    table.toggleSelected(4);
+    table.toggleSelected(5);
+    root.find('thead .all-selector-menu input').val(['all']);
+    var selected = table.getSelected();
+    assert.equal(selected, 'all', "All records selected");
 });
 
 test("Table filters", function (assert) {

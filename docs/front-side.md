@@ -142,6 +142,8 @@ Full list of options
         DT_BUTTON_CLEAR: 'Clear',
         DT_BUTTON_CANCEL: 'Cancel',
         DT_TITLE_FILTER_WINDOW: 'Filter',
+        DT_LABEL_CURRENT_PAGE: 'Current page',
+        DT_LABEL_ALL_PAGES: 'All pages',
         DT_LABEL_PAGE_OF_1: 'Page',
         DT_LABEL_PAGE_OF_2: 'of #',
         DT_LABEL_FILTER_LIKE: 'Strings like',
@@ -160,7 +162,7 @@ Methods
 
 * **getSelected()**
 
-  This method will return array of IDs of selected rows.
+  This method will return 'all' if all records on all the pages are selected or an array of IDs of selected rows, which could be empty.
 
 * **refresh(params)**
 

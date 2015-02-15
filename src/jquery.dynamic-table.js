@@ -28,6 +28,8 @@
                 DT_BUTTON_CLEAR: 'Clear',
                 DT_BUTTON_CANCEL: 'Cancel',
                 DT_TITLE_FILTER_WINDOW: 'Filter',
+                DT_LABEL_CURRENT_PAGE: 'Current page',
+                DT_LABEL_ALL_PAGES: 'All pages',
                 DT_LABEL_PAGE_OF_1: 'Page',
                 DT_LABEL_PAGE_OF_2: 'of #',
                 DT_LABEL_FILTER_LIKE: 'Strings like',
@@ -186,7 +188,7 @@
         },
 
         toggleSelected: function (rowId) {
-            var input = $('tbody tr[data-row-id=' + rowId + '] td.selector input'),
+            var input = this.element.find('tbody tr[data-row-id=' + rowId + '] td.selector input'),
                 checked = !input.prop('checked');
 
             input.prop('checked', checked);
@@ -199,12 +201,18 @@
             }
 
             var all = this.element.find('tbody.data td.selector input:checked');
-            this.element.find('thead th.selector input')
+            this.element.find('thead th.selector input[type="checkbox"]')
                         .prop('checked', all.length == this.rows.length);
+            this.element.find('thead .all-selector-menu input')
+                        .val(['page']);
         },
 
         getSelected: function () {
             var inputs = this.element.find('tbody.data td.selector input:checked');
+            var range = this.element.find('thead .all-selector-menu input:checked').val();
+            if (inputs.length == this.rows.length && range == 'all')
+                return 'all';
+
             var ids = [];
             inputs.each(function (index, el) {
                 ids.push($(el).val());
@@ -269,9 +277,9 @@
         if (plugin.options.row_id_column != null) {
             plugin.visibleColumns++;
 
-            $('<th class="selector"><input type="checkbox"></th>')
-                .appendTo(tr)
-                .find('input')
+            var allSelector = $('<th class="selector"><div class="menu-wrapper"><input type="checkbox"></th>');
+            allSelector.appendTo(tr)
+                .find('input[type="checkbox"]')
                 .prop('disabled', true)
                 .on('change', function () {
                     var inputs = plugin.element.find('tbody td.selector input');
@@ -280,13 +288,43 @@
                               .closest('tr')
                               .addClass('success');
                         plugin.element.trigger('dt.selected');
+                        plugin.element.find('thead .all-selector-menu input').val(['page']);
+                        plugin.element.find('thead th.selector').addClass('bg-primary');
+                        plugin.element.find('thead .all-selector-menu').show();
                     } else {
                         inputs.prop('checked', false)
                               .closest('tr')
                               .removeClass('success');
                         plugin.element.trigger('dt.deselected');
+                        plugin.element.find('thead th.selector').removeClass('bg-primary');
+                        plugin.element.find('thead .all-selector-menu').hide();
                     }
                 });
+
+            allSelector.find('.menu-wrapper')
+                .on('mouseenter', function () {
+                    if (!plugin.element.find('thead th.selector input[type="checkbox"]').prop('checked'))
+                        return;
+                    plugin.element.find('thead th.selector').addClass('bg-primary');
+                    plugin.element.find('thead .all-selector-menu').show();
+                })
+                .on('mouseleave', function () {
+                    plugin.element.find('thead th.selector').removeClass('bg-primary');
+                    plugin.element.find('thead .all-selector-menu').hide();
+                });
+
+            var menu = $('<div class="all-selector-menu bg-primary"></div>');
+            $('<label><input type="radio" name="all-selector-menu" value="page"> '
+                    + plugin.options.strings.DT_LABEL_CURRENT_PAGE
+                    + '</label>')
+                .appendTo(menu);
+            $('<br>')
+                .appendTo(menu);
+            $('<label><input type="radio" name="all-selector-menu" value="all"> '
+                    + plugin.options.strings.DT_LABEL_ALL_PAGES
+                    + '</label>')
+                .appendTo(menu);
+            menu.appendTo(allSelector.find('.menu-wrapper'));
         }
 
         $.each(plugin.columns, function (id, props) {
@@ -643,6 +681,9 @@
         });
 
         thead.appendTo(plugin.element.find('table'));
+
+        var padding = plugin.element.find('thead th.selector').css('padding-left');
+        plugin.element.find('thead .all-selector-menu').css('margin-left', -1 * parseInt(padding));
     };
 
     var _initTbody = function (plugin) {
@@ -869,8 +910,10 @@
     {
         var props = plugin.columns[id];
 
-        plugin.element.find('.selector input')
-                      .prop('disabled', !enable);
+        var allSelector = plugin.element.find('.selector input[type="checkbox"]');
+        allSelector.prop('disabled', plugin.rows.length == 0 || !enable);
+        if (plugin.rows.length == 0)
+            allSelector.prop('checked', false);
 
         var th = plugin.element.find('[data-column-id=' + id + ']');
         th.find('.text')
@@ -1045,18 +1088,8 @@
                         .prop('disabled', true)
                         .prop('value', rowId)
                         .on('click', function () {
-                            var me = $(this);
-                            if (me.prop('checked')) {
-                                me.closest('tr').addClass('success');
-                                plugin.element.trigger('dt.selected');
-                            } else {
-                                me.closest('tr').removeClass('success');
-                                plugin.element.trigger('dt.deselected');
-                            }
-
-                            var all = plugin.element.find('tbody.data td.selector input:checked');
-                            plugin.element.find('thead th.selector input')
-                                          .prop('checked', all.length == plugin.rows.length);
+                            $(this).prop('checked', !$(this).prop('checked'));
+                            plugin.toggleSelected(rowId);
                         });
             }
 
