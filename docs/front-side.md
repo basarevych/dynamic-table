@@ -316,7 +316,7 @@ Front-side - AngularJS wrapper for the plugin
                             + '"></i>';
                     }
                     if (row['datetime'] != null) {
-                        var m = moment(row['datetime'] * 1000);
+                        var m = momenti.unix(row['datetime']).local();
                         row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
                     }
 
