@@ -26,9 +26,11 @@ class Sample extends EntityRepository
      */
     public function removeAll()
     {
-        $query = $this->_em->createQuery(
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
             'DELETE Application\Entity\Sample s'
         );
-        return $query->getResult();
+        $query->getResult();
     }
 } 
