@@ -53,7 +53,7 @@ Back to our table, the last thing to do is to parse jQuery plugin's GET query an
 
 Two GET requests are made by the jQuery plugin:
 * First time the plugin is created it will run '?query=describe' request to the server.
-* Each time the table is loaded it will request '?query=data'.
+* Each time the table is refreshed it will request '?query=data'.
 
 Here is framework-agnostic code to handle these requests:
 

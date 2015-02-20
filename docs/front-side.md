@@ -342,7 +342,7 @@ Front-side - AngularJS wrapper for the plugin
                             + '"></i>';
                     }
                     if (row['datetime'] != null) {
-                        var m = moment(row['datetime'] * 1000);
+                        var m = momenti.unix(row['datetime']).local();
                         row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
                     }
 
@@ -367,7 +367,7 @@ Front-side - AngularJS wrapper for the plugin
             case 'loading':     console.log('Table is loading'); break;
             case 'loaded':      console.log('Table has been loaded'); break;
             case 'selected':    console.log('Row selected'); break;
-            case 'deselected':  console.log(Row deselected'); break;
+            case 'deselected':  console.log('Row deselected'); break;
         }
     });
   ```
