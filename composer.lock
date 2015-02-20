@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "8f5861dcbe31d10447d0074730123e6ccbeeaef9"
+                "reference": "1b19c45a7145b8fb0d151937e9855abad55501da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/8f5861dcbe31d10447d0074730123e6ccbeeaef9",
-                "reference": "8f5861dcbe31d10447d0074730123e6ccbeeaef9",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/1b19c45a7145b8fb0d151937e9855abad55501da",
+                "reference": "1b19c45a7145b8fb0d151937e9855abad55501da",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "jquery",
                 "php"
             ],
-            "time": "2015-02-15 14:07:41"
+            "time": "2015-02-20 12:34:28"
         },
         {
             "name": "doctrine/annotations",
@@ -828,16 +828,16 @@
         },
         {
             "name": "zendframework/zendframework",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zf2.git",
-                "reference": "c878e047ab1c5dcfb201974bdff607be54ccb54b"
+                "reference": "886063aa5aee7476b77c380e25ecfacb2ee5ff4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/c878e047ab1c5dcfb201974bdff607be54ccb54b",
-                "reference": "c878e047ab1c5dcfb201974bdff607be54ccb54b",
+                "url": "https://api.github.com/repos/zendframework/zf2/zipball/886063aa5aee7476b77c380e25ecfacb2ee5ff4c",
+                "reference": "886063aa5aee7476b77c380e25ecfacb2ee5ff4c",
                 "shasum": ""
             },
             "require": {
@@ -942,7 +942,7 @@
                 "framework",
                 "zf2"
             ],
-            "time": "2015-01-14 16:44:17"
+            "time": "2015-02-18 19:48:16"
         },
         {
             "name": "zendframework/zendxml",
@@ -1944,16 +1944,16 @@
         },
         {
             "name": "webfactory/doctrine-orm-test-infrastructure",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webfactory/doctrine-orm-test-infrastructure.git",
-                "reference": "b6a3d2446c215a7ac03ab10d22c4d1acf049c0af"
+                "reference": "2a7045f716fab57aa0f3d7a97dd9e6a831c35c12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webfactory/doctrine-orm-test-infrastructure/zipball/b6a3d2446c215a7ac03ab10d22c4d1acf049c0af",
-                "reference": "b6a3d2446c215a7ac03ab10d22c4d1acf049c0af",
+                "url": "https://api.github.com/repos/webfactory/doctrine-orm-test-infrastructure/zipball/2a7045f716fab57aa0f3d7a97dd9e6a831c35c12",
+                "reference": "2a7045f716fab57aa0f3d7a97dd9e6a831c35c12",
                 "shasum": ""
             },
             "require": {
@@ -1994,7 +1994,7 @@
                 "orm",
                 "testing"
             ],
-            "time": "2014-09-26 12:59:04"
+            "time": "2015-02-20 12:14:48"
         }
     ],
     "aliases": [],
