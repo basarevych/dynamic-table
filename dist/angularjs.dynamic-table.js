@@ -39,7 +39,7 @@ dtModule.provider('dynamicTable', function () {
         },
     };
 
-    this.$get = [ '$filter', '$rootScope', function ($filter, $rootScope) {
+    this.$get = [ '$filter', '$rootScope', '$timeout', function ($filter, $rootScope, $timeout) {
         if (translationFilter) {
             var strings = defaultOptions.strings;
             $.each(strings, function (key, value) {
@@ -66,20 +66,16 @@ dtModule.provider('dynamicTable', function () {
 
                 var service = this;
                 this.element.on('dt.loading', function (e) {
-                    service.event = 'loading';
-                    $rootScope.$digest();
+                    $timeout(function () { service.event = 'loading'; });
                 });
                 this.element.on('dt.loaded', function (e) {
-                    service.event = 'loaded';
-                    $rootScope.$digest();
+                    $timeout(function () { service.event = 'loaded'; });
                 });
                 this.element.on('dt.selected', function (e) {
-                    service.event = 'selected';
-                    $rootScope.$digest();
+                    $timeout(function () { service.event = 'selected'; });
                 });
                 this.element.on('dt.deselected', function (e) {
-                    service.event = 'deselected';
-                    $rootScope.$digest();
+                    $timeout(function () { service.event = 'deselected'; });
                 });
             };
         };
@@ -105,7 +101,8 @@ dtModule.directive('dynamicTable',
                 if (typeof attrs['id'] == 'undefined')
                     console.log('DynamicTable expects id attribute to be set');
 
-                scope.ctrl.init(element);
+                if (angular.isDefined(scope.ctrl) && angular.isDefined(scope.ctrl.init))
+                    scope.ctrl.init(element);
             }
         };
     } ]

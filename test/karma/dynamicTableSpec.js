@@ -47,23 +47,27 @@ describe('dynamicTable', function () {
         expect(inst.options['url']).toBe(backendUrl);
     });
 
-    it('underlying plugin works', function () {
+    it('underlying plugin works', inject(function ($timeout) {
         scope.ctrl = dynamicTable({ url: backendUrl });
         compileDirective('<div id="foo" dynamic-table="ctrl"><div>');
 
         expect(calledUrl).toBe(backendUrl);
 
         scope.ctrl.element.trigger('dt.loading');
+        $timeout.flush();
         expect(scope.ctrl.event).toBe('loading');
 
         scope.ctrl.element.trigger('dt.loaded');
+        $timeout.flush();
         expect(scope.ctrl.event).toBe('loaded');
 
         scope.ctrl.element.trigger('dt.selected');
+        $timeout.flush();
         expect(scope.ctrl.event).toBe('selected');
 
         scope.ctrl.element.trigger('dt.deselected');
+        $timeout.flush();
         expect(scope.ctrl.event).toBe('deselected');
-    });
+    }));
 
 });
