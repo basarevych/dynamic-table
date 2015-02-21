@@ -105,7 +105,8 @@ dtModule.directive('dynamicTable',
                 if (typeof attrs['id'] == 'undefined')
                     console.log('DynamicTable expects id attribute to be set');
 
-                scope.ctrl.init(element);
+                if (angular.isDefined(scope.ctrl) && angular.isDefined(scope.ctrl.init))
+                    scope.ctrl.init(element);
             }
         };
     } ]
