@@ -48,3 +48,6 @@
     width: 4em;
     text-align: center;
 }
+.dynamic-table .dropdown {
+    z-index: 2000;
+}
