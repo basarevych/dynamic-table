@@ -182,6 +182,7 @@ if [ "$input" = "y" ]; then
 fi
 
 run_command cd ../..
+echo
 echo "===> Initialization"
 echo
 
@@ -205,6 +206,7 @@ if [ "$input" != "n" ]; then
     if [ "$dbserver" = "mysql" ]; then
         echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
         echo "CREATE DATABASE $dbname CHARACTER SET utf8;" >> $dbscript
+        echo "GRANT USAGE ON *.* TO '$dbuser'@'localhost';" >> $dbscript
         echo "DROP USER '$dbuser'@'localhost';" >> $dbscript
         echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$dbpassword';" >> $dbscript
         echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" >> $dbscript
