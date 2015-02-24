@@ -1,0 +1,10 @@
+<?php
+
+return [
+    'mail' => [
+        'transport' => 'smtp',      // 'sendmail' (PHP internal mail) or 'smtp'
+        // 'smtp' transport options:
+        'host'      => '127.0.0.1',
+        'port'      => 25
+    ],
+];

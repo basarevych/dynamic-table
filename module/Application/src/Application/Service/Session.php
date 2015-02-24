@@ -25,6 +25,13 @@ use Zend\Session\SaveHandler\Cache;
 class Session implements ServiceLocatorAwareInterface
 {
     /**
+     * Was session started?
+     *
+     * @var boolean
+     */
+    protected $started = false;
+
+    /**
      * Service Locator
      *
      * @var ServiceLocatorInterface
@@ -94,6 +101,8 @@ class Session implements ServiceLocatorAwareInterface
             $init->session_initialized = true;
             $sessionManager->regenerateId();
         }
+
+        $this->started = true;
     }
 
     /**
@@ -104,6 +113,9 @@ class Session implements ServiceLocatorAwareInterface
      */
     public function getContainer($name = 'default')
     {
+        if (!$this->started)
+            $this->start();
+
         return new Container($name);
     }
 }
