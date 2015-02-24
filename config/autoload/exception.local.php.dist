@@ -1,0 +1,16 @@
+<?php
+
+return [
+    'exceptions' => [
+        'display'       => false,   // Display exception details?
+        'forward' => [
+            'enabled'   => false,   // Forward exception via email?
+            'codes'     => [ 500 ], // 500: non-HTTP exceptions,
+                                    // 403: Access Denied,
+                                    // 404: Not Found, etc
+            'from'      => "root@localhost",        // Use real one
+            'to'        => "tester@example.com",    // Who will receive report
+            'subject'   => "Exception Report"       // Add project name here
+        ]
+    ],
+];

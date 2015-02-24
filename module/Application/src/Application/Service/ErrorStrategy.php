@@ -52,7 +52,7 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
      *
      * @var boolean;
      */
-    protected $displayExceptions = null;
+    protected $displayExceptions = false;
 
     /**
      * Forward exception via email config
@@ -71,13 +71,13 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
     {
         $this->serviceLocator = $serviceLocator;
 
-        if ($this->displayExceptions === null) {
-            $config = $serviceLocator->get('config');
-            if (!isset($config['exceptions']))
-                throw new \Exception('No "exceptions" section in the config');
-            if (!isset($config['exceptions']['display']))
-                throw new \Exception('No "display" in "exceptions" section of the config');
-            if (!isset($config['exceptions']['forward']) || !is_array($config['exceptions']['forward']))
+        $config = $serviceLocator->get('config');
+
+        if (isset($config['exceptions']['display']))
+            $this->displayExceptions = ($config['exceptions']['display'] === true);
+
+        if (isset($config['exceptions']['forward'])) {
+            if (!is_array($config['exceptions']['forward']))
                 throw new \Exception('No "forward" array in "exceptions" section of the config');
             if (!isset($config['exceptions']['forward']['enabled']))
                 throw new \Exception('No "enabled" in "exceptions/forward" section of the config');
@@ -90,7 +90,6 @@ class ErrorStrategy implements ListenerAggregateInterface, ServiceLocatorAwareIn
             if (!isset($config['exceptions']['forward']['subject']))
                 throw new \Exception('No "subject" in "exceptions/forward" section of the config');
 
-            $this->displayExceptions = ($config['exceptions']['display'] === true);
             $this->forward = $config['exceptions']['forward'];
         }
 

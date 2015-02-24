@@ -50,6 +50,27 @@ class Mail implements ServiceLocatorAwareInterface
     {
         $this->serviceLocator = $serviceLocator;
 
+        $options = $serviceLocator->get('Config');
+        if (isset($options['mail']['transport']))
+            $transport = $options['mail']['transport'];
+        else
+            $transport = 'sendmail';
+
+        if ($transport == 'sendmail') {
+            $this->transport = new Transport\Sendmail();
+        } else if ($transport == 'smtp') {
+            if (!isset($options['mail']['host']))
+                throw new Exception("Set SMTP 'host' in 'mail' config!");
+            if (!isset($options['mail']['port']))
+                throw new Exception("Set SMTP 'port' in 'mail' config!");
+            $cfg = new Transport\SmtpOptions();
+            $cfg->setHost($options['mail']['host']);
+            $cfg->setPort($options['mail']['port']);
+            $this->transport = new Transport\Smtp($cfg);
+        } else {
+            throw new Exception("Unknown mail transport: $transport");
+        }
+
         return $this;
     }
 
@@ -77,22 +98,6 @@ class Mail implements ServiceLocatorAwareInterface
         if ($this->transport)
             return $this->transport;
 
-        $options = $this->getServiceLocator()->get('Config');
-        if (!isset($options['mail']))
-            throw new \Exception("Set mail parameters in config file!");
-
-        if ($options['mail']['transport'] == 'sendmail') {
-            $transport = new Transport\Sendmail();
-        } else if ($options['mail']['transport'] == 'smtp') {
-            $cfg = new Transport\SmtpOptions();
-            $cfg->setHost($options['mail']['host']);
-            $cfg->setPort($options['mail']['port']);
-            $transport = new Transport\Smtp($cfg);
-        } else {
-            throw new \Exception("Set mail transport type in config file!");
-        }
-
-        $this->transport = $transport;
         return $transport;
     }
 

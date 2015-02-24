@@ -1,0 +1,255 @@
+#!/bin/sh
+
+# Put your Project name here. Must be alphanumeric only.
+project="zf2skeleton"
+
+
+run_command() {
+    $@
+    if [ $? -ne 0 ]; then
+        echo "$@"
+        echo "command failed, aborting"
+        exit 2
+    fi
+}
+
+echo
+echo "  WARNING  This script will overwrite your existing configuration files."
+echo "           It will also (re)create the database, destroying all its content"
+echo
+echo "  Hit Ctrl-C now to exit or press Enter to begin"
+
+read key
+
+which_perl=`which perl`
+if [ $? -ne 0 ]; then
+    echo "Perl not found, aborting"
+    exit 1
+fi
+
+echo "===> Configuration"
+echo
+run_command cd config/autoload
+rm -f *local.php
+
+run_command cp exception.local.php.dist exception.local.php
+
+input="none"
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Do you want to display PHP exceptions to the user? y/[n]: " input
+done
+if [ "$input" = "y" ]; then
+    display="true"
+else
+    display="false"
+fi
+
+run_command perl -pi -e "s/(\s*'display'\s*=>\s*)(true|false)(.*)/\${1}$display\${3}/" "exception.local.php"
+
+echo
+echo "  File config/autoload/exception.local.php created"
+echo "  Additionally you can have exceptions be reported via email - edit the file"
+echo
+
+run_command cp mail.local.php.dist mail.local.php
+
+input="none"
+while [ "$input" != "sendmail" -a "$input" != "smtp" -a "$input" != "" ]; do
+    read -p "* What mail transport should be used? sendmail/[smtp]: " input
+done
+if [ "$input" = "sendmail" ]; then
+    transport="sendmail"
+else
+    transport="smtp"
+fi
+
+run_command perl -pi -e "s/(\s*'transport'\s*=>\s*')(sendmail|smtp)('.*)/\${1}$transport\${3}/" "mail.local.php"
+
+if [ "$transport" = "smtp" ]; then
+    read -p "  SMTP host? [127.0.0.1]: " input
+    if [ "$input" = "" ]; then
+        input="127.0.0.1"
+    fi
+    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(127\.0\.0\.1)('.*)/\${1}$input\${3}/" "mail.local.php"
+
+    read -p "  SMTP port? [25]: " input
+    if [ "$input" = "" ]; then
+        input=25
+    fi
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)(25)(.*)/\${1}$input\${3}/" "mail.local.php"
+fi
+
+echo
+echo "  File config/autoload/mail.local.php created"
+echo
+
+input="none"
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Will you be using PHP sessions? [y]/n: " input
+done
+
+if [ "$input" != "n" ]; then
+    run_command cp session.local.php.dist session.local.php
+
+    read -p "  Session name (alphanumeric only)? [$project]: " input
+    if [ "$input" = "" ]; then
+        input="$project"
+    fi
+
+    run_command perl -pi -e "s/(\s*'name'\s*=>\s*')(zf2skeleton)('.*)/\${1}$input\${3}/" "session.local.php"
+
+    echo
+    echo "  File config/autoload/session.local.php created"
+    echo "  Additionally you can switch session to use memcached instead of files"
+    echo "  and change default session lifetime - edit the file"
+    echo
+fi
+
+input="none"
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Do you need Doctrine ORM? [y]/n: " input
+done
+
+if [ "$input" != "n" ]; then
+    input="none"
+    while [ "$input" != "mysql" -a "$input" != "postgresql" -a "$input" != "" ]; do
+        read -p "  What is the database server? [mysql]/postgresql: " input
+    done
+
+    if [ "$input" = "postgresql" ]; then
+        dbserver="postgresql"
+        defaultport=5432
+        dbroot="pgsql"
+    else
+        dbserver="mysql"
+        defaultport=3306
+        dbroot="root"
+    fi
+
+    read -p "  Database server hostname? [localhost]: " dbhost
+    if [ "$dbhost" = "" ]; then
+        dbhost="localhost"
+    fi
+
+    read -p "  Database server port? [$defaultport]: " dbport
+    if [ "$dbport" = "" ]; then
+        dbport=$defaultport
+    fi
+
+    read -p "  Database server account name? [$project]: " dbuser
+    if [ "$dbuser" = "" ]; then
+        dbuser=$project
+    fi
+
+    read -p "  Database server acount password? " dbpassword
+
+    read -p "  Database name? [$project]: " dbname
+    if [ "$dbname" = "" ]; then
+        dbname=$project
+    fi
+
+    run_command cp $dbserver.local.php.dist $dbserver.local.php
+
+    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(localhost)('.*)/\${1}$dbhost\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($defaultport)(.*)/\${1}$dbport\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}$dbuser\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}$dbpassword\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}$dbname\${3}/" "$dbserver.local.php"
+
+    echo
+    echo "  File config/autoload/$dbserver.local.php created"
+    echo
+fi
+
+input="none"
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Do you want to use Memcached? y/[n]: " input
+done
+
+if [ "$input" = "y" ]; then
+    read -p "  Namespace to use? [$project]: " input
+    if [ "$input" = "" ]; then
+        input="$project"
+    fi
+
+    run_command cp memcached.local.php.dist memcached.local.php
+    run_command perl -pi -e "s/(\s*'namespace'\s*=>\s*')(Skeleton)('.*)/\${1}$input\${3}/" "memcached.local.php"
+
+    echo
+    echo "  File config/autoload/memcached.local.php created"
+    echo "  Additionally you can change host/port and cache expiration time in the file"
+    echo
+fi
+
+run_command cd ../..
+echo "===> Initialization"
+echo
+
+echo "* Installing production environment dependencies..."
+echo
+run_command ./scripts/update prod
+echo
+
+input="none"
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Create and populate the database? [y]/n: " input
+done
+
+if [ "$input" != "n" ]; then
+    read -p "* Database server administrator account name? [$dbroot]: " input
+    if [ "$input" != "" ]; then
+        dbroot="$input"
+    fi
+
+    dbscript="/tmp/$project.install"
+    if [ "$dbserver" = "mysql" ]; then
+        echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
+        echo "CREATE DATABASE $dbname CHARACTER SET utf8;" >> $dbscript
+        echo "DROP USER '$dbuser'@'localhost';" >> $dbscript
+        echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$dbpassword';" >> $dbscript
+        echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" >> $dbscript
+        echo "FLUSH PRIVILEGES;" >> $dbscript
+    else
+        echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
+        echo "CREATE DATABASE $dbname;" >> $dbscript
+        echo "DROP USER IF EXISTS $dbuser;" >> $dbscript
+        echo "CREATE USER $dbuser WITH PASSWORD '$dbpassword';" >> $dbscript
+        echo "GRANT ALL PRIVILEGES ON DATABASE $dbname TO $dbuser;" >> $dbscript
+    fi
+
+    echo
+    echo "  The following code will be executed:"
+    echo
+    cat $dbscript
+    echo
+
+    echo "  Press Enter to continue, be ready to provide DB administrator password"
+    read input
+
+    if [ "$dbserver" = "mysql" ]; then
+        run_command mysql -u $dbroot -p < $dbscript
+    else
+        run_command psql -U $dbroot -d template1 < $dbscript
+    fi
+
+    echo
+    echo "* Creating the schema..."
+
+    if [ "$dbserver" = "mysql" ]; then
+        if [ "$dbpassword" = "" ]; then
+            run_command mysql -u$dbuser $dbname < database/$dbserver.schema.sql
+        else
+            run_command mysql -u$dbuser -p$dbpassword $dbname < database/$dbserver.schema.sql
+        fi
+    else
+        run_command psql -U $dbuser -d $dbname < database/$dbserver.schema.sql
+    fi
+
+    echo
+    echo "* Populating the database..."
+
+    run_command php public.prod/index.php populate-db
+fi
+
+echo
+echo "===> All done"

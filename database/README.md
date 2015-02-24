@@ -19,7 +19,7 @@ The database
   * PostgreSQL
 
     ```shell
-    > psql -U pgsql -d postgres
+    > psql -U pgsql -d template1
     postgres=# create user username_here with password 'password_here';
     postgres=# create database db_name_here;
     postgres=# grant all privileges on database db_name_here to username_here;
@@ -31,5 +31,5 @@ The database
 2. Populate the database
 
   ```shell
-  > php public/index.php populate-db
+  > php public.prod/index.php populate-db
   ```

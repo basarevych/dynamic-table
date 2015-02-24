@@ -26,6 +26,7 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
+throw new \Exception('xxx');
         return new ViewModel();
     }
 

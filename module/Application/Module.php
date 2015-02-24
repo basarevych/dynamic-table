@@ -36,7 +36,6 @@ class Module
 
         $serviceManager = $e->getApplication()->getServiceManager();
         $translator     = $serviceManager->get('translator');
-        $session        = $serviceManager->get('Session');
         $config         = $serviceManager->get('Config');
 
         // Attach global strategies
@@ -71,9 +70,6 @@ class Module
             'cookie'    => ($cookie && $cookie->offsetExists('locale')) ? $cookie->locale : '',
             'available' => array_unique($config['translator']['locales']),
         ];
-
-        // Start session
-        $session->start();
     }
 
     /**
