@@ -49,11 +49,11 @@ run_command perl -pi -e "s/(\s*'display'\s*=>\s*)(true|false)(.*)/\${1}$display\
 echo
 echo "  File config/autoload/exception.local.php created"
 echo "  Additionally you can have exceptions be reported via email - edit the file"
-echo
 
 run_command cp mail.local.php.dist mail.local.php
 
 input="none"
+echo
 while [ "$input" != "sendmail" -a "$input" != "smtp" -a "$input" != "" ]; do
     read -p "* What mail transport should be used? sendmail/[smtp]: " input
 done
@@ -81,9 +81,9 @@ fi
 
 echo
 echo "  File config/autoload/mail.local.php created"
-echo
 
 input="none"
+echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
     read -p "* Will you be using PHP sessions? [y]/n: " input
 done
@@ -102,10 +102,10 @@ if [ "$input" != "n" ]; then
     echo "  File config/autoload/session.local.php created"
     echo "  Additionally you can switch session to use memcached instead of files"
     echo "  and change default session lifetime - edit the file"
-    echo
 fi
 
 input="none"
+echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
     read -p "* Do you need Doctrine ORM? [y]/n: " input
 done
@@ -158,10 +158,10 @@ if [ "$input" != "n" ]; then
 
     echo
     echo "  File config/autoload/$dbserver.local.php created"
-    echo
 fi
 
 input="none"
+echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
     read -p "* Do you want to use Memcached? y/[n]: " input
 done
@@ -178,7 +178,6 @@ if [ "$input" = "y" ]; then
     echo
     echo "  File config/autoload/memcached.local.php created"
     echo "  Additionally you can change host/port and cache expiration time in the file"
-    echo
 fi
 
 run_command cd ../..
@@ -189,15 +188,15 @@ echo
 echo "* Installing production environment dependencies..."
 echo
 run_command ./scripts/update prod
-echo
 
 input="none"
+echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
     read -p "* Create and populate the database? [y]/n: " input
 done
 
 if [ "$input" != "n" ]; then
-    read -p "* Database server administrator account name? [$dbroot]: " input
+    read -p "  Database server administrator account name? [$dbroot]: " input
     if [ "$input" != "" ]; then
         dbroot="$input"
     fi
