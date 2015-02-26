@@ -37,6 +37,7 @@
 }
 .dynamic-table th .popover {
     width: 300px;
+    z-index: 9999;
 }
 .dynamic-table tbody.empty td {
     padding: 1em 0;
