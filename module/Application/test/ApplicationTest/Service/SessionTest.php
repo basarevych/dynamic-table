@@ -21,6 +21,19 @@ class SessionTest extends AbstractControllerTestCase
         parent::setUp();
 
         $this->getApplication()->bootstrap();
+
+        $sl = $this->getApplicationServiceLocator();
+        $sl->setAllowOverride(true);
+
+        $config = $sl->get('Config');
+        $config['session'] = [
+            'name'                => 'zf2skeleton',
+            'save_handler'        => 'files', // 'files' or 'memcached'
+//            'save_path'           => realpath(__DIR__ . '/../../data/session'),
+            'remember_me_seconds' => 7 * 24 * 60 * 60,
+            'cookie_lifetime'     => 7 * 24 * 60 * 60,
+        ];
+        $sl->setService('Config', $config);
     }
 
     public function testServiceLocatorMethods()
@@ -34,6 +47,25 @@ class SessionTest extends AbstractControllerTestCase
             $service->getServiceLocator(),
             "Service Locator is wrong"
         );
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testSessionStarted()
+    {
+        $sl = $this->getApplicationServiceLocator();
+        $config = $sl->get('Config');
+
+        $manager = Container::getDefaultManager();
+        $manager->destroy();
+
+        $this->getApplication()->bootstrap();
+        $session = $sl->get('Session');
+        $cnt = $session->getContainer();
+
+        $this->assertEquals(PHP_SESSION_ACTIVE, session_status(), "Session is not started");
+        $this->assertEquals($config['session']['name'], session_name(), "Session name is invalid");
     }
 
     /**
