@@ -86,21 +86,4 @@ class ModuleTest extends AbstractControllerTestCase
 
         $this->assertEquals('fr', locale_get_default());
     }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function testSessionStarted()
-    {
-        $sl = $this->getApplicationServiceLocator();
-        $config = $sl->get('Config');
-
-        $manager = Container::getDefaultManager();
-        $manager->destroy();
-
-        $this->getApplication()->bootstrap();
-
-        $this->assertEquals(PHP_SESSION_ACTIVE, session_status(), "Session is not started");
-        $this->assertEquals($config['session']['name'], session_name(), "Session name is invalid");
-    }
 }
