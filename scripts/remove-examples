@@ -25,7 +25,6 @@ if [ "$input" = "y" ]; then
     touch front/js/app.js
     rm -f front/css/app.css
     touch front/css/app.css
-    ./scripts/build-front prod
 fi
 
 echo
