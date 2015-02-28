@@ -48,6 +48,7 @@ class IndexController extends AbstractActionController
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
+        $translate = $sl->get('viewhelpermanager')->get('translate');
 
         // Handle validate request
         if ($this->params()->fromQuery('query') == 'validate') {
@@ -59,11 +60,13 @@ class IndexController extends AbstractActionController
             $form->isValid();
 
             $control = $form->get($field);
-            $messages = $control->getMessages();
+            $messages = [];
+            foreach ($control->getMessages() as $msg)
+                $messages[] = $translate($msg);
 
             return new JsonModel([
                 'valid'     => (count($messages) == 0),
-                'messages'  => array_values($messages),
+                'messages'  => $messages,
             ]);
         }
 
