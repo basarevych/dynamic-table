@@ -21,10 +21,10 @@ read input
 
 if [ "$input" = "y" ]; then
     echo "=> Emptying app.js and app.css"
-    rm public/js/app.js
-    touch public/js/app.js
-    rm public/css/app.css
-    touch public/css/app.css
+    rm public.prod/js/app.js
+    touch public.prod/js/app.js
+    rm public.prod/css/app.css
+    touch public.prod/css/app.css
 fi
 
 echo
