@@ -7,6 +7,17 @@ if ($this->script) {    // Run script and return (no form is displayed)
     return;
 }
 
+if (!function_exists('formatNumber')) { // make phpunit happy
+    function formatNumber($number) {
+        if ($number === null)
+            return '';
+
+        $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
+        $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 6);
+        return $fmt->format($number);
+    }
+}
+
 $form = $this->form;
 
 $security = $form->get('security');
@@ -73,7 +84,7 @@ $datetime = $form->get('datetime');
         <div class="col-sm-8">
             <input type="text" class="form-control"
                    name="<?= $integer->getName() ?>"
-                   value="<?= $this->escapeHtml($integer->getValue()) ?>"
+                   value="<?= formatNumber($integer->getValue()) ?>"
                    data-on-blur="validateFormField($('#modal-form [name=<?= $integer->getName() ?>]'))"
                    data-on-enter="$('#modal-form [name=<?= $float->getName() ?>]').focus()">
             <div class="help-block">
@@ -96,7 +107,7 @@ $datetime = $form->get('datetime');
         <div class="col-sm-8">
             <input type="text" class="form-control"
                    name="<?= $float->getName() ?>"
-                   value="<?= $this->escapeHtml($float->getValue()) ?>"
+                   value="<?= formatNumber($float->getValue()) ?>"
                    data-on-blur="validateFormField($('#modal-form [name=<?= $float->getName() ?>]'))"
                    data-on-enter="$('#modal-form [name=<?= $boolean->getName() ?>]').focus()">
             <div class="help-block">

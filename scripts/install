@@ -233,6 +233,8 @@ if [ "$input" != "n" ]; then
         run_command psql -U $dbroot -d template1 < $dbscript
     fi
 
+    rm -f $dbscript
+
     echo
     echo "* Creating the schema..."
 
