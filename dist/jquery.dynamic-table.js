@@ -324,6 +324,10 @@
                     + plugin.options.strings.DT_LABEL_ALL_PAGES
                     + '</label>')
                 .appendTo(menu);
+            menu.find('input[type=radio]')
+                .on('change', function () {
+                    plugin.element.trigger('dt.selected');
+                });
             menu.appendTo(allSelector.find('.menu-wrapper'));
         }
 
