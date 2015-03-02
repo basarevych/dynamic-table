@@ -19,6 +19,7 @@ return [
     'Previous Exception information' => 'Previous Exception information',
     'Class' => 'Class',
     'Code' => 'Code',
+    'Message' => 'Message',
     'File' => 'File',
     'Line' => 'Line',
     'Stack trace' => 'Stack trace',
