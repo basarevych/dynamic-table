@@ -1,17 +1,3 @@
-<?php
-
-if (!function_exists('formatNumber')) { // make phpunit happy
-    function formatNumber($number) {
-        if ($number === null)
-            return '';
-
-        $fmt = new \NumberFormatter(\Locale::getDefault(), \NumberFormatter::DECIMAL);
-        $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 6);
-        return $fmt->format($number);
-    }
-}
-
-?>
 <script>
     function printDateTime(timestamp) {
         if (timestamp == null)
@@ -110,8 +96,8 @@ if (!function_exists('formatNumber')) { // make phpunit happy
                         <tr>
                             <td><?= $entity->getId() ?></td>
                             <td><?= $this->escapeHtml($entity->getValueString()) ?></td>
-                            <td><?= formatNumber($entity->getValueInteger()) ?></td>
-                            <td><?= formatNumber($entity->getValueFloat()) ?></td>
+                            <td><?= \Application\Tool\Number::localeFormat($entity->getValueInteger()) ?></td>
+                            <td><?= \Application\Tool\Number::localeFormat($entity->getValueFloat()) ?></td>
                             <td>
                                 <?php
                                     $b = $entity->getValueBoolean();

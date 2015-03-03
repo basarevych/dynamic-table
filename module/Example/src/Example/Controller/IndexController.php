@@ -126,8 +126,8 @@ class IndexController extends AbstractActionController
             $form->setData([
                 'id'        => $entity->getId(),
                 'string'    => $entity->getValueString(),
-                'integer'   => $entity->getValueInteger(),
-                'float'     => $entity->getValueFloat(),
+                'integer'   => \Application\Tool\Number::localeFormat($entity->getValueInteger()),
+                'float'     => \Application\Tool\Number::localeFormat($entity->getValueFloat()),
                 'boolean'   => $boolean,
                 'datetime'  => $datetime
             ]);
