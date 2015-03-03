@@ -3,10 +3,8 @@
 namespace ExampleTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
-use Zend\Dom\Document;
-use Zend\Dom\Query;
 use Zend\Http\Request as HttpRequest;
-use PHPUnit_Framework_ExpectationFailedException;
+use Zend\Dom\Query;
 use Application\Entity\Sample as SampleEntity;
 
 class QueryMock {
@@ -17,6 +15,8 @@ class QueryMock {
 
 class IndexControllerTest extends AbstractHttpControllerTestCase
 {
+    use \ApplicationTest\Controller\RegexAtLeastOnceTrait;
+
     public function setUp()
     {
         \Locale::setDefault('en_US');
@@ -227,35 +227,5 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
         $this->assertNotEquals(null, $removed, "Entity was not removed");
         $this->assertEquals($this->a->getId(), $removed->getId(), "Wrong entity was removed");
-    }
-
-    private function assertQueryContentRegexAtLeastOnce($path, $pattern, $useXpath = false)
-    {
-        $response = $this->getResponse();
-        $document = new Document($response->getContent());
-
-        if ($useXpath) {
-            $document->registerXpathNamespaces($this->xpathNamespaces);
-        }
-
-        $result   = Document\Query::execute($path, $document, $useXpath ? Document\Query::TYPE_XPATH : Document\Query::TYPE_CSS);
-
-        if ($result->count() == 0) {
-            throw new PHPUnit_Framework_ExpectationFailedException(sprintf(
-                'Failed asserting node DENOTED BY %s EXISTS',
-                $path
-            ));
-        }
-
-        foreach ($result as $node) {
-            if (preg_match($pattern, $node->nodeValue))
-                return;
-        }
-
-        throw new PHPUnit_Framework_ExpectationFailedException(sprintf(
-            'Failed asserting node denoted by %s CONTAINS content MATCHING "%s"',
-            $path,
-            $pattern
-        ));
     }
 }
