@@ -7,10 +7,14 @@ use PHPUnit_Framework_ExpectationFailedException;
 
 trait RegexAtLeastOnceTrait
 {
-    private function assertQueryContentRegexAtLeastOnce($path, $pattern, $useXpath = false)
+    private function assertQueryContentRegexAtLeastOnce($path, $pattern, $useXpath = false, $content = null)
     {
-        $response = $this->getResponse();
-        $document = new Document($response->getContent());
+        if (!$content) {
+            $response = $this->getResponse();
+            $content = $response->getContent();
+        }
+
+        $document = new Document($content);
 
         if ($useXpath) {
             $document->registerXpathNamespaces($this->xpathNamespaces);
