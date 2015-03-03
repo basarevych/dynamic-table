@@ -12,6 +12,7 @@ rm -f "module/Application/src/Application/Repository/Sample.php"
 rm -f "module/Application/test/ApplicationTest/Repository/SampleTest.php"
 
 echo "=> Updating PHPUnit config"
+sed -i '' "/'Example'/d" test/Bootstrap.php
 sed -i '' "/'ExampleTest'/d" test/Bootstrap.php
 sed -i '' "/module\/Example\/test\/ExampleTest/d" test/phpunit.xml.dist
 
