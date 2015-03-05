@@ -75,13 +75,22 @@ return [
     'doctrine' => [
         'driver' => [
             'application_entity' => [
-                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                 'paths' => [ __DIR__ . '/../src/Application/Entity' ],
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'paths' => [ __DIR__ . '/../src/Application/Entity' ],
             ],
             'orm_default' => [
-                 'drivers' => [
-                    'Application\Entity' => 'application_entity'
-                 ]
+                'drivers' => [
+                   'Application\Entity' => 'application_entity'
+                ]
+            ],
+            'application_document' => [
+                'class' => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                'paths' => [ __DIR__ . '/../src/Application/Document' ],
+            ],
+            'odm_default' => [
+                'drivers' => [
+                    'Application\Document' => 'application_document'
+                ]
             ]
         ]
     ],

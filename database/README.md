@@ -28,6 +28,27 @@ The database
     > psql -U username_here -d db_name_here < database/postgresql.schema.sql
     ```
 
+  * MongoDB
+
+    ```js
+    > mongo -u root -p --authenticationDatabase admin
+    > use db_name_here
+    > db.runCommand({ dropAllUsersFromDatabase: 1 })
+    > db.runCommand({ dropDatabase: 1 })
+    
+    > use db_name_here
+    > db.createUser(
+        {
+          user: "username_here",
+          pwd: "password_here",
+          roles: [
+            { role: "userAdmin", db: "db_name_here" },
+            { role: "readWrite", db: "db_name_here" },
+          ]
+        }
+      )
+    ```
+
 2. Populate the database
 
   ```shell

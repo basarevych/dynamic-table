@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @category    Application
  * @package     Entity
  * 
- * @ORM\Entity(repositoryClass="Application\Repository\Sample")
+ * @ORM\Entity(repositoryClass="Application\Entity\SampleRepository")
  * @ORM\Table(name="sample")
  */
 class Sample

@@ -3,10 +3,12 @@
 return [
     'modules' => [
         'Application',
-        'Example',
+        'ExampleORM',
+        'ExampleODM',
         // Your modules here
         'DoctrineModule',
-        'DoctrineORMModule'
+        'DoctrineORMModule',
+        'DoctrineMongoODMModule',
     ],
 
     'module_listener_options' => [

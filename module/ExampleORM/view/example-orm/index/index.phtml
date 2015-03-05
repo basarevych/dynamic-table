@@ -1,0 +1,146 @@
+<script>
+    function printDateTime(timestamp) {
+        if (timestamp == null)
+            return;
+
+        var local = moment.unix(timestamp).local();
+        document.write(local.format('YYYY-MM-DD HH:mm:ss Z'));
+    }
+
+    function editEntityForm(id) {
+        $.ajax({
+            url: '<?= $this->basePath('/example-orm/index/edit-form') ?>',
+            data: {
+                id: id
+            },
+            success: function (html) {
+                var modal = $('#modal-form');
+                modal.find('.modal-title').text(
+                    typeof id == 'undefined'
+                        ? '<?= $this->translate('Create entity') ?>'
+                        : '<?= $this->translate('Edit entity') ?>'
+                );
+                modal.find('button[type=submit]').text(
+                    typeof id == 'undefined'
+                        ? '<?= $this->translate('Create') ?>'
+                        : '<?= $this->translate('Save changes') ?>'
+                );
+                modal.find('.modal-body').html(html);
+            }
+        });
+    }
+
+    function deleteEntityForm(id) {
+        $.ajax({
+            url: '<?= $this->basePath('/example-orm/index/delete-form') ?>',
+            data: {
+                id: id
+            },
+            success: function (html) {
+                var modal = $('#modal-form');
+                modal.find('.modal-title').text('<?= $this->translate('Delete entity') ?>');
+                modal.find('button[type=submit]').text('<?= $this->translate('Delete') ?>');
+                modal.find('.modal-body').html(html);
+            }
+        });
+    }
+</script>
+
+<div id="modal-form" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <?= $this->translate('Cancel') ?>
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <?= $this->translate('Submit') ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1><?= $this->translate('Entities &amp; Form Example') ?></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-default" onclick="editEntityForm()">
+                <?= $this->translate('Create entity') ?>
+            </button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><?= $this->translate('String') ?></th>
+                        <th><?= $this->translate('Integer') ?></th>
+                        <th><?= $this->translate('Float') ?></th>
+                        <th><?= $this->translate('Boolean') ?></th>
+                        <th><?= $this->translate('DateTime') ?></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->entities as $entity): ?>
+                        <tr>
+                            <td><?= $entity->getId() ?></td>
+                            <td><?= $this->escapeHtml($entity->getValueString()) ?></td>
+                            <td><?= \Application\Tool\Number::localeFormat($entity->getValueInteger()) ?></td>
+                            <td><?= \Application\Tool\Number::localeFormat($entity->getValueFloat()) ?></td>
+                            <td>
+                                <?php
+                                    $b = $entity->getValueBoolean();
+                                    if ($b !== null)
+                                        echo $this->translate($b ? 'true' : 'false')
+                                ?>
+                            </td>
+                            <td>
+                                <script>
+                                    printDateTime(<?= ($dt = $entity->getValueDatetime()) ? $dt->getTimestamp() : 'null' ?>);
+                                </script>
+                            </td>
+                            <td style="width: 1px; white-space: nowrap;">
+                                <button type="button" class="btn btn-default btn-xs"
+                                        onclick="editEntityForm(<?= $entity->getId() ?>)">
+                                    <?= $this->translate('Edit') ?>
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs"
+                                        onclick="deleteEntityForm(<?= $entity->getId() ?>)">
+                                    <?= $this->translate('Delete') ?>
+                                </button>
+                            </td>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Note on number fields</h4>
+            <p>Integer and float fields are printed according to current locale (thousand and decimal separators)</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Note on DateTime field</h4>
+            <ul>
+                <li>Database field is always in UTC since we are using custom UtcDateTime Doctrine type</li>
+                <li>PHP timezone is whatever you set in 'date.timezone' variable of php.ini</li>
+                <li>Displayed timezone here on the client is the local browser timezone, because we are sending UNIX timestamps (UTC) over the network and convert them to string using moment.js</li>
+            </ul>
+        </div>
+    </div>
+</div>

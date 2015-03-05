@@ -1,20 +1,29 @@
 #!/bin/sh
 
 echo "=> Deleting Example module directory"
-rm -rf module/Example
+rm -rf module/ExampleORM
+rm -rf module/ExampleODM
 
 echo "=> Updating application.config.php"
-sed -i '' "/'Example'/d" config/application.config.php
+sed -i '' "/'ExampleORM'/d" config/application.config.php
+sed -i '' "/'ExampleODM'/d" config/application.config.php
 
 echo "=> Removing Sample entity and repository"
 rm -f "module/Application/src/Application/Entity/Sample.php"
-rm -f "module/Application/src/Application/Repository/Sample.php"
-rm -f "module/Application/test/ApplicationTest/Repository/SampleTest.php"
+rm -f "module/Application/src/Application/Entity/SampleRepository.php"
+rm -f "module/Application/test/ApplicationTest/Entity/SampleRepositoryTest.php"
+
+echo "=> Removing Sample document and repository"
+rm -f "module/Application/src/Application/Document/Sample.php"
+rm -f "module/Application/src/Application/Document/SampleRepository.php"
 
 echo "=> Updating PHPUnit config"
-sed -i '' "/'Example'/d" test/Bootstrap.php
-sed -i '' "/'ExampleTest'/d" test/Bootstrap.php
-sed -i '' "/module\/Example\/test\/ExampleTest/d" test/phpunit.xml.dist
+sed -i '' "/'ExampleORM'/d" test/Bootstrap.php
+sed -i '' "/'ExampleORMTest'/d" test/Bootstrap.php
+sed -i '' "/'ExampleODM'/d" test/Bootstrap.php
+sed -i '' "/'ExampleODMTest'/d" test/Bootstrap.php
+sed -i '' "/module\/ExampleORM\/test\/ExampleORMTest/d" test/phpunit.xml.dist
+sed -i '' "/module\/ExampleODM\/test\/ExampleODMTest/d" test/phpunit.xml.dist
 
 echo
 echo -n "==> Do you want to clear app.js and app.css? [y/n] "

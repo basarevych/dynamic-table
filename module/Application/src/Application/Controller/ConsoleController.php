@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractConsoleController;
 use Application\Entity\Sample as SampleEntity;
+use Application\Document\Sample as SampleDocument;
 
 /**
  * Console controller
@@ -41,25 +42,52 @@ class ConsoleController extends AbstractConsoleController
     public function populateDbAction()
     {
         $sl = $this->getServiceLocator();
-        $em = $sl->get('Doctrine\ORM\EntityManager');
+        $mm = $sl->get('ModuleManager');
 
-        $repo = $em->getRepository('Application\Entity\Sample');
-        $repo->removeAll();
+        if ($mm->getModule('DoctrineORMModule')) {
+            $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $dt = new \DateTime();
-        for ($i = 1; $i <= 10; $i++) {
-            $dt->add(new \DateInterval('PT10S'));
+            $repo = $em->getRepository('Application\Entity\Sample');
+            $repo->removeAll();
 
-            $entity = new SampleEntity();
-            $entity->setValueString("string $i");
-            if ($i != 3) {
-                $entity->setValueInteger($i * $i * 100);
-                $entity->setValueFloat($i / 100);
-                $entity->setValueBoolean($i % 2 == 0);
-                $entity->setValueDatetime(clone $dt);
+            $dt = new \DateTime();
+            for ($i = 1; $i <= 10; $i++) {
+                $dt->add(new \DateInterval('PT10S'));
+
+                $entity = new SampleEntity();
+                $entity->setValueString("string $i");
+                if ($i != 3) {
+                    $entity->setValueInteger($i * $i * 100);
+                    $entity->setValueFloat($i / 100);
+                    $entity->setValueBoolean($i % 2 == 0);
+                    $entity->setValueDatetime(clone $dt);
+                }
+                $em->persist($entity);
             }
-            $em->persist($entity);
+            $em->flush();
         }
-        $em->flush();
+
+        if ($mm->getModule('DoctrineMongoODMModule')) {
+            $dm = $sl->get('doctrine.documentmanager.odm_default');
+
+            $repo = $dm->getRepository('Application\Document\Sample');
+            $repo->removeAll();
+
+            $dt = new \DateTime();
+            for ($i = 1; $i <= 10; $i++) {
+                $dt->add(new \DateInterval('PT10S'));
+
+                $document = new SampleDocument();
+                $document->setValueString("string $i");
+                if ($i != 3) {
+                    $document->setValueInteger($i * $i * 100);
+                    $document->setValueFloat($i / 100);
+                    $document->setValueBoolean($i % 2 == 0);
+                    $document->setValueDatetime(clone $dt);
+                }
+                $dm->persist($document);
+            }
+            $dm->flush();
+        }
     }
 } 

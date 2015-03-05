@@ -102,11 +102,13 @@ class EntityNotExists extends AbstractValidator
      * Set entity name
      *
      * @param string $entity
-     * @return EntityManager
+     * @return EntityNotExists
      */
     public function setEntity($entity)
     {
         $this->entity = $entity;
+
+        return $this;
     }
 
     /**

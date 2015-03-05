@@ -1,0 +1,46 @@
+<?php
+
+if ($this->script) {    // Run script and return (no form is displayed)
+    echo "<script>" . PHP_EOL;
+    echo $this->script . PHP_EOL;
+    echo "</script>" . PHP_EOL;
+    return;
+}
+
+$form = $this->form;
+$security = $form->get('security');
+$id = $form->get('id');
+
+?>
+
+<form class="form-horizontal" name="<?= $form->getName() ?>" onsubmit="return false"
+      method="<?= $form->getAttribute('method') ?>"
+      action="<?= $this->basePath('/example-orm/index/delete-form') ?>">
+
+    <input type="hidden"
+           name="<?= $security->getName() ?>"
+           value="<?= $security->getValue() ?>">
+
+    <input type="hidden"
+           name="<?= $id->getName() ?>"
+           value="<?= $id->getValue() ?>">
+
+    <?php foreach (array_merge($this->messages, $security->getMessages()) as $msg): ?>
+        <div class="alert alert-danger">
+            <center><?= $this->escapeHtml($this->translate($msg)) ?></center>
+        </div>
+    <?php endforeach ?>
+
+    <p><?= sprintf($this->translate('CONFIRM_SAMPLE_DELETE'), $this->name) ?></p>
+</form>
+
+<script>
+    var modal = $('#modal-form');
+
+    initModalForm(modal);                   // See /js/app.js 
+
+    if (!modal.is(':visible'))
+        modal.modal('show');
+
+    setFormFocus(modal.find('form'));       // See /js/app.js
+</script>
