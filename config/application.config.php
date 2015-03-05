@@ -6,7 +6,8 @@ return [
         'Example',
         // Your modules here
         'DoctrineModule',
-        'DoctrineORMModule'
+        'DoctrineORMModule',
+        'DoctrineMongoODMModule',
     ],
 
     'module_listener_options' => [

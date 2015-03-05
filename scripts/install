@@ -55,7 +55,7 @@ run_command cp mail.local.php.dist mail.local.php
 input="none"
 echo
 while [ "$input" != "sendmail" -a "$input" != "smtp" -a "$input" != "" ]; do
-    read -p "* What mail transport should be used? sendmail/[smtp]: " input
+    read -p "* What mail transport should be used for system messages (like exception reports)? sendmail/[smtp]: " input
 done
 if [ "$input" = "sendmail" ]; then
     transport="sendmail"
@@ -107,13 +107,16 @@ fi
 input="none"
 echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
-    read -p "* Do you need Doctrine ORM? [y]/n: " input
+    read -p "* Do you need Doctrine SQL ORM? [y]/n: " input
 done
 
+using_orm=0
 if [ "$input" != "n" ]; then
+    using_orm=1
+
     input="none"
     while [ "$input" != "mysql" -a "$input" != "postgresql" -a "$input" != "" ]; do
-        read -p "  What is the database server? [mysql]/postgresql: " input
+        read -p "  What is the SQL server? [mysql]/postgresql: " input
     done
 
     if [ "$input" = "postgresql" ]; then
@@ -126,24 +129,24 @@ if [ "$input" != "n" ]; then
         dbroot="root"
     fi
 
-    read -p "  Database server hostname? [localhost]: " dbhost
+    read -p "  SQL server hostname? [localhost]: " dbhost
     if [ "$dbhost" = "" ]; then
         dbhost="localhost"
     fi
 
-    read -p "  Database server port? [$defaultport]: " dbport
+    read -p "  SQL server port? [$defaultport]: " dbport
     if [ "$dbport" = "" ]; then
         dbport=$defaultport
     fi
 
-    read -p "  Database server account name? [$project]: " dbuser
+    read -p "  SQL server account name? [$project]: " dbuser
     if [ "$dbuser" = "" ]; then
         dbuser=$project
     fi
 
-    read -p "  Database server acount password? " dbpassword
+    read -p "  SQL server acount password? " dbpassword
 
-    read -p "  Database name? [$project]: " dbname
+    read -p "  SQL database name? [$project]: " dbname
     if [ "$dbname" = "" ]; then
         dbname=$project
     fi
@@ -158,6 +161,72 @@ if [ "$input" != "n" ]; then
 
     echo
     echo "  File config/autoload/$dbserver.local.php created"
+fi
+
+input="none"
+echo
+while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+    read -p "* Do you need Doctrine Mongo ODM? y/[n]: " input
+done
+
+using_odm=0
+if [ "$input" = "y" ]; then
+    using_odm=1
+
+    mongodefaultport=27017
+    mongoroot="root"
+    mongoauthdb="admin"
+
+    read -p "  Mongo server hostname? [localhost]: " mongohost
+    if [ "$mongohost" = "" ]; then
+        mongohost="localhost"
+    fi
+
+    read -p "  Mongo server port? [$mongodefaultport]: " mongoport
+    if [ "$mongoport" = "" ]; then
+        mongoport=$mongodefaultport
+    fi
+
+    read -p "  Mongo server account name? [$project]: " mongouser
+    if [ "$mongouser" = "" ]; then
+        mongouser=$project
+    fi
+
+    read -p "  Mongo server acount password? " mongopassword
+
+    read -p "  Mongo database name? [$project]: " mongoname
+    if [ "$mongoname" = "" ]; then
+        mongoname=$project
+    fi
+
+    run_command cp mongodb.local.php.dist mongodb.local.php
+
+    run_command perl -pi -e "s/(\s*'server'\s*=>\s*')(localhost)('.*)/\${1}$mongohost\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($mongodefaultport)(.*)/\${1}$mongoport\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}$mongouser\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}$mongopassword\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}$mongoname\${3}/" "mongodb.local.php"
+
+    echo
+    echo "  File config/autoload/mongodb.local.php created"
+fi
+
+if [ $using_orm -eq 1 ]; then
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineORMModule'\s*.*)/\${1}/" "../application.config.php"
+else
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineORMModule'\s*.*)/\/\/\${1}/" "../application.config.php"
+fi
+
+if [ $using_odm -eq 1 ]; then
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineMongoODMModule'\s*.*)/\${1}/" "../application.config.php"
+else
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineMongoODMModule'\s*.*)/\/\/\${1}/" "../application.config.php"
+fi
+
+if [ $using_orm -eq 0 -a $using_odm -eq 0 ]; then
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineModule'\s*.*)/\/\/\${1}/" "../application.config.php"
+else
+    run_command perl -pi -e "s/\/?\/?(\s*'DoctrineModule'\s*.*)/\${1}/" "../application.config.php"
 fi
 
 input="none"
@@ -189,67 +258,123 @@ echo "* Installing production environment dependencies..."
 echo
 run_command ./scripts/update prod
 
+if [ $using_orm -eq 1 ]; then
+    input="none"
+    echo
+    while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+        read -p "* Create the SQL database and user? [y]/n: " input
+    done
+
+    if [ "$input" != "n" ]; then
+        read -p "  SQL server administrator account name? [$dbroot]: " input
+        if [ "$input" != "" ]; then
+            dbroot="$input"
+        fi
+
+        dbscript="/tmp/$project.install"
+        if [ "$dbserver" = "mysql" ]; then
+            echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
+            echo "CREATE DATABASE $dbname CHARACTER SET utf8;" >> $dbscript
+            echo "GRANT USAGE ON *.* TO '$dbuser'@'localhost';" >> $dbscript
+            echo "DROP USER '$dbuser'@'localhost';" >> $dbscript
+            echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$dbpassword';" >> $dbscript
+            echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" >> $dbscript
+            echo "FLUSH PRIVILEGES;" >> $dbscript
+        else
+            echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
+            echo "CREATE DATABASE $dbname;" >> $dbscript
+            echo "DROP USER IF EXISTS $dbuser;" >> $dbscript
+            echo "CREATE USER $dbuser WITH PASSWORD '$dbpassword';" >> $dbscript
+            echo "GRANT ALL PRIVILEGES ON DATABASE $dbname TO $dbuser;" >> $dbscript
+        fi
+
+        echo
+        echo "  The following code will be executed:"
+        echo
+        cat $dbscript
+        echo
+
+        echo "  Press Enter to continue, be ready to provide DB administrator password"
+        read input
+
+        if [ "$dbserver" = "mysql" ]; then
+            run_command mysql -u $dbroot -p < $dbscript
+        else
+            run_command psql -U $dbroot -d template1 < $dbscript
+        fi
+
+        rm -f $dbscript
+
+        echo
+        echo "* Creating the schema..."
+
+        if [ "$dbserver" = "mysql" ]; then
+            if [ "$dbpassword" = "" ]; then
+                run_command mysql -u$dbuser $dbname < database/$dbserver.schema.sql
+            else
+                run_command mysql -u$dbuser -p$dbpassword $dbname < database/$dbserver.schema.sql
+            fi
+        else
+            run_command psql -U $dbuser -d $dbname < database/$dbserver.schema.sql
+        fi
+    fi
+fi
+
+if [ $using_odm -eq 1 ]; then
+    input="none"
+    echo
+    while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+        read -p "* Create Mongo user and database? [y]/n: " input
+    done
+
+    if [ "$input" != "n" ]; then
+        read -p "  Mongo server administrator account name? [$mongoroot]: " input
+        if [ "$input" != "" ]; then
+            mongoroot="$input"
+        fi
+
+        read -p "  Mongo server authentication database? [$mongoauthdb]: " input
+        if [ "$input" != "" ]; then
+            mongoauthdb="$input"
+        fi
+
+        dbscript="/tmp/$project.install.js"
+        echo "db = db.getSiblingDB('$mongoname')" > $dbscript
+        echo "db.runCommand({ dropAllUsersFromDatabase: 1 })" >> $dbscript
+        echo "db.runCommand({ dropDatabase: 1 })" >> $dbscript
+        echo "db = db.getSiblingDB('$mongoname')" >> $dbscript
+        echo "db.createUser(" >> $dbscript
+        echo "  {" >> $dbscript
+        echo "    user: \"$mongouser\"," >> $dbscript
+        echo "    pwd: \"$mongopassword\"," >> $dbscript
+        echo "    roles: [ { role: \"userAdmin\", db: \"$mongoname\" } ]" >> $dbscript
+        echo "  }" >> $dbscript
+        echo ")" >> $dbscript
+
+        echo
+        echo "  The following code will be executed:"
+        echo
+        cat $dbscript
+        echo
+
+        echo "  Press Enter to continue, be ready to provide DB administrator password"
+        read input
+
+        run_command mongo -u $mongoroot -p --authenticationDatabase $mongoauthdb $dbscript
+
+        rm -f $dbscript
+    fi
+fi
+
 input="none"
 echo
 while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
-    read -p "* Create and populate the database? [y]/n: " input
+    read -p "* Populate the databases [y]/n: " input
 done
 
 if [ "$input" != "n" ]; then
-    read -p "  Database server administrator account name? [$dbroot]: " input
-    if [ "$input" != "" ]; then
-        dbroot="$input"
-    fi
-
-    dbscript="/tmp/$project.install"
-    if [ "$dbserver" = "mysql" ]; then
-        echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
-        echo "CREATE DATABASE $dbname CHARACTER SET utf8;" >> $dbscript
-        echo "GRANT USAGE ON *.* TO '$dbuser'@'localhost';" >> $dbscript
-        echo "DROP USER '$dbuser'@'localhost';" >> $dbscript
-        echo "CREATE USER '$dbuser'@'localhost' IDENTIFIED BY '$dbpassword';" >> $dbscript
-        echo "GRANT ALL PRIVILEGES ON $dbname.* TO '$dbuser'@'localhost';" >> $dbscript
-        echo "FLUSH PRIVILEGES;" >> $dbscript
-    else
-        echo "DROP DATABASE IF EXISTS $dbname;" > $dbscript
-        echo "CREATE DATABASE $dbname;" >> $dbscript
-        echo "DROP USER IF EXISTS $dbuser;" >> $dbscript
-        echo "CREATE USER $dbuser WITH PASSWORD '$dbpassword';" >> $dbscript
-        echo "GRANT ALL PRIVILEGES ON DATABASE $dbname TO $dbuser;" >> $dbscript
-    fi
-
     echo
-    echo "  The following code will be executed:"
-    echo
-    cat $dbscript
-    echo
-
-    echo "  Press Enter to continue, be ready to provide DB administrator password"
-    read input
-
-    if [ "$dbserver" = "mysql" ]; then
-        run_command mysql -u $dbroot -p < $dbscript
-    else
-        run_command psql -U $dbroot -d template1 < $dbscript
-    fi
-
-    rm -f $dbscript
-
-    echo
-    echo "* Creating the schema..."
-
-    if [ "$dbserver" = "mysql" ]; then
-        if [ "$dbpassword" = "" ]; then
-            run_command mysql -u$dbuser $dbname < database/$dbserver.schema.sql
-        else
-            run_command mysql -u$dbuser -p$dbpassword $dbname < database/$dbserver.schema.sql
-        fi
-    else
-        run_command psql -U $dbuser -d $dbname < database/$dbserver.schema.sql
-    fi
-
-    echo
-    echo "* Populating the database..."
+    echo "* Populating the databases..."
 
     run_command php public.prod/index.php populate-db
 fi

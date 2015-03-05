@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'doctrine' => [
+        'connection' => [
+            'odm_default' => [
+                'server'           => 'localhost',
+                'port'             => 27017,
+                'user'             => 'dbuser',
+                'password'         => 'dbpassword',
+                'dbname'           => 'dbname',
+            ],
+        ],
+    ],
+];
