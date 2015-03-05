@@ -9,7 +9,7 @@
 
     function editEntityForm(id) {
         $.ajax({
-            url: '<?= $this->basePath('/example/index/edit-form') ?>',
+            url: '<?= $this->basePath('/example-orm/index/edit-form') ?>',
             data: {
                 id: id
             },
@@ -32,7 +32,7 @@
 
     function deleteEntityForm(id) {
         $.ajax({
-            url: '<?= $this->basePath('/example/index/delete-form') ?>',
+            url: '<?= $this->basePath('/example-orm/index/delete-form') ?>',
             data: {
                 id: id
             },

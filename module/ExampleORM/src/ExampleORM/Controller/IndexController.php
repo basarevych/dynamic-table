@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Example\Controller;
+namespace ExampleORM\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -15,7 +15,7 @@ use Zend\View\Model\JsonModel;
 use Application\Exception\NotFoundException;
 use Application\Entity\Sample as SampleEntity;
 use Application\Form\ConfirmForm;
-use Example\Form\EditSampleForm;
+use ExampleORM\Form\EditSampleForm;
 
 /**
  * Index controller

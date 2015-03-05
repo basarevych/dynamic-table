@@ -1,6 +1,6 @@
 <?php
 
-namespace ExampleTest\Controller;
+namespace ExampleORMTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use Zend\Http\Request as HttpRequest;

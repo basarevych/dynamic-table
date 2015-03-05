@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Example\Form;
+namespace ExampleORM\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;

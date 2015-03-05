@@ -7,7 +7,7 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Example;
+namespace ExampleORM;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Mvc\ModuleRouteListener;

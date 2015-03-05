@@ -3,9 +3,18 @@
         <div class="col-lg-12">
             <h1>IndexControler/indexAction</h1>
             <p>
-                <a href="<?= $this->basePath('/example') ?>">
-                    Open example controller
-                </a>
+                Open
+                <ul>
+                    <li>
+                        <a href="<?= $this->basePath('/example-orm') ?>">
+                            Doctrine SQL ORM example module
+                        </a>
+                    </li><li>
+                        <a href="<?= $this->basePath('/example-odm') ?>">
+                            Doctrine Mongo ODM example module
+                        </a>
+                    </li>
+                </ul>
             </p>
         </div>
     </div>
