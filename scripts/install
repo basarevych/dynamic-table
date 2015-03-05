@@ -211,6 +211,7 @@ if [ "$input" = "y" ]; then
     run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}$mongouser\${3}/" "mongodb.local.php"
     run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}$mongopassword\${3}/" "mongodb.local.php"
     run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}$mongoname\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'default_db'\s*=>\s*')(dbname)('.*)/\${1}$mongoname\${3}/" "mongodb.local.php"
 
     echo
     echo "  File config/autoload/mongodb.local.php created"
@@ -348,7 +349,10 @@ if [ $using_odm -eq 1 ]; then
         echo "  {" >> $dbscript
         echo "    user: \"$mongouser\"," >> $dbscript
         echo "    pwd: \"$mongopassword\"," >> $dbscript
-        echo "    roles: [ { role: \"userAdmin\", db: \"$mongoname\" } ]" >> $dbscript
+        echo "    roles: [" >> $dbscript
+        echo "      { role: \"userAdmin\", db: \"$mongoname\" }," >> $dbscript
+        echo "      { role: \"readWrite\", db: \"$mongoname\" }," >> $dbscript
+        echo "    ]" >> $dbscript
         echo "  }" >> $dbscript
         echo ")" >> $dbscript
 

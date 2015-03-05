@@ -11,5 +11,10 @@ return [
                 'dbname'           => 'dbname',
             ],
         ],
+        'configuration' => [
+            'odm_default' => [
+                'default_db'       => 'dbname',
+            ],
+        ],
     ],
 ];

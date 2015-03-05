@@ -7,19 +7,19 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Application\Repository;
+namespace Application\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
-use Application\Entity\Sample as SampleEntity;
+use Application\Entity\SampleEntity;
 
 /**
  * Repository for Sample entity
  * 
  * @category    Application
- * @package     Repository
+ * @package     Entity 
  */
-class Sample extends EntityRepository
+class SampleRepository extends EntityRepository
 {
     /**
      * Remove all the table content

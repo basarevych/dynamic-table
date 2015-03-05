@@ -7,29 +7,26 @@
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
-namespace Application\Entity;
+namespace Application\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Sample entity
+ * Sample document
  * 
  * @category    Application
  * @package     Entity
  * 
- * @ORM\Entity(repositoryClass="Application\Entity\SampleRepository")
- * @ORM\Table(name="sample")
+ * @ODM\Document(repositoryClass="Application\Document\SampleRepository")
  */
-class Sample
+class Sample 
 {
     /**
-     * Row ID
+     * Object ID
      *
      * @var integer
      * 
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ODM\Id
      */
     protected $id;
 
@@ -38,7 +35,7 @@ class Sample
      *
      * @var string
      * 
-     * @ORM\Column(type="string")
+     * @ODM\String
      */
     protected $value_string;
 
@@ -47,7 +44,7 @@ class Sample
      *
      * @var integer
      * 
-     * @ORM\Column(type="integer", nullable=true)
+     * @ODM\Int
      */
     protected $value_integer;
 
@@ -56,7 +53,7 @@ class Sample
      *
      * @var float
      * 
-     * @ORM\Column(type="float", nullable=true)
+     * @ODM\Float
      */
     protected $value_float;
 
@@ -65,7 +62,7 @@ class Sample
      *
      * @var boolean
      * 
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ODM\Boolean
      */
     protected $value_boolean;
 
@@ -74,7 +71,7 @@ class Sample
      *
      * @var DateTime
      * 
-     * @ORM\Column(type="utcdatetime", nullable=true)
+     * @ODM\Date
      */
     protected $value_datetime;
 
@@ -99,7 +96,7 @@ class Sample
     /**
      * Get id
      *
-     * @return integer 
+     * @return id $id
      */
     public function getId()
     {
@@ -107,22 +104,21 @@ class Sample
     }
 
     /**
-     * Set value_string
+     * Set valueString
      *
      * @param string $valueString
-     * @return Setting
+     * @return self
      */
     public function setValueString($valueString)
     {
         $this->value_string = $valueString;
-
         return $this;
     }
 
     /**
-     * Get value_string
+     * Get valueString
      *
-     * @return string 
+     * @return string $valueString
      */
     public function getValueString()
     {
@@ -130,22 +126,21 @@ class Sample
     }
 
     /**
-     * Set value_integer
+     * Set valueInteger
      *
-     * @param integer $valueInteger
-     * @return Setting
+     * @param int $valueInteger
+     * @return self
      */
     public function setValueInteger($valueInteger)
     {
         $this->value_integer = $valueInteger;
-
         return $this;
     }
 
     /**
-     * Get value_integer
+     * Get valueInteger
      *
-     * @return integer 
+     * @return int $valueInteger
      */
     public function getValueInteger()
     {
@@ -153,22 +148,21 @@ class Sample
     }
 
     /**
-     * Set value_float
+     * Set valueFloat
      *
      * @param float $valueFloat
-     * @return Setting
+     * @return self
      */
     public function setValueFloat($valueFloat)
     {
         $this->value_float = $valueFloat;
-
         return $this;
     }
 
     /**
-     * Get value_float
+     * Get valueFloat
      *
-     * @return float 
+     * @return float $valueFloat
      */
     public function getValueFloat()
     {
@@ -176,22 +170,21 @@ class Sample
     }
 
     /**
-     * Set value_boolean
+     * Set valueBoolean
      *
      * @param boolean $valueBoolean
-     * @return Setting
+     * @return self
      */
     public function setValueBoolean($valueBoolean)
     {
         $this->value_boolean = $valueBoolean;
-
         return $this;
     }
 
     /**
-     * Get value_boolean
+     * Get valueBoolean
      *
-     * @return boolean 
+     * @return boolean $valueBoolean
      */
     public function getValueBoolean()
     {
@@ -199,22 +192,21 @@ class Sample
     }
 
     /**
-     * Set value_datetime
+     * Set valueDatetime
      *
-     * @param utcdatetime $valueDatetime
-     * @return Setting
+     * @param date $valueDatetime
+     * @return self
      */
     public function setValueDatetime($valueDatetime)
     {
         $this->value_datetime = $valueDatetime;
-
         return $this;
     }
 
     /**
-     * Get value_datetime
+     * Get valueDatetime
      *
-     * @return utcdatetime 
+     * @return date $valueDatetime
      */
     public function getValueDatetime()
     {

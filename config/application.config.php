@@ -4,6 +4,7 @@ return [
     'modules' => [
         'Application',
         'ExampleORM',
+        'ExampleODM',
         // Your modules here
         'DoctrineModule',
         'DoctrineORMModule',

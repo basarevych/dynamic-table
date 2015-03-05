@@ -11,32 +11,32 @@ namespace Application\Validator;
 
 use Exception;
 use Zend\Validator\AbstractValidator;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
- * EntityNotExists validator
+ * DocumentNotExists validator
  *
  * Usage:
  *
  * $params = [
- *      'entityManager' => $em,                         // Doctrine EntityManager instance
- *      'entity'        => 'Application\Entity\Sample', // The Entity
- *      'property'      => 'value_string',              // The property to compare value to
- *      'ignoreId'      => [ 123 ],                     // [Optional] IDs of records to be ignored
+ *      'documentManager' => $dm,                           // Doctrine DocumentManager instance
+ *      'document'        => 'Application\Document\Sample', // The Document
+ *      'property'        => 'value_string',                // The property to compare value to
+ *      'ignoreId'        => [ 123 ],                       // [Optional] IDs of records to be ignored
  * ];
- * $validator = new EntityNotExists($params);
+ * $validator = new DocumentNotExists($params);
  *
  * 'ignoreId' is useful when editing entity, skip this option when creating.
  *
  * @category    Application
  * @package     Validator
  */
-class EntityNotExists extends AbstractValidator
+class DocumentNotExists extends AbstractValidator
 {
     /**
-     * @const ENTITY_EXISTS     When entity found
+     * @const DOCUMENT_EXISTS     When Document found
      */
-    const ENTITY_EXISTS = 'entityExists';
+    const DOCUMENT_EXISTS = 'documentExists';
 
     /**
      * Validation failure message template definitions
@@ -44,25 +44,25 @@ class EntityNotExists extends AbstractValidator
      * @var array
      */
     protected $messageTemplates = array(
-        self::ENTITY_EXISTS => "Value is already in the database"
+        self::DOCUMENT_EXISTS => "Value is already in the database"
     );
 
     /**
-     * Entity manager
+     * Document manager
      *
-     * @var EntityManager
+     * @var DocumentManager
      */
-    protected $em;
+    protected $dm;
 
     /**
-     * Full Entity name
+     * Full Document name
      *
      * @var string
      */
-    protected $entity;
+    protected $document;
 
     /**
-     * Property of the entity to be checked for equality to a value
+     * Property of the document to be checked for equality to a value
      *
      * @var string
      */
@@ -76,56 +76,56 @@ class EntityNotExists extends AbstractValidator
     protected $ignoreId;
 
     /**
-     * Set entity manager
+     * Set document manager
      *
-     * @param EntityManager $em
-     * @return EntityNotExists
+     * @param DocumentManager $dm
+     * @return DocumentNotExists
      */
-    public function setEntityManager(EntityManager $em)
+    public function setDocumentManager(DocumentManager $dm)
     {
-        $this->em = $em;
+        $this->dm = $dm;
 
         return $this;
     }
 
     /**
-     * Get entity manager
+     * Get document manager
      *
-     * @return EntityManager
+     * @return DocumentManager
      */
-    public function getEntityManager()
+    public function getDocumentManager()
     {
-        return $this->em;
+        return $this->dm;
     }
 
     /**
-     * Set entity name
+     * Set document name
      *
-     * @param string $entity
-     * @return EntityNotExists
+     * @param string $document
+     * @return DocumentNotExists
      */
-    public function setEntity($entity)
+    public function setDocument($document)
     {
-        $this->entity = $entity;
+        $this->document = $document;
 
         return $this;
     }
 
     /**
-     * Get entity name
+     * Get document name
      *
      * @return string
      */
-    public function getEntity()
+    public function getDocument()
     {
-        return $this->entity;
+        return $this->document;
     }
 
     /**
      * Set property name
      *
      * @param string $property
-     * @return EntityNotExists
+     * @return DocumentNotExists
      */
     public function setProperty($property)
     {
@@ -148,7 +148,7 @@ class EntityNotExists extends AbstractValidator
      * Set IDs to be ignored
      *
      * @oaram integer|array $id
-     * @return EntityNotExists
+     * @return DocumentNotExists
      */
     public function setIgnoreId($id)
     {
@@ -180,35 +180,32 @@ class EntityNotExists extends AbstractValidator
 
         $options = $this->getOptions();
 
-        $em = $this->getEntityManager();
-        if (!$em)
-            throw new Exception('No EntityManager provided');
+        $dm = $this->getDocumentManager();
+        if (!$dm)
+            throw new Exception('No DocumentManager provided');
 
-        $entity = $this->getEntity();
-        if (!$entity)
-            throw new Exception('No entity name provided');
+        $document = $this->getDocument();
+        if (!$document)
+            throw new Exception('No document name provided');
 
         $property = $this->getProperty();
         if (!$property)
             throw new Exception('No property name provided');
 
-        $qb = $em->createQueryBuilder();
-        $qb->select('COUNT(e)')
-           ->from($entity, 'e')
-           ->where("e.$property = :value")
-           ->setParameter('value', $value);
+        $qb = $dm->createQueryBuilder();
+        $qb->find($document)
+           ->field($property)->equals($value);
 
         $ignore = $this->getIgnoreId();
         if ($ignore !== null) {
             if (!is_array($ignore))
                 $ignore = [ $ignore ];
-            $qb->andWhere('e.id NOT IN (:id)')
-               ->setParameter('id', $ignore);
+            $qb->field('id')->notIn($ignore);
         }
 
-        $check = $qb->getQuery()->getSingleScalarResult();
+        $check = $qb->getQuery()->execute()->count();
         if ($check > 0) {
-            $this->error(self::ENTITY_EXISTS);
+            $this->error(self::DOCUMENT_EXISTS);
             return false;
         }
 

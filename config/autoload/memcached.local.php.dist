@@ -54,7 +54,10 @@ return [
                 'query_cache'       => 'zend.memcached',
                 'result_cache'      => 'zend.memcached',
                 'hydration_cache'   => 'zend.memcached',
-            ]
+            ],
+            'odm_default' => [
+                'metadata_cache'    => 'zend.memcached',
+            ],
         ]
     ],
 ];

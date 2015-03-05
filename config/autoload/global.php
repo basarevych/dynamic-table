@@ -30,7 +30,7 @@ return [
                 'types' => [
                     'utcdatetime' => 'Application\Doctrine\UtcDateTime'
                 ]
-            ]
+            ],
         ],
     ],
 
