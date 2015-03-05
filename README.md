@@ -6,15 +6,21 @@ ZF2 Skeleton
 
 Yet another Zend Framework 2 Skeleton Application and a little tutorial (see the docs below).
 
+Requires:
+* PHP 5.4+
+* PDO extension and doctrine/doctrine-orm-module module
+* Mongo extension and doctrine/doctrine-mongo-odm-module
+
 Features:
 * Tools used: Composer for backend, Bower/Grunt for frontend, deployment scripts
-* Doctrine integration
+* Doctrine SQL ORM integration
+* Doctrine Mongo ODM integration
 * Memcached integration
-* Sample console controller
 * Translator preconfigured
 * Mail service
 * Custom Error/Exception Strategy
 * Sessions
+* Example of regular and console controllers
 
 Read bundled [Documentation](http://basarevych.github.io/zf2-skeleton).
 
