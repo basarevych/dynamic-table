@@ -27,6 +27,11 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+echo "===> Installing production environment dependencies..."
+echo
+run_command ./scripts/update prod
+
+echo
 echo "===> Configuration"
 echo
 run_command cd config/autoload
@@ -253,10 +258,6 @@ run_command cd ../..
 echo
 echo "===> Initialization"
 echo
-
-echo "* Installing production environment dependencies..."
-echo
-run_command ./scripts/update prod
 
 if [ $using_orm -eq 1 ]; then
     input="none"
