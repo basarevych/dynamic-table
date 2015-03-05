@@ -7,7 +7,7 @@ use Zend\Http\Request as HttpRequest;
 use Zend\Dom\Query;
 use Application\Entity\Sample as SampleEntity;
 
-class QueryMock {
+class OrmQueryMock {
     public function getSingleScalarResult() {
         return 0;
     }
@@ -30,7 +30,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
                          ->setMethods([ 'createQueryBuilder', 'getRepository', 'persist', 'remove', 'flush' ])
                          ->getMockForAbstractClass();
 
-        $this->repository = $this->getMockBuilder('Application\Repository\Sample')
+        $this->repository = $this->getMockBuilder('Application\Entity\SampleRepository')
                                  ->disableOriginalConstructor()
                                  ->setMethods([ 'findAll', 'find' ])
                                  ->getMock();
@@ -50,7 +50,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
         $this->qb->expects($this->any())
                  ->method('getQuery')
-                 ->will($this->returnValue(new QueryMock()));
+                 ->will($this->returnValue(new OrmQueryMock()));
 
         $sl = $this->getApplicationServiceLocator();
         $sl->setAllowOverride(true);
@@ -78,43 +78,41 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function testIndexActionCanBeAccessed()
     {
-        $this->dispatch('/example');
+        $this->dispatch('/example-orm');
         $this->assertResponseStatusCode(200);
 
-        $this->assertModuleName('example');
-        $this->assertControllerName('example\controller\index');
+        $this->assertModuleName('exampleorm');
+        $this->assertControllerName('exampleorm\controller\index');
         $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('example');
+        $this->assertMatchedRouteName('example-orm');
     }
 
     public function testIndexActionDisplaysEntity()
     {
         \Locale::setDefault('en_US');
-        $this->dispatch('/example');
+        $this->dispatch('/example-orm');
 
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*string 1\s*$/m');
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*9,000\s*$/m');
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*0.42\s*$/m');
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*true\s*$/m');
         $this->assertQueryContentRegexAtLeastOnce('table tr td', '/^\s*printDateTime\(' . $this->a->getValueDatetime()->getTimestamp() . '\);\s*$/m');
-        $this->assertQuery('button[onclick="editEntityForm(42)"]');
-        $this->assertQuery('button[onclick="deleteEntityForm(42)"]');
     }
 
     public function testEditFormActionCanBeAccessed()
     {
-        $this->dispatch('/example/index/edit-form');
+        $this->dispatch('/example-orm/index/edit-form');
         $this->assertResponseStatusCode(200);
 
-        $this->assertModuleName('example');
-        $this->assertControllerName('example\controller\index');
+        $this->assertModuleName('exampleorm');
+        $this->assertControllerName('exampleorm\controller\index');
         $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('example');
+        $this->assertMatchedRouteName('example-orm');
     }
 
     public function testEditFormActionCreatesEntity()
     {
-        $this->dispatch('/example/index/edit-form');
+        $this->dispatch('/example-orm/index/edit-form');
         $this->assertResponseStatusCode(200);
 
         $response = $this->getResponse();
@@ -139,7 +137,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
                     $persisted = $entity;
                  }));
 
-        $this->dispatch('/example/index/edit-form', HttpRequest::METHOD_POST, $postParams);
+        $this->dispatch('/example-orm/index/edit-form', HttpRequest::METHOD_POST, $postParams);
         $this->assertResponseStatusCode(200);
 
         $this->assertNotEquals(null, $persisted, "Entity was not created");
@@ -152,7 +150,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function testEditFormActionModifiesEntity()
     {
-        $this->dispatch('/example/index/edit-form?id=' . $this->a->getId());
+        $this->dispatch('/example-orm/index/edit-form?id=' . $this->a->getId());
         $this->assertResponseStatusCode(200);
 
         $response = $this->getResponse();
@@ -178,7 +176,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
                     $persisted = $entity;
                  }));
 
-        $this->dispatch('/example/index/edit-form', HttpRequest::METHOD_POST, $postParams);
+        $this->dispatch('/example-orm/index/edit-form', HttpRequest::METHOD_POST, $postParams);
         $this->assertResponseStatusCode(200);
 
         $this->assertNotEquals(null, $persisted, "Entity was not created");
@@ -191,18 +189,18 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     public function testDeleteFormActionCanBeAccessed()
     {
-        $this->dispatch('/example/index/delete-form?id=' . $this->a->getId());
+        $this->dispatch('/example-orm/index/delete-form?id=' . $this->a->getId());
         $this->assertResponseStatusCode(200);
 
-        $this->assertModuleName('example');
-        $this->assertControllerName('example\controller\index');
+        $this->assertModuleName('exampleorm');
+        $this->assertControllerName('exampleorm\controller\index');
         $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('example');
+        $this->assertMatchedRouteName('example-orm');
     }
 
     public function testDeleteFormActionDeletesEntity()
     {
-        $this->dispatch('/example/index/delete-form?id=' . $this->a->getId());
+        $this->dispatch('/example-orm/index/delete-form?id=' . $this->a->getId());
         $this->assertResponseStatusCode(200);
 
         $response = $this->getResponse();
@@ -222,7 +220,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
                     $removed = $entity;
                  }));
 
-        $this->dispatch('/example/index/delete-form', HttpRequest::METHOD_POST, $postParams);
+        $this->dispatch('/example-orm/index/delete-form', HttpRequest::METHOD_POST, $postParams);
         $this->assertResponseStatusCode(200);
 
         $this->assertNotEquals(null, $removed, "Entity was not removed");
