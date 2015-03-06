@@ -20,7 +20,7 @@ use DynamicTable\Adapter\AbstractAdapter;
  * @category    DynamicTable
  * @package     Adapter
  */
-class DoctrineAdapter extends AbstractAdapter
+class DoctrineORMAdapter extends AbstractAdapter
 {
     /**
      * Doctrine QueryBuilder
@@ -177,7 +177,7 @@ class DoctrineAdapter extends AbstractAdapter
     protected function buildFilter($field, $type, $filter, $value)
     {
         if ((is_array($value) && count($value) != 2)
-                || (!is_array($value) && strlen($value) == 0)) {
+                || (!is_array($value) && ($value !== false && strlen($value) == 0))) {
             return false;
         }
         if (strlen($field) == 0)

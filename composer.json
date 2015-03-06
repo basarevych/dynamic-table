@@ -19,8 +19,10 @@
     "require": {
         "php": ">=5.4.8"
      },
+    "minimum-stability": "alpha",
     "require-dev": {
         "phpunit/phpunit": "@stable",
+        "doctrine/doctrine-mongo-odm-module": "0.8.*",
         "webfactory/doctrine-orm-test-infrastructure": "@stable"
     },
     "autoload": {

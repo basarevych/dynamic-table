@@ -5,10 +5,10 @@ namespace DynamicTableTest;
 use PHPUnit_Framework_TestCase;
 use Webfactory\Doctrine\ORMTestInfrastructure\ORMInfrastructure;
 use DynamicTable\Table;
-use DynamicTable\Adapter\DoctrineAdapter;
+use DynamicTable\Adapter\DoctrineORMAdapter;
 use DynamicTableTest\Entity\Sample as SampleEntity;
 
-class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
+class DoctrineORMAdapterTest extends PHPUnit_Framework_TestCase
 {
     protected $infrastructure;
     protected $repository;
@@ -24,7 +24,7 @@ class DoctrineAdapterTest extends PHPUnit_Framework_TestCase
         $this->repository = $this->infrastructure->getRepository('DynamicTableTest\Entity\Sample');
         $this->em = $this->infrastructure->getEntityManager();
 
-        $this->adapter = new DoctrineAdapter();
+        $this->adapter = new DoctrineORMAdapter();
 
         $this->table = new Table();
         $this->table->setAdapter($this->adapter);
