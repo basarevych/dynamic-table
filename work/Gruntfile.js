@@ -16,16 +16,16 @@ module.exports = function(grunt) {
             main: {
                 files: [
                     {
-                        src: 'src/jquery.<%= pkg.name %>.js',
-                        dest: 'dist/jquery.<%= pkg.name %>.js'
+                        src: '../src/jquery.<%= pkg.name %>.js',
+                        dest: '../dist/jquery.<%= pkg.name %>.js'
                     },
                     {
-                        src: 'src/jquery.<%= pkg.name %>.css',
-                        dest: 'dist/jquery.<%= pkg.name %>.css'
+                        src: '../src/jquery.<%= pkg.name %>.css',
+                        dest: '../dist/jquery.<%= pkg.name %>.css'
                     },
                     {
-                        src: 'src/angularjs.<%= pkg.name %>.js',
-                        dest: 'dist/angularjs.<%= pkg.name %>.js'
+                        src: '../src/angularjs.<%= pkg.name %>.js',
+                        dest: '../dist/angularjs.<%= pkg.name %>.js'
                     },
                 ]
             }
@@ -36,12 +36,12 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>'
             },
             jquery: {
-                src: 'dist/jquery.<%= pkg.name %>.js',
-                dest: 'dist/jquery.<%= pkg.name %>.min.js'
+                src: '../dist/jquery.<%= pkg.name %>.js',
+                dest: '../dist/jquery.<%= pkg.name %>.min.js'
             },
             angularjs: {
-                src: 'dist/angularjs.<%= pkg.name %>.js',
-                dest: 'dist/angularjs.<%= pkg.name %>.min.js'
+                src: '../dist/angularjs.<%= pkg.name %>.js',
+                dest: '../dist/angularjs.<%= pkg.name %>.min.js'
             },
         },
 
@@ -50,18 +50,18 @@ module.exports = function(grunt) {
                 banner: '<%= banner %>'
             },
             dist: {
-                src: 'dist/jquery.<%= pkg.name %>.css',
-                dest: 'dist/jquery.<%= pkg.name %>.min.css'
+                src: '../dist/jquery.<%= pkg.name %>.css',
+                dest: '../dist/jquery.<%= pkg.name %>.min.css'
             }
         },
 
         qunit: {
-            files: ['test/qunit/**/*.html']
+            files: ['qunit/**/*.html']
         },
 
         karma: {
             unit: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma.conf.js',
                 singleRun: true,
                 autoWatch: false,
                 options: {
@@ -72,9 +72,9 @@ module.exports = function(grunt) {
                         'bower_components/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
                         'bower_components/angular/angular.js',
                         'bower_components/angular-mocks/angular-mocks.js',
-                        'src/jquery.<%= pkg.name %>.js',
-                        'src/angularjs.<%= pkg.name %>.js',
-                        'test/karma/**/*.js',
+                        '../src/jquery.<%= pkg.name %>.js',
+                        '../src/angularjs.<%= pkg.name %>.js',
+                        'karma/**/*.js',
                     ],
                 }
             }

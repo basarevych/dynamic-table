@@ -19,8 +19,14 @@
         "grid"
     ],
     "homepage": "https://github.com/basarevych/dynamic-table",
+    "minimum-stability": "alpha",
     "require": {
-        "php": ">=5.4.8",
+        "php": ">=5.4.8"
+     },
+    "require-dev": {
+        "phpunit/phpunit": "@stable",
+        "doctrine/mongodb-odm": "*",
+        "webfactory/doctrine-orm-test-infrastructure": "@stable"
     },
     "autoload": {
         "psr-0": {
