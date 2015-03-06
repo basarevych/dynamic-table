@@ -16,13 +16,13 @@
         "grid"
     ],
     "homepage": "https://github.com/basarevych/dynamic-table",
-    "require": {
-        "php": ">=5.4.8"
-     },
     "minimum-stability": "alpha",
+    "require": {
+        "php": ">=5.4.8",
+        "doctrine/mongodb-odm": "*"
+     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
-        "doctrine/doctrine-mongo-odm-module": "0.8.*",
         "webfactory/doctrine-orm-test-infrastructure": "@stable"
     },
     "autoload": {

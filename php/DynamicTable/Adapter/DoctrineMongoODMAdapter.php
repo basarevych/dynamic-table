@@ -11,9 +11,7 @@ namespace DynamicTable\Adapter;
 
 use MongoDate;
 use MongoRegex;
-use Zend\Paginator\Paginator;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use DoctrineMongoODMModule\Paginator\Adapter\DoctrinePaginator;
 use DynamicTable\Table;
 use DynamicTable\Adapter\AbstractAdapter;
 
@@ -189,13 +187,11 @@ class DoctrineMongoOdmAdapter extends AbstractAdapter
     {
         $query = $this->getQueryBuilder()->getQuery();
         $cursor = $query->execute();
-        $adapter = new DoctrinePaginator($cursor);
-        $paginator = new Paginator($adapter);
-        $table->calculatePageParams(count($paginator));
+        $table->calculatePageParams($cursor->count());
 
         if ($table->getPageSize() > 0) {
-            $paginator->setCurrentPageNumber($table->getPageNumber())
-                      ->setItemCountPerPage($table->getPageSize());
+            $cursor->skip($table->getPageSize() * ($table->getPageNumber() - 1));
+            $cursor->limit($table->getPageSize());
         }
 
         $mapper = $table->getMapper();
@@ -203,7 +199,7 @@ class DoctrineMongoOdmAdapter extends AbstractAdapter
             throw new \Exception("Data 'mapper' is required when using DoctrineAdapter");
 
         $result = [];
-        foreach ($paginator as $row)
+        foreach ($cursor as $row)
             $result[] = $mapper($row);
 
         return $result;

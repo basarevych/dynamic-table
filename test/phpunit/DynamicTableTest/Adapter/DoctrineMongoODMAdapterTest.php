@@ -56,12 +56,11 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
 
         $this->cursor = $this->getMockBuilder('Doctrine\ODM\MongoDB\Cursor')
                              ->disableOriginalConstructor()
-                             ->setMethods([ 'toArray', 'getMongoCursor', 'recreate', 'skip', 'limit' ])
+                             ->setMethods([ 'toArray', 'count', 'getMongoCursor', 'valid', 'skip', 'limit' ])
                              ->getMock();
 
         $this->mongoCursor = $this->getMockBuilder('MongoCursor')
                                   ->disableOriginalConstructor()
-//                                  ->setMethods([ 'count' ])
                                   ->getMock();
 
         $this->cursor->expects($this->any())
@@ -245,20 +244,35 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
 
     public function testPaginate()
     {
-        $fixture = [];
-        for($i = 0; $i < 10; $i++) {
-            $doc = new SampleDocument();
-            $doc->setValueInteger($i);
-            $fixture[] = $doc;
-        }
-
         $this->cursor->expects($this->any())
                      ->method('toArray')
-                     ->will($this->returnValue($fixture));
+                     ->will($this->returnValue([]));
+
+        $this->cursor->expects($this->any())
+                     ->method('count')
+                     ->will($this->returnValue(10));
+
+        $passedSkip = null;
+        $this->cursor->expects($this->any())
+                     ->method('skip')
+                     ->will($this->returnCallback(function ($skip) use (&$passedSkip) {
+                        $passedSkip = $skip;
+                     }));
+
+        $passedLimit = null;
+        $this->cursor->expects($this->any())
+                     ->method('limit')
+                     ->will($this->returnCallback(function ($limit) use (&$passedLimit) {
+                        $passedLimit = $limit;
+                     }));
+
+        $this->table->setPageSize(2);
+        $this->table->setPageNumber(3);
 
         $data = $this->adapter->paginate($this->table);
 
-        for ($i = 0; $i < count($fixture); $i++)
-            $this->assertEquals($fixture[$i]->getValueInteger(), $data[$i]['integer']);
+        $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
+        $this->assertEquals(2 * 2, $passedSkip, "Number of skipped docs is wrong");
+        $this->assertEquals(2, $passedLimit, "Limit of return docs is wrong");
     }
 }
