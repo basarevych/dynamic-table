@@ -16,5 +16,5 @@ Configuration
 Your project must meet the [requirements](docs/requirements.md).
 
 Dynamic Table consists of two parts:
- * [server-side](docs/server-side.md) - set of PHP classes
+ * [server-side](docs/server-side.md) - set of PHP classes for PHP arrays, Doctrine ORM and Doctrine MongoDB ODM support
  * and [front-side](docs/front-side.md) - jQuery plugin and AngularJS wrapper for the plugin

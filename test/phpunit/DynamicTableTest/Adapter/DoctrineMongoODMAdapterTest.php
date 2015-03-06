@@ -56,7 +56,7 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
 
         $this->cursor = $this->getMockBuilder('Doctrine\ODM\MongoDB\Cursor')
                              ->disableOriginalConstructor()
-                             ->setMethods([ 'toArray', 'count', 'getMongoCursor', 'valid', 'skip', 'limit' ])
+                             ->setMethods([ 'valid', 'count', 'current', 'getMongoCursor', 'skip', 'limit' ])
                              ->getMock();
 
         $this->mongoCursor = $this->getMockBuilder('MongoCursor')
@@ -127,6 +127,7 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
             ],
         ]);
         $this->table->setMapper(function ($row) {
+if (!$row) return;
             $datetime = $row->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->getTimestamp();
@@ -244,13 +245,29 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
 
     public function testPaginate()
     {
+        $fixture = [];
+        for ($i = 0; $i < 10; $i++) {
+            $doc = new SampleDocument();
+            $doc->setValueInteger(rand(0, 100));
+            $fixture[] = $doc;
+        }
+
+        $i = 0; $count = count($fixture);
         $this->cursor->expects($this->any())
-                     ->method('toArray')
-                     ->will($this->returnValue([]));
+                     ->method('valid')
+                     ->will($this->returnCallback(function () use (&$i, $count) {
+                        return $i < $count;
+                     }));
 
         $this->cursor->expects($this->any())
                      ->method('count')
-                     ->will($this->returnValue(10));
+                     ->will($this->returnValue($count));
+
+        $this->cursor->expects($this->any())
+                     ->method('current')
+                     ->will($this->returnCallback(function () use (&$i, $fixture) {
+                        return $fixture[$i++];
+                     }));
 
         $passedSkip = null;
         $this->cursor->expects($this->any())
@@ -274,5 +291,8 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, $this->table->getTotalPages(), "There should be 5 pages");
         $this->assertEquals(2 * 2, $passedSkip, "Number of skipped docs is wrong");
         $this->assertEquals(2, $passedLimit, "Limit of return docs is wrong");
+
+        for ($i = 0; $i < count($fixture); $i++)
+            $this->assertEquals($fixture[$i]->getValueInteger(), $data[$i]['integer'], "Returned data is wrong");
     }
 }
