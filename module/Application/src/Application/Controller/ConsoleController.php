@@ -51,7 +51,7 @@ class ConsoleController extends AbstractConsoleController
             $repo->removeAll();
 
             $dt = new \DateTime();
-            for ($i = 1; $i <= 10; $i++) {
+            for ($i = 1; $i <= 100; $i++) {
                 $dt->add(new \DateInterval('PT10S'));
 
                 $entity = new SampleEntity();
@@ -74,7 +74,7 @@ class ConsoleController extends AbstractConsoleController
             $repo->removeAll();
 
             $dt = new \DateTime();
-            for ($i = 1; $i <= 10; $i++) {
+            for ($i = 1; $i <= 100; $i++) {
                 $dt->add(new \DateInterval('PT10S'));
 
                 $document = new SampleDocument();

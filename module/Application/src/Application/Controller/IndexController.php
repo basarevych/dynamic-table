@@ -13,7 +13,8 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use DynamicTable\Table;
-use DynamicTable\Adapter\DoctrineAdapter;
+use DynamicTable\Adapter\DoctrineORMAdapter;
+use DynamicTable\Adapter\DoctrineMongoODMAdapter;
 use DynamicTable\Adapter\ArrayAdapter;
 
 /**
@@ -33,15 +34,42 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Table data retrieving action (Database version)
+     * Table data retrieving action (ORM version)
      *
      * @return JsonModel
      */
-    public function doctrineTableAction()
+    public function doctrineOrmTableAction()
     {
-        $table = $this->createTable();
+        $table = $this->createTable(true);
 
-        $this->connectDoctrineData($table);
+        $this->connectDoctrineORMData($table);
+
+        $query = $this->params()->fromQuery('query');
+        switch ($query) {
+        case 'describe':
+            $data = $table->describe();
+            break;
+        case 'data':
+            $data = $table->setPageParams($_GET)->fetch();
+            break;
+        default:
+            throw new \Exception('Unknown query type: ' . $query);
+        }
+
+        $data['success'] = true;
+        return new JsonModel($data);
+    }
+
+    /**
+     * Table data retrieving action (ODM version)
+     *
+     * @return JsonModel
+     */
+    public function doctrineOdmTableAction()
+    {
+        $table = $this->createTable(false);
+
+        $this->connectDoctrineODMData($table);
 
         $query = $this->params()->fromQuery('query');
         switch ($query) {
@@ -66,7 +94,7 @@ class IndexController extends AbstractActionController
      */
     public function arrayTableAction()
     {
-        $table = $this->createTable();
+        $table = $this->createTable(true);
 
         $this->connectArrayData($table);
 
@@ -99,7 +127,7 @@ class IndexController extends AbstractActionController
      *
      * @return Table
      */
-    protected function createTable()
+    protected function createTable($idIsInteger = true)
     {
         $sl = $this->getServiceLocator();
         $translate = $sl->get('viewhelpermanager')->get('translate');
@@ -108,52 +136,58 @@ class IndexController extends AbstractActionController
 
         $table->setColumns([
             'id' => [
-                'title'     => $translate('ID'),
-                'sql_id'    => 's.id',
-                'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_EQUAL ],
-                'sortable'  => true,
-                'visible'   => false,
+                'title'         => $translate('ID'),
+                'sql_id'        => 's.id',
+                'field_name'    => 'id',
+                'type'          => $idIsInteger ? Table::TYPE_INTEGER : Table::TYPE_STRING,
+                'filters'       => [ Table::FILTER_EQUAL ],
+                'sortable'      => true,
+                'visible'       => false,
             ],
             'string' => [
-                'title'     => $translate('String'),
-                'sql_id'    => 's.value_string',
-                'type'      => Table::TYPE_STRING,
-                'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
-                'sortable'  => true,
-                'visible'   => true,
+                'title'         => $translate('String'),
+                'sql_id'        => 's.value_string',
+                'field_name'    => 'value_string',
+                'type'          => Table::TYPE_STRING,
+                'filters'       => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+                'sortable'      => true,
+                'visible'       => true,
             ],
             'integer' => [
-                'title'     => $translate('Integer'),
-                'sql_id'    => 's.value_integer',
-                'type'      => Table::TYPE_INTEGER,
-                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-                'sortable'  => true,
-                'visible'   => true,
+                'title'         => $translate('Integer'),
+                'sql_id'        => 's.value_integer',
+                'field_name'    => 'value_integer',
+                'type'          => Table::TYPE_INTEGER,
+                'filters'       => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
+                'sortable'      => true,
+                'visible'       => true,
             ],
             'float' => [
-                'title'     => $translate('Float'),
-                'sql_id'    => 's.value_float',
-                'type'      => Table::TYPE_FLOAT,
-                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-                'sortable'  => true,
-                'visible'   => true,
+                'title'         => $translate('Float'),
+                'sql_id'        => 's.value_float',
+                'field_name'    => 'value_float',
+                'type'          => Table::TYPE_FLOAT,
+                'filters'       => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
+                'sortable'      => true,
+                'visible'       => true,
             ],
             'boolean' => [
-                'title'     => $translate('Boolean'),
-                'sql_id'    => 's.value_boolean',
-                'type'      => Table::TYPE_BOOLEAN,
-                'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
-                'sortable'  => true,
-                'visible'   => true,
+                'title'         => $translate('Boolean'),
+                'sql_id'        => 's.value_boolean',
+                'field_name'    => 'value_boolean',
+                'type'          => Table::TYPE_BOOLEAN,
+                'filters'       => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+                'sortable'      => true,
+                'visible'       => true,
             ],
             'datetime' => [
-                'title'     => $translate('DateTime'),
-                'sql_id'    => 's.value_datetime',
-                'type'      => Table::TYPE_DATETIME,
-                'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-                'sortable'  => true,
-                'visible'   => true,
+                'title'         => $translate('DateTime'),
+                'sql_id'        => 's.value_datetime',
+                'field_name'    => 'value_datetime',
+                'type'          => Table::TYPE_DATETIME,
+                'filters'       => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
+                'sortable'      => true,
+                'visible'       => true,
             ],
         ]);
 
@@ -161,11 +195,11 @@ class IndexController extends AbstractActionController
     }
 
     /**
-     * Create Doctrine adapter and mapper
+     * Create Doctrine ORM adapter and mapper
      *
      * @param Table $table
      */
-    protected function connectDoctrineData($table)
+    protected function connectDoctrineORMData($table)
     {
         $sl = $this->getServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
@@ -175,7 +209,43 @@ class IndexController extends AbstractActionController
         $qb->select('s')
            ->from('Application\Entity\Sample', 's');
 
-        $adapter = new DoctrineAdapter();
+        $adapter = new DoctrineORMAdapter();
+        $adapter->setQueryBuilder($qb);
+
+        $mapper = function ($row) use ($escapeHtml) {
+            $datetime = $row->getValueDatetime();
+            if ($datetime !== null)
+                $datetime = $datetime->getTimestamp();
+
+            return [
+                'id'        => $row->getId(),
+                'string'    => $escapeHtml($row->getValueString()),
+                'integer'   => $row->getValueInteger(),
+                'float'     => $row->getValueFloat(),
+                'boolean'   => $row->getValueBoolean(),
+                'datetime'  => $datetime,
+            ];
+        };
+
+        $table->setAdapter($adapter);
+        $table->setMapper($mapper);
+    }
+
+    /**
+     * Create Doctrine ODM adapter and mapper
+     *
+     * @param Table $table
+     */
+    protected function connectDoctrineODMData($table)
+    {
+        $sl = $this->getServiceLocator();
+        $dm = $sl->get('doctrine.documentmanager.odm_default');
+        $escapeHtml = $sl->get('viewhelpermanager')->get('escapeHtml');
+
+        $qb = $dm->createQueryBuilder();
+        $qb->find('Application\Document\Sample');
+
+        $adapter = new DoctrineMongoODMAdapter();
         $adapter->setQueryBuilder($qb);
 
         $mapper = function ($row) use ($escapeHtml) {

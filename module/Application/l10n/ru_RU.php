@@ -28,8 +28,9 @@ return [
     'Get selected' => 'Получить выбранные',
     'All records on all the pages' => 'Все записи на всех страницах',
     'Nothing selected' => 'Ничего не выбрано',
-    'Doctrine-backed Dynamic Table' => 'Dynamic Table для Doctrine',
-    'Array-backed Dynamic Table' => 'Dynamic Table для массивов',
+    'Doctrine ORM Dynamic Table' => 'Doctrine ORM Dynamic Table',
+    'Doctrine ODM Dynamic Table' => 'Doctrine ODM Dynamic Table',
+    'PHP Array Dynamic Table' => 'PHP массив Dynamic Table',
 
     // DynamicTable
     'DT_BANNER_LOADING' => 'Загружается... Пожалуйста, подождите',

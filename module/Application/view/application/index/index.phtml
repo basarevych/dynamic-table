@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-offset-3 col-md-9">
-            <h3><?= $this->translate('Doctrine-backed Dynamic Table') ?></h3>
+            <h3><?= $this->translate('Doctrine ORM Dynamic Table') ?></h3>
         </div>
     </div>
     <div class="row">
@@ -22,7 +22,7 @@
 
     <div class="row">
         <div class="col-md-offset-3 col-md-9">
-            <h3><?= $this->translate('Array-backed Dynamic Table') ?></h3>
+            <h3><?= $this->translate('Doctrine ODM Dynamic Table') ?></h3>
         </div>
     </div>
     <div class="row">
@@ -38,6 +38,27 @@
         </div>
         <div class="col-md-9">
             <div id="table2"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-3 col-md-9">
+            <h3><?= $this->translate('PHP Array Dynamic Table') ?></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <h4><?= $this->translate('Last event') ?></h4>
+            <pre id="event3">&nbsp;</pre>
+            <br>
+            <br>
+            <button id="get-selected-table3" class="btn btn-default">
+                <?= $this->translate('Get selected') ?>
+            </button>
+            <pre id="selected3">&nbsp;</pre>
+        </div>
+        <div class="col-md-9">
+            <div id="table3"></div>
         </div>
     </div>
 </div>
@@ -82,7 +103,7 @@
     };
 
     var table1 = $('#table1').dynamicTable({
-        url: 'index/doctrine-table',
+        url: 'index/doctrine-orm-table',
         locale: '<?= substr(\Locale::getDefault(), 0, 2) ?>',
         row_id_column: 'id',
         mapper: mapper,
@@ -90,6 +111,14 @@
     });
 
     var table2 = $('#table2').dynamicTable({
+        url: 'index/doctrine-odm-table',
+        locale: '<?= substr(\Locale::getDefault(), 0, 2) ?>',
+        row_id_column: 'id',
+        mapper: mapper,
+        strings: strings,
+    });
+
+    var table3 = $('#table3').dynamicTable({
         url: 'index/array-table',
         locale: '<?= substr(\Locale::getDefault(), 0, 2) ?>',
         row_id_column: 'id',
@@ -117,6 +146,16 @@
             $('#selected2').text('<?= $this->translate('Nothing selected') ?>');
     });
 
+    $('#get-selected-table3').on('click', function () {
+        var selected = table3.getSelected();
+        if (selected === 'all')
+            $('#selected3').text('<?= $this->translate('All records on all the pages') ?>');
+        else if (selected.length)
+            $('#selected3').text(selected.join(', '));
+        else
+            $('#selected3').text('<?= $this->translate('Nothing selected') ?>');
+    });
+
     $('#table1').on('dt.loading', function (e) {
         $('#event1').text('Loading');
     });
@@ -141,5 +180,18 @@
     });
     $('#table2').on('dt.deselected', function (e) {
         $('#event2').text('Deselected');
+    });
+
+    $('#table3').on('dt.loading', function (e) {
+        $('#event3').text('Loading');
+    });
+    $('#table3').on('dt.loaded', function (e) {
+        $('#event3').text('Loaded');
+    });
+    $('#table3').on('dt.selected', function (e) {
+        $('#event3').text('Selected');
+    });
+    $('#table3').on('dt.deselected', function (e) {
+        $('#event3').text('Deselected');
     });
 </script>

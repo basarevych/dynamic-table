@@ -12,20 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "45a0ab5b52fd182ea39bc4ea866220c5f4f45800"
+                "reference": "6ded61d86da82a8557ed04603b4fecd8733ad79f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/45a0ab5b52fd182ea39bc4ea866220c5f4f45800",
-                "reference": "45a0ab5b52fd182ea39bc4ea866220c5f4f45800",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/6ded61d86da82a8557ed04603b4fecd8733ad79f",
+                "reference": "6ded61d86da82a8557ed04603b4fecd8733ad79f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "@stable",
-                "webfactory/doctrine-orm-test-infrastructure": "@stable"
             },
             "type": "library",
             "autoload": {
@@ -46,12 +42,15 @@
             "description": "Dynamic HTML grid",
             "homepage": "https://github.com/basarevych/dynamic-table",
             "keywords": [
+                "angularjs",
                 "doctrine",
                 "grid",
                 "jquery",
+                "mongo",
+                "orm",
                 "php"
             ],
-            "time": "2015-03-02 05:32:53"
+            "time": "2015-03-06 16:50:49"
         },
         {
             "name": "doctrine/annotations",

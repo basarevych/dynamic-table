@@ -29,8 +29,9 @@ return [
     'Get selected' => 'Get selected',
     'All records on all the pages' => 'All records on all the pages',
     'Nothing selected' => 'Nothing selected',
-    'Doctrine-backed Dynamic Table' => 'Doctrine-backed Dynamic Table',
-    'Array-backed Dynamic Table' => 'Array-backed Dynamic Table',
+    'Doctrine ORM Dynamic Table' => 'Doctrine ORM Dynamic Table',
+    'Doctrine ODM Dynamic Table' => 'Doctrine ODM Dynamic Table',
+    'PHP Array Dynamic Table' => 'PHP Array Dynamic Table',
 
     // DynamicTable
     'DT_BANNER_LOADING' => 'Loading... Please wait',
