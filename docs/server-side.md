@@ -3,7 +3,7 @@ Server-side
 
 Server-side classes are framework agnostic but I use them personally with ZF2.
 
-Create an instance of main class (DynamicTable\Table) and one of "data adapters". Currently there are two adapters available: DynamicTable\Adapter\ArrayAdapter and DynamicTable\Adapter\DoctrineAdapter.
+Create an instance of main class (DynamicTable\Table) and one of "data adapters". Currently there are three adapters available: Array, Doctrine ORM and Doctrine Mongo ODM.
 
 First thing to do is to define the table (we use Table::setColumns() to describe table columns):
 
@@ -43,11 +43,12 @@ Table::setColumns expects an array of column definitions:
 * 'sortable' - true if table could be sorted by this column or not
 * 'visible' - true if column should be visible from the beginning
 
-See [createTable()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L94) method of demo page.
+See [createTable()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L130) method of demo page.
 
 Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are two available:
-* read about [ArrayAdapter](array-adapter.md)
-* or [DoctrineAdapter](doctrine-adapter.md)
+* [DynamicTable\Adapter\ArrayAdapter](array-adapter.md)
+* [DynamicTable\Adapter\DoctrineORMAdapter](doctrine-orm-adapter.md)
+* [DynamicTable\Adapter\DoctrineMongoODMAdapter](doctrine-odm-adapter.md)
 
 Back to our table, the last thing to do is to parse jQuery plugin's GET query and return the data.
 
@@ -76,4 +77,4 @@ header('Content-Type: application/json; charset=utf-8');
 echo json_encode($data);
 ```
 
-See [arrayTableAction()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L67) and [doctrineTableAction()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L40) methods of demo page for ZF2 examples.
+See [arrayTableAction()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L95), [doctrineOrmTableAction()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L41) and [doctrineOdmTableAction()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L68) methods of demo page for ZF2 examples.

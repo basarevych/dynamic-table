@@ -1,7 +1,7 @@
 Doctrine Adapter
 ----------------
 
-An entity we will create DynamicTable for: [Application\Entity\Sample](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Entity/Sample.php)
+The document we will create DynamicTable for: [Application\Document\Sample](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Document/Sample.php)
 
 Here is the table:
 
@@ -12,7 +12,7 @@ $table->setColumns([
     'id' => [
         'sql_id'    => 's.id',
         'title'     => 'ID',
-        'type'      => Table::TYPE_INTEGER,
+        'type'      => Table::TYPE_STRING,
         'filters'   => [ Table::FILTER_EQUAL ],
         'sortable'  => true,
         'visible'   => false,
@@ -60,21 +60,20 @@ $table->setColumns([
 ]);
 ```
 
-Let's create DoctrineAdapter.
+Let's create DoctrineMongoODMAdapter.
 
-**NOTE** DoctrineAdapter requires additional property on the column - **sql_id**. This is how Doctrine refers to an entity property. For example, we **select()**ed entity **s** in QueryBuilder, then its properties are named like "s.property_name", i.e. "s.value_string" is property "value_string" of entity "s".
+**NOTE** DoctrineMongoODMAdapter requires additional property on the column - **field_name**. This is field name of our Document.
 
 ```php
-use DynamicTable\Adapter\DoctrineAdapter;
+use DynamicTable\Adapter\DoctrineMongoODMAdapter;
 
 // ...
 
-// $em is Doctrine EntityManager
-$qb = $em->createQueryBuilder();
-$qb->select('s')
-   ->from('Application\Entity\Sample', 's');
+// $dm is Doctrine DocumentManager
+$qb = $dm->createQueryBuilder();
+$qb->find('Application\Document\Sample');
 
-$adapter = new DoctrineAdapter();
+$adapter = new DoctrineMongoODMAdapter();
 $adapter->setQueryBuilder($qb);
 ```
 
@@ -82,7 +81,7 @@ The last step is to create a mapper of source data row to resulting array row. O
 
 ```php
 $mapper = function ($row) { // $row in this case is Query result item,
-                            // i.e. Sample entity instance
+                            // i.e. Sample document instance
     $datetime = $row->getValueDatetime();
     if ($datetime !== null)
         $datetime = $datetime->getTimestamp();
