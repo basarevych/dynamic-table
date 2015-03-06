@@ -45,7 +45,7 @@ Table::setColumns expects an array of column definitions:
 
 See [createTable()](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Controller/IndexController.php#L130) method of demo page.
 
-Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are two available:
+Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are three available:
 * [DynamicTable\Adapter\ArrayAdapter](array-adapter.md)
 * [DynamicTable\Adapter\DoctrineORMAdapter](doctrine-orm-adapter.md)
 * [DynamicTable\Adapter\DoctrineMongoODMAdapter](doctrine-odm-adapter.md)
