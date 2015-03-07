@@ -15,7 +15,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * Sample document
  * 
  * @category    Application
- * @package     Entity
+ * @package     Document 
  * 
  * @ODM\Document(repositoryClass="Application\Document\SampleRepository")
  */
