@@ -330,18 +330,35 @@ if [ $using_odm -eq 1 ]; then
     done
 
     if [ "$input" != "n" ]; then
-        read -p "  Mongo server administrator account name? [$mongoroot]: " input
-        if [ "$input" != "" ]; then
-            mongoroot="$input"
+        input="none"
+        while [ "$input" != "y" -a "$input" != "n" -a "$input" != "" ]; do
+            read -p "  Mongo requires authentication? [y]/n: " input
+        done
+
+        mongoneedauth=0
+        if [ "$input" != "n" ]; then
+            mongoneedauth=1
         fi
 
-        read -p "  Mongo server authentication database? [$mongoauthdb]: " input
-        if [ "$input" != "" ]; then
-            mongoauthdb="$input"
+        if [ $mongoneedauth -eq 1 ]; then
+            read -p "  Mongo server administrator account name? [$mongoroot]: " input
+            if [ "$input" != "" ]; then
+                mongoroot="$input"
+            fi
+
+            read -p "  Mongo server authentication database? [$mongoauthdb]: " input
+            if [ "$input" != "" ]; then
+                mongoauthdb="$input"
+            fi
         fi
 
         dbscript="/tmp/$project.install.js"
         echo "db = db.getSiblingDB('$mongoname')" > $dbscript
+        echo "db.getCollectionNames().forEach(" >> $dbscript
+        echo "  function(collection_name) {" >> $dbscript
+        echo "    db[collection_name].remove({})" >> $dbscript
+        echo "  }" >> $dbscript
+        echo ")" >> $dbscript
         echo "db.runCommand({ dropAllUsersFromDatabase: 1 })" >> $dbscript
         echo "db.runCommand({ dropDatabase: 1 })" >> $dbscript
         echo "db = db.getSiblingDB('$mongoname')" >> $dbscript
@@ -362,10 +379,14 @@ if [ $using_odm -eq 1 ]; then
         cat $dbscript
         echo
 
-        echo "  Press Enter to continue, be ready to provide DB administrator password"
+        echo "  Press Enter to continue, be ready to provide DB administrator password if required"
         read input
 
-        run_command mongo -u $mongoroot -p --authenticationDatabase $mongoauthdb $dbscript
+        if [ $mongoneedauth -eq 1 ]; then
+            run_command mongo -u $mongoroot -p --authenticationDatabase $mongoauthdb $dbscript
+        else
+            run_command mongo $dbscript
+        fi
 
         rm -f $dbscript
     fi
