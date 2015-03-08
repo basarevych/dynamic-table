@@ -14,8 +14,8 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Application\Exception\NotFoundException;
 use Application\Entity\Sample as SampleEntity;
-use Application\Form\ConfirmForm;
-use ExampleORM\Form\EditSampleForm;
+use Application\Form\Confirm as ConfirmForm;
+use ExampleORM\Form\EditSample as EditSampleForm;
 
 /**
  * Index controller

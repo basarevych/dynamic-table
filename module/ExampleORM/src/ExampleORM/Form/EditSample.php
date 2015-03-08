@@ -27,7 +27,7 @@ use Application\Filter\LocaleFormattedNumber;
  * @category    Admin
  * @package     Form
  */
-class EditSampleForm extends Form
+class EditSample extends Form
 {
     /**
      * The input filter
