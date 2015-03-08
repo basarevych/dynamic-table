@@ -22,7 +22,7 @@ use Zend\Validator;
  * @category    Admin
  * @package     Form
  */
-class ConfirmForm extends Form
+class Confirm extends Form
 {
     /**
      * The input filter
