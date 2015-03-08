@@ -22,7 +22,7 @@ For example, for Zend Framework 2 add:
 "doctrine/doctrine-mongo-odm-module": "0.8.*",
 ```
 
-1. Front-side dependencies:
+2. Front-side dependencies:
 
   * jQuery
   * moment.js
@@ -39,8 +39,8 @@ Add your bower.json:
 ```
 
 And the page should include the js and css files of DynamicTable:
- * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.js
- * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.css
+* vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.js
+* vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.css
 
 Include AngularJS wrapper (if you use Angular) in addition to the above:
- * vendor/basarevych/dynamic-table/dist/angularjs.dynamic-table.min.js
+* vendor/basarevych/dynamic-table/dist/angularjs.dynamic-table.min.js
