@@ -725,93 +725,10 @@
                     .attr('role', 'toolbar')
                     .appendTo(td);
 
-        var dropdown = $('<div></div>');
-        dropdown.attr('class', 'btn-group dropdown dropup')
-                .attr('role', 'group')
-                .appendTo(rightToolbar);
-
-        $('<button></button>')
-            .attr('class', 'btn btn-default dropdown-toggle')
-            .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.DT_BUTTON_PAGE_SIZE + ' <span class="caret"></span>')
-            .appendTo(dropdown);
-
-        var list = $('<ul></ul>');
-        list.attr('class', 'dropdown-menu')
-            .attr('role', 'menu')
-            .appendTo(dropdown);
-
-        $.each(plugin.options.page_sizes, function (index, value) {
-            var li = $('<li></li>');
-            li.attr('role', 'presentation')
-              .appendTo(list);
-            if (value == plugin.pageSize)
-                li.attr('class', 'active');
-
-            $('<a></a>')
-                .attr('role', 'menuitem')
-                .attr('tabindex', '-1')
-                .attr('href', 'javascript:void(0)')
-                .attr('data-size', value)
-                .text(value == 0 ? 'All' : value)
-                .on('click', function() {
-                    var el = $(this);
-                    el.closest('ul')
-                      .find('li')
-                      .removeClass('active');
-                    el.closest('li')
-                      .addClass('active');
-
-                    plugin.setSize(el.attr('data-size'));
-                })
-                .appendTo(li);
-        });
-
-        var dropdown = $('<div></div>');
-        dropdown.attr('class', 'btn-group dropdown dropup')
-                .attr('role', 'group')
-                .appendTo(rightToolbar);
-
-        $('<button></button>')
-            .attr('class', 'btn btn-default dropdown-toggle')
-            .attr('data-toggle', 'dropdown')
-            .html(plugin.options.strings.DT_BUTTON_COLUMNS + ' <span class="caret"></span>')
-            .appendTo(dropdown);
-
-        var list = $('<ul></ul>');
-        list.attr('class', 'dropdown-menu')
-            .attr('role', 'menu')
-            .appendTo(dropdown);
-
-        $.each(plugin.columns, function (id, column) {
-            var li = $('<li></li>');
-            li.attr('role', 'presentation')
-              .appendTo(list);
-
-            var span = $('<span></span>');
-            span.text(column.title);
-
-            $('<a></a>')
-                .attr('role', 'menuitem')
-                .attr('tabindex', '-1')
-                .attr('href', 'javascript:void(0)')
-                .attr('data-column-id', id)
-                .html('<span class="glyphicon glyphicon-ok ' + (column.visible ? '' : 'invisible') + '"></span> ' + span.html())
-                .on('click', function() {
-                    plugin.toggleColumn($(this).attr('data-column-id'));
-                })
-                .appendTo(li);
-        });
-
-        var leftToolbar = $('<div></div>');
-        leftToolbar.attr('class', 'btn-toolbar')
-                    .attr('role', 'toolbar')
-                    .appendTo(td);
-
         var group = $('<div></div>');
         group.attr('class', 'btn-group')
              .attr('role', 'group')
-             .appendTo(leftToolbar);
+             .appendTo(rightToolbar);
 
         $('<button></button>')
             .attr('class', 'btn btn-default')
@@ -834,7 +751,7 @@
         var group = $('<div></div>');
         group.attr('class', 'btn-group')
              .attr('role', 'group')
-             .appendTo(leftToolbar);
+             .appendTo(rightToolbar);
 
         var inputGroup = $('<div></div>');
         inputGroup.attr('class', 'input-group')
@@ -872,7 +789,7 @@
         var group = $('<div></div>');
         group.attr('class', 'btn-group')
              .attr('role', 'group')
-             .appendTo(leftToolbar);
+             .appendTo(rightToolbar);
 
         $('<button></button>')
             .attr('class', 'btn btn-default')
@@ -895,7 +812,7 @@
         var group = $('<div></div>');
         group.attr('class', 'btn-group')
              .attr('role', 'group')
-             .appendTo(leftToolbar);
+             .appendTo(rightToolbar);
 
         $('<button></button>')
             .attr('class', 'btn btn-default')
@@ -906,6 +823,89 @@
                 plugin.refresh({ page_number: input.val() });
             })
             .appendTo(group);
+
+        var leftToolbar = $('<div></div>');
+        leftToolbar.attr('class', 'btn-toolbar')
+                    .attr('role', 'toolbar')
+                    .appendTo(td);
+
+        var dropdown = $('<div></div>');
+        dropdown.attr('class', 'btn-group dropdown dropup')
+                .attr('role', 'group')
+                .appendTo(leftToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default dropdown-toggle')
+            .attr('data-toggle', 'dropdown')
+            .html(plugin.options.strings.DT_BUTTON_COLUMNS + ' <span class="caret"></span>')
+            .appendTo(dropdown);
+
+        var list = $('<ul></ul>');
+        list.attr('class', 'dropdown-menu')
+            .attr('role', 'menu')
+            .appendTo(dropdown);
+
+        $.each(plugin.columns, function (id, column) {
+            var li = $('<li></li>');
+            li.attr('role', 'presentation')
+              .appendTo(list);
+
+            var span = $('<span></span>');
+            span.text(column.title);
+
+            $('<a></a>')
+                .attr('role', 'menuitem')
+                .attr('tabindex', '-1')
+                .attr('href', 'javascript:void(0)')
+                .attr('data-column-id', id)
+                .html('<span class="glyphicon glyphicon-ok ' + (column.visible ? '' : 'invisible') + '"></span> ' + span.html())
+                .on('click', function() {
+                    plugin.toggleColumn($(this).attr('data-column-id'));
+                })
+                .appendTo(li);
+        });
+
+        var dropdown = $('<div></div>');
+        dropdown.attr('class', 'btn-group dropdown dropup')
+                .attr('role', 'group')
+                .appendTo(leftToolbar);
+
+        $('<button></button>')
+            .attr('class', 'btn btn-default dropdown-toggle')
+            .attr('data-toggle', 'dropdown')
+            .html(plugin.options.strings.DT_BUTTON_PAGE_SIZE + ' <span class="caret"></span>')
+            .appendTo(dropdown);
+
+        var list = $('<ul></ul>');
+        list.attr('class', 'dropdown-menu')
+            .attr('role', 'menu')
+            .appendTo(dropdown);
+
+        $.each(plugin.options.page_sizes, function (index, value) {
+            var li = $('<li></li>');
+            li.attr('role', 'presentation')
+              .appendTo(list);
+            if (value == plugin.pageSize)
+                li.attr('class', 'active');
+
+            $('<a></a>')
+                .attr('role', 'menuitem')
+                .attr('tabindex', '-1')
+                .attr('href', 'javascript:void(0)')
+                .attr('data-size', value)
+                .text(value == 0 ? 'All' : value)
+                .on('click', function() {
+                    var el = $(this);
+                    el.closest('ul')
+                      .find('li')
+                      .removeClass('active');
+                    el.closest('li')
+                      .addClass('active');
+
+                    plugin.setSize(el.attr('data-size'));
+                })
+                .appendTo(li);
+        });
 
         tfoot.appendTo(plugin.element.find('table'));
     };

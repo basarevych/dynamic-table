@@ -1,1 +1,1 @@
-../src/angularjs.dynamic-table.js
+../../src/angularjs.dynamic-table.js

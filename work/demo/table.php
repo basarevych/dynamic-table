@@ -1,8 +1,8 @@
 <?php
 
-require '../php/DynamicTable/Table.php';
-require '../php/DynamicTable/Adapter/AbstractAdapter.php';
-require '../php/DynamicTable/Adapter/ArrayAdapter.php';
+require '../../php/DynamicTable/Table.php';
+require '../../php/DynamicTable/Adapter/AbstractAdapter.php';
+require '../../php/DynamicTable/Adapter/ArrayAdapter.php';
 
 $data = [];
 $dt = new \DateTime("2010-05-11 13:00:00");
