@@ -24,7 +24,7 @@
     width: 1px;
 }
 .dynamic-table .all-selector-menu {
-    z-index: 9999;
+    z-index: 1025;
     display: none;
     position: absolute;
     padding: 3px 10px;
@@ -37,7 +37,7 @@
 }
 .dynamic-table th .popover {
     width: 300px;
-    z-index: 9999;
+    z-index: 1025;
 }
 .dynamic-table tbody.empty td {
     padding: 1em 0;
@@ -50,5 +50,5 @@
     text-align: center;
 }
 .dynamic-table .dropdown {
-    z-index: 2000;
+    z-index: 1020;
 }
