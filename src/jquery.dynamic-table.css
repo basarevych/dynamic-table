@@ -24,7 +24,7 @@
     width: 1px;
 }
 .dynamic-table .all-selector-menu {
-    z-index: 999;
+    z-index: 9999;
     display: none;
     position: absolute;
     padding: 3px 10px;
