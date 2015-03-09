@@ -19,7 +19,7 @@ class ConsoleControllerTest extends AbstractConsoleControllerTestCase
                          ->setMethods([ 'getRepository', 'persist', 'flush' ])
                          ->getMock();
 
-        $this->repository = $this->getMockBuilder('Application\Repository\Sample')
+        $this->repository = $this->getMockBuilder('Application\Entity\SampleRepository')
                                  ->disableOriginalConstructor()
                                  ->setMethods([ 'removeAll' ])
                                  ->getMock();
