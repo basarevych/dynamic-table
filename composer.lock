@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "fdb5281847c002cc6e94eaec2dd29fb996681c70"
+                "reference": "45456c2c87aef7ba84e5e4e34b797898a7f146bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/fdb5281847c002cc6e94eaec2dd29fb996681c70",
-                "reference": "fdb5281847c002cc6e94eaec2dd29fb996681c70",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/45456c2c87aef7ba84e5e4e34b797898a7f146bc",
+                "reference": "45456c2c87aef7ba84e5e4e34b797898a7f146bc",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "orm",
                 "php"
             ],
-            "time": "2015-03-08 18:55:58"
+            "time": "2015-03-09 04:12:24"
         },
         {
             "name": "doctrine/annotations",
