@@ -98,7 +98,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('example-odm');
     }
 
-    public function testIndexActionDisplaysEntity()
+    public function testIndexActionDisplaysDocument()
     {
         \Locale::setDefault('en_US');
         $this->dispatch('/example-odm');
@@ -121,7 +121,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('example-odm');
     }
 
-    public function testEditFormActionCreatesEntity()
+    public function testEditFormActionCreatesDocument()
     {
         $this->dispatch('/example-odm/index/edit-form');
         $this->assertResponseStatusCode(200);
@@ -159,7 +159,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertEquals($dt, $persisted->getValueDatetime(), "DateTime was not saved");
     }
 
-    public function testEditFormActionModifiesEntity()
+    public function testEditFormActionModifiesDocument()
     {
         $this->dispatch('/example-odm/index/edit-form?id=' . $this->a->getId());
         $this->assertResponseStatusCode(200);
@@ -209,7 +209,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         $this->assertMatchedRouteName('example-odm');
     }
 
-    public function testDeleteFormActionDeletesEntity()
+    public function testDeleteFormActionDeletesDocument()
     {
         $this->dispatch('/example-odm/index/delete-form?id=' . $this->a->getId());
         $this->assertResponseStatusCode(200);
