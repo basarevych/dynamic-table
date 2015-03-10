@@ -127,7 +127,6 @@ class DoctrineMongoODMAdapterTest extends PHPUnit_Framework_TestCase
             ],
         ]);
         $this->table->setMapper(function ($row) {
-if (!$row) return;
             $datetime = $row->getValueDatetime();
             if ($datetime !== null)
                 $datetime = $datetime->getTimestamp();
