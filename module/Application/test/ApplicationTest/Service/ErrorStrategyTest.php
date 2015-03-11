@@ -31,11 +31,7 @@ class ErrorStrategyTest extends AbstractControllerTestCase
         $sl = $this->getApplicationServiceLocator();
         $service->setServiceLocator($sl);
 
-        $this->assertEquals(
-            $sl,
-            $service->getServiceLocator(),
-            "Service Locator is wrong"
-        );
+        $this->assertEquals($sl, $service->getServiceLocator(), "Service Locator is wrong");
     }
 
     public function testAttach()
