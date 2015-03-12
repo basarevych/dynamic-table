@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/basarevych/dynamic-table.git",
-                "reference": "8679745b66c63db725b26aca6fe2e55a9d03c8ca"
+                "reference": "4f5ec6de351619f2552ce08d5ac647f8e08537c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/8679745b66c63db725b26aca6fe2e55a9d03c8ca",
-                "reference": "8679745b66c63db725b26aca6fe2e55a9d03c8ca",
+                "url": "https://api.github.com/repos/basarevych/dynamic-table/zipball/4f5ec6de351619f2552ce08d5ac647f8e08537c5",
+                "reference": "4f5ec6de351619f2552ce08d5ac647f8e08537c5",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "orm",
                 "php"
             ],
-            "time": "2015-03-09 04:40:37"
+            "time": "2015-03-10 14:47:27"
         },
         {
             "name": "doctrine/annotations",
@@ -1093,16 +1093,16 @@
         },
         {
             "name": "zendframework/zendframework",
-            "version": "2.3.5",
+            "version": "2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zf2.git",
-                "reference": "886063aa5aee7476b77c380e25ecfacb2ee5ff4c"
+                "reference": "cf1f2212b5ff772ba695f9efbb315505ec0211eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zf2/zipball/886063aa5aee7476b77c380e25ecfacb2ee5ff4c",
-                "reference": "886063aa5aee7476b77c380e25ecfacb2ee5ff4c",
+                "url": "https://api.github.com/repos/zendframework/zf2/zipball/cf1f2212b5ff772ba695f9efbb315505ec0211eb",
+                "reference": "cf1f2212b5ff772ba695f9efbb315505ec0211eb",
                 "shasum": ""
             },
             "require": {
@@ -1207,7 +1207,7 @@
                 "framework",
                 "zf2"
             ],
-            "time": "2015-02-18 19:48:16"
+            "time": "2015-03-12 14:02:09"
         },
         {
             "name": "zendframework/zendxml",
