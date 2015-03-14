@@ -830,7 +830,7 @@
                     .appendTo(td);
 
         var dropdown = $('<div></div>');
-        dropdown.attr('class', 'btn-group dropdown dropup')
+        dropdown.attr('class', 'btn-group dropdown')
                 .attr('role', 'group')
                 .appendTo(leftToolbar);
 
@@ -866,7 +866,7 @@
         });
 
         var dropdown = $('<div></div>');
-        dropdown.attr('class', 'btn-group dropdown dropup')
+        dropdown.attr('class', 'btn-group dropdown')
                 .attr('role', 'group')
                 .appendTo(leftToolbar);
 
