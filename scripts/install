@@ -49,7 +49,7 @@ else
     display="false"
 fi
 
-run_command perl -pi -e "s/(\s*'display'\s*=>\s*)(true|false)(.*)/\${1}\Q$display\E\${3}/" "exception.local.php"
+run_command perl -pi -e "s/(\s*'display'\s*=>\s*)(true|false)(.*)/\${1}$display\${3}/" "exception.local.php"
 
 echo
 echo "  File config/autoload/exception.local.php created"
@@ -60,7 +60,7 @@ run_command cp mail.local.php.dist mail.local.php
 input="none"
 echo
 while [ "$input" != "sendmail" -a "$input" != "smtp" -a "$input" != "" ]; do
-    read -p "* What mail transport should be used for system messages (like exception reports)? sendmail/[smtp]: " input
+    read -p "* What transport should be used for email messages? sendmail/[smtp]: " input
 done
 if [ "$input" = "sendmail" ]; then
     transport="sendmail"
@@ -68,20 +68,20 @@ else
     transport="smtp"
 fi
 
-run_command perl -pi -e "s/(\s*'transport'\s*=>\s*')(sendmail|smtp)('.*)/\${1}\Q$transport\E\${3}/" "mail.local.php"
+run_command perl -pi -e "s/(\s*'transport'\s*=>\s*')(sendmail|smtp)('.*)/\${1}$transport\${3}/" "mail.local.php"
 
 if [ "$transport" = "smtp" ]; then
     read -p "  SMTP host? [127.0.0.1]: " input
     if [ "$input" = "" ]; then
         input="127.0.0.1"
     fi
-    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(127\.0\.0\.1)('.*)/\${1}\Q$input\E\${3}/" "mail.local.php"
+    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(127\.0\.0\.1)('.*)/\${1}$input\${3}/" "mail.local.php"
 
     read -p "  SMTP port? [25]: " input
     if [ "$input" = "" ]; then
         input=25
     fi
-    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)(25)(.*)/\${1}\Q$input\E\${3}/" "mail.local.php"
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)(25)(.*)/\${1}$input\${3}/" "mail.local.php"
 fi
 
 echo
@@ -101,7 +101,7 @@ if [ "$input" != "n" ]; then
         input="$project"
     fi
 
-    run_command perl -pi -e "s/(\s*'name'\s*=>\s*')(zf2skeleton)('.*)/\${1}\Q$input\E\${3}/" "session.local.php"
+    run_command perl -pi -e "s/(\s*'name'\s*=>\s*')(zf2skeleton)('.*)/\${1}$input\${3}/" "session.local.php"
 
     echo
     echo "  File config/autoload/session.local.php created"
@@ -158,11 +158,11 @@ if [ "$input" != "n" ]; then
 
     run_command cp $dbserver.local.php.dist $dbserver.local.php
 
-    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(localhost)('.*)/\${1}\Q$dbhost\E\${3}/" "$dbserver.local.php"
-    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($defaultport)(.*)/\${1}\Q$dbport\E\${3}/" "$dbserver.local.php"
-    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}\Q$dbuser\E\${3}/" "$dbserver.local.php"
-    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}\Q$dbpassword\E\${3}/" "$dbserver.local.php"
-    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}\Q$dbname\E\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'host'\s*=>\s*')(localhost)('.*)/\${1}$dbhost\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($defaultport)(.*)/\${1}$dbport\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}$dbuser\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}$dbpassword\${3}/" "$dbserver.local.php"
+    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}$dbname\${3}/" "$dbserver.local.php"
 
     echo
     echo "  File config/autoload/$dbserver.local.php created"
@@ -206,12 +206,12 @@ if [ "$input" = "y" ]; then
 
     run_command cp mongodb.local.php.dist mongodb.local.php
 
-    run_command perl -pi -e "s/(\s*'server'\s*=>\s*')(localhost)('.*)/\${1}\Q$mongohost\E\${3}/" "mongodb.local.php"
-    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($mongodefaultport)(.*)/\${1}\Q$mongoport\E\${3}/" "mongodb.local.php"
-    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}\Q$mongouser\E\${3}/" "mongodb.local.php"
-    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}\Q$mongopassword\E\${3}/" "mongodb.local.php"
-    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}\Q$mongoname\E\${3}/" "mongodb.local.php"
-    run_command perl -pi -e "s/(\s*'default_db'\s*=>\s*')(dbname)('.*)/\${1}\Q$mongoname\E\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'server'\s*=>\s*')(localhost)('.*)/\${1}$mongohost\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'port'\s*=>\s*)($mongodefaultport)(.*)/\${1}$mongoport\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'user'\s*=>\s*')(dbuser)('.*)/\${1}$mongouser\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'password'\s*=>\s*')(dbpassword)('.*)/\${1}$mongopassword\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'dbname'\s*=>\s*')(dbname)('.*)/\${1}$mongoname\${3}/" "mongodb.local.php"
+    run_command perl -pi -e "s/(\s*'default_db'\s*=>\s*')(dbname)('.*)/\${1}$mongoname\${3}/" "mongodb.local.php"
 
     echo
     echo "  File config/autoload/mongodb.local.php created"
@@ -248,7 +248,7 @@ if [ "$input" = "y" ]; then
     fi
 
     run_command cp memcached.local.php.dist memcached.local.php
-    run_command perl -pi -e "s/(\s*'namespace'\s*=>\s*')(Skeleton)('.*)/\${1}\Q$input\E\${3}/" "memcached.local.php"
+    run_command perl -pi -e "s/(\s*'namespace'\s*=>\s*')(Skeleton)('.*)/\${1}$input\${3}/" "memcached.local.php"
 
     echo
     echo "  File config/autoload/memcached.local.php created"
