@@ -80,7 +80,7 @@
                             <?php endforeach ?>
                             <li class="divider"></li>
                             <li>
-                                <a href="javascript:void(0)" onclick="$.removeCookie('locale'); window.location.reload()">
+                                <a href="javascript:void(0)" onclick="$.removeCookie('locale', { path: '/' }); window.location.reload()">
                                     <span class="glyphicon glyphicon-ok <?= $this->locale['cookie'] == '' ?: 'invisible' ?>"></span>
                                     <?= $this->translate('Autodetect') ?>
                                 </a>
