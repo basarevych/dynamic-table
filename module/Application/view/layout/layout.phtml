@@ -72,7 +72,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <?php foreach ($this->locale['available'] as $locale): ?>
                                 <li>
-                                    <a href="javascript:void(0)" onclick="$.cookie('locale', '<?= $locale ?>'); window.location.reload()">
+                                    <a href="javascript:void(0)" onclick="$.cookie('locale', '<?= $locale ?>', { path: '/' }); window.location.reload()">
                                         <span class="glyphicon glyphicon-ok <?= $this->locale['cookie'] == $locale ?: 'invisible' ?>"></span>
                                         <?= $this->translate($locale) ?>
                                     </a>
