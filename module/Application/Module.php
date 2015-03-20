@@ -57,6 +57,7 @@ class Module
             $translator->setFallbackLocale($fallback);
             locale_set_default($locale);
             setlocale(LC_ALL, $locale . '.UTF-8');
+            \Zend\Validator\AbstractValidator::setDefaultTranslator($translator);
         }
 
         $cookie = null;

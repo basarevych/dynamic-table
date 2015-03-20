@@ -57,7 +57,7 @@ $datetime = $form->get('datetime');
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
                     <?php foreach ($string->getMessages() as $msg): ?>
-                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                        <li><?= $this->escapeHtml($msg) ?></li>
                     <?php endforeach ?>
                     </ul>
                 <?php endif ?>
@@ -80,7 +80,7 @@ $datetime = $form->get('datetime');
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
                     <?php foreach ($integer->getMessages() as $msg): ?>
-                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                        <li><?= $this->escapeHtml($msg) ?></li>
                     <?php endforeach ?>
                     </ul>
                 <?php endif ?>
@@ -103,7 +103,7 @@ $datetime = $form->get('datetime');
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
                     <?php foreach ($float->getMessages() as $msg): ?>
-                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                        <li><?= $this->escapeHtml($msg) ?></li>
                     <?php endforeach ?>
                     </ul>
                 <?php endif ?>
@@ -151,7 +151,7 @@ $datetime = $form->get('datetime');
                 <?php if (!$valid): ?>
                     <ul class="list-unstyled icon-list error-list">
                     <?php foreach ($datetime->getMessages() as $msg): ?>
-                        <li><?= $this->escapeHtml($this->translate($msg)) ?></li>
+                        <li><?= $this->escapeHtml($msg) ?></li>
                     <?php endforeach ?>
                     </ul>
                 <?php endif ?>
