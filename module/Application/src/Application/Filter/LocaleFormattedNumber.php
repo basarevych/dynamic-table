@@ -22,12 +22,10 @@ use Zend\Filter\AbstractFilter;
 class LocaleFormattedNumber extends AbstractFilter
 {
     /**
-     *
-     * Returns the string $value with characters stripped from the beginning and end
+     * Convert Locale-formatted string to a number
      *
      * @param  string $value
-     * @return string
-     * @see    Zend\Filter\FilterInterface
+     * @return mixed
      */
     public function filter($value)
     {
