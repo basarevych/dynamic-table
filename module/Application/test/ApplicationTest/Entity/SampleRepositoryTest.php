@@ -6,7 +6,7 @@ use PHPUnit_Framework_TestCase;
 use Webfactory\Doctrine\ORMTestInfrastructure\ORMInfrastructure;
 use Application\Entity\Sample as SampleEntity;
 
-class SampleTest extends PHPUnit_Framework_TestCase
+class SampleRepositoryTest extends PHPUnit_Framework_TestCase
 {
     protected $infrastructure;
     protected $repository;
