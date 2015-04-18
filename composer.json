@@ -15,7 +15,8 @@
         "zendframework/zendframework": "2.4.*",
         "doctrine/doctrine-orm-module": "0.8.*",
         "doctrine/doctrine-mongo-odm-module": "0.8.*",
-        "basarevych/dynamic-table": "dev-master"
+        "basarevych/dynamic-table": "0.1.*",
+        "symfony/console": "<2.7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
