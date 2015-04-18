@@ -178,7 +178,7 @@ Methods
     table.refresh({
         filters: {
             foo: {
-                like: 'bar',
+                like: 'some',
                 null: true
             },
             bar: {
@@ -193,7 +193,7 @@ Methods
 
     The code above will refresh the page while requesting the following filters:
 
-      * Set filter FILTER_LIKE to 'bar' string on column **foo**
+      * Set filter FILTER_LIKE to 'some' string on column **foo**
       * Enable FILTER_NULL on column **foo**
       * Set filter FILTER_BETWEEN to range from 3 to 5 on column **bar**
       * Set filter FILTER_EQUAL to 7 on column **baz**

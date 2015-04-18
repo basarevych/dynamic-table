@@ -9,7 +9,7 @@ This project does not add any depency, but your must include this:
 1. Server-side dependencies
 
 ```
-"basarevych/dynamic-table": "dev-master"
+"basarevych/dynamic-table": "0.1.*"
 ```
 
 If you use Doctrine ORM or Doctrine MongoDB ODM add to your composer.json the appropriate
@@ -29,13 +29,13 @@ For example, for Zend Framework 2 add:
   * bootstrap
   * eonasdan datetime picker
 
-Add your bower.json:
+Add to your bower.json:
 
 ```
 "jquery": "~2.1.3",
-"moment": "~2.9.0",
-"bootstrap": "~3.3.2",
-"eonasdan-bootstrap-datetimepicker": "~4.0.0"
+"moment": "~2.10.2",
+"bootstrap": "~3.3.4",
+"eonasdan-bootstrap-datetimepicker": "~4.7.14"
 ```
 
 And the page should include the js and css files of DynamicTable:
