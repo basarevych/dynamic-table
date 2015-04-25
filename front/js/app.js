@@ -171,6 +171,7 @@ function initModalForm(modal)
     button
         .removeClass('disabled')
         .prop('disabled', false)
+        .off('click')
         .one('click', function () {
             spinner.show();
 
