@@ -163,9 +163,21 @@ function validateFormField(element) {
 */
 function initModalForm(modal)
 {
-    modal.find('button[type=submit]')
-        .off('click')
-        .on('click', function () {
+    var spinner = modal.find('.modal-footer .spinner'),
+        button = modal.find('button[type=submit]');
+
+    spinner.hide();
+
+    button
+        .removeClass('disabled')
+        .prop('disabled', false)
+        .one('click', function () {
+            spinner.show();
+
+            $(this)
+                .addClass('disabled')
+                .prop('disabled', true);
+
             modal.find('form').ajaxSubmit({ // jQuery form plugin
                 success: function (data) {
                     modal.find('.modal-body').html(data);
