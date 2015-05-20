@@ -130,6 +130,28 @@ module.exports = function(grunt) {
             },
         },
 
+        jasmine: {
+            src: [
+                '<%= concat.appjs.src %>'
+            ],
+            options: {
+                vendor: [
+                    '<%= concat.vendorjs.src %>',
+                    'node_modules/jasmine-jquery/lib/jasmine-jquery.js'
+                ],
+                helpers: [
+                    'test/helpers/**/*.js'
+                ],
+                specs: [
+                    'test/specs/**/*.js'
+                ],
+                styles: [
+                    '<%= concat.vendorcss.src %>',
+                    '<%= concat.appcss.src %>'
+                ],
+            }
+        },
+
         watch: {
             files: [ 'assets/**/*', 'css/**/*', 'js/**/*' ],
             tasks: ['dev'],
@@ -141,6 +163,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('dev', ['copy:prepare', 'copy:dev', 'concat']);
     grunt.registerTask('prod', ['copy:prepare', 'copy:prod', 'concat', 'uglify', 'cssmin']);
