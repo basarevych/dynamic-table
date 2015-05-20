@@ -1,4 +1,34 @@
 /*
+    This function will install event handlers for the modal ajax form:
+    * 'submit' buttons will ajaxSubmit() the form
+*/
+function initModalForm(modal)
+{
+    var spinner = modal.find('.modal-footer .spinner'),
+        button = modal.find('button[type=submit]');
+
+    spinner.hide();
+
+    button
+        .removeClass('disabled')
+        .prop('disabled', false)
+        .off('click')
+        .one('click', function () {
+            spinner.show();
+
+            $(this)
+                .addClass('disabled')
+                .prop('disabled', true);
+
+            modal.find('form').ajaxSubmit({ // jQuery form plugin
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+        });
+}
+
+/*
     This will initiate focus for the form
 */
 function setFormFocus(form) {
@@ -133,34 +163,4 @@ function validateFormField(element) {
             }
         },
     });
-}
-
-/*
-    This function will install event handlers for the modal ajax form:
-    * 'submit' buttons will ajaxSubmit() the form
-*/
-function initModalForm(modal)
-{
-    var spinner = modal.find('.modal-footer .spinner'),
-        button = modal.find('button[type=submit]');
-
-    spinner.hide();
-
-    button
-        .removeClass('disabled')
-        .prop('disabled', false)
-        .off('click')
-        .one('click', function () {
-            spinner.show();
-
-            $(this)
-                .addClass('disabled')
-                .prop('disabled', true);
-
-            modal.find('form').ajaxSubmit({ // jQuery form plugin
-                success: function (data) {
-                    modal.find('.modal-body').html(data);
-                }
-            });
-        });
 }
