@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd front
+./node_modules/.bin/grunt jasmine

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4460b429c16fdf50275661dd237b5686",
+    "hash": "b194badc1df822c371dd86b3545fec1e",
     "packages": [
         {
             "name": "basarevych/dynamic-table",
@@ -2208,10 +2208,7 @@
     ],
     "aliases": [],
     "minimum-stability": "alpha",
-    "stability-flags": {
-        "phpunit/phpunit": 0,
-        "webfactory/doctrine-orm-test-infrastructure": 0
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

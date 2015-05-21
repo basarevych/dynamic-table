@@ -1,0 +1,42 @@
+<div id="modal-form" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" name="form" onsubmit="return false" method="POST" action="/example/form">
+                    <input type="hidden" name="security" value="hash">
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="field">
+                            Label:
+                            <span class="required-marker text-danger">
+                                REQUIRED FIELD
+                            </span>
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="field" name="field" value="foobar"
+                                   data-on-blur="validateFormField($('#modal-form [name=field]'))"
+                                   data-on-enter="$('#modal-form [type=submit]').focus().click()">
+                            <div class="help-block">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <img src="<?= $this->basePath('/img/loader.gif') ?>" class="spinner">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

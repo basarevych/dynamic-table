@@ -1,24 +1,26 @@
 {
-    "name": "dynamic-table-demo",
-    "description": "DynamicTable demo project",
-    "version": "0.0.1",
-    "license": "MIT",
-    "author": {
-        "name": "Ross Basarevych",
-        "email": "basarevych@gmail.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https:/github.com/basarevych/dynamic-table-demo.git"
-    },
-    "devDependencies": {
-        "bower": "~1.4.1",
-        "grunt": "~0.4.5",
-        "grunt-cli": "~0.1.13",
-        "grunt-contrib-concat": "~0.5.1",
-        "grunt-contrib-copy": "~0.8.0",
-        "grunt-contrib-cssmin": "~0.12.3",
-        "grunt-contrib-uglify": "~0.9.1",
-        "grunt-contrib-watch": "~0.6.1"
-    }
+  "name": "synamic-table-demo",
+  "description": "DynamicTable demo project",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": {
+    "name": "Ross Basarevych",
+    "email": "basarevych@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https:/github.com/basarevych/dynamic-table"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-cssmin": "^0.12.3",
+    "grunt-contrib-jasmine": "^0.8.2",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "jasmine-jquery": "^2.0.6"
+  }
 }

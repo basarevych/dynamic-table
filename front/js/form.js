@@ -1,24 +1,32 @@
 /*
-    Example: <input data-on-enter="alert('foobar')">
-
-    When the user presses Enter key they will see an alert
+    This function will install event handlers for the modal ajax form:
+    * 'submit' buttons will ajaxSubmit() the form
 */
-$(document).on('keypress', '[data-on-enter]', function (e) {
-    if (e.keyCode == 13) {
-        eval($(this).attr('data-on-enter'));
-        return false;
-    }
-});
+function initModalForm(modal)
+{
+    var spinner = modal.find('.modal-footer .spinner'),
+        button = modal.find('button[type=submit]');
 
-/*
-    Example: <input data-on-blur="alert('foobar')">
+    spinner.hide();
 
-    0.5 s delayed alert when focus leaves the input
-*/
-$(document).on('blur', '[data-on-blur]', function (e) {
-    var code = $(this).attr('data-on-blur');
-    setTimeout(function () { eval(code); }, 500);
-});
+    button
+        .removeClass('disabled')
+        .prop('disabled', false)
+        .off('click')
+        .one('click', function () {
+            spinner.show();
+
+            $(this)
+                .addClass('disabled')
+                .prop('disabled', true);
+
+            modal.find('form').ajaxSubmit({ // jQuery form plugin
+                success: function (data) {
+                    modal.find('.modal-body').html(data);
+                }
+            });
+        });
+}
 
 /*
     This will initiate focus for the form
@@ -155,34 +163,4 @@ function validateFormField(element) {
             }
         },
     });
-}
-
-/*
-    This function will install event handlers for the modal ajax form:
-    * 'submit' buttons will ajaxSubmit() the form
-*/
-function initModalForm(modal)
-{
-    var spinner = modal.find('.modal-footer .spinner'),
-        button = modal.find('button[type=submit]');
-
-    spinner.hide();
-
-    button
-        .removeClass('disabled')
-        .prop('disabled', false)
-        .off('click')
-        .one('click', function () {
-            spinner.show();
-
-            $(this)
-                .addClass('disabled')
-                .prop('disabled', true);
-
-            modal.find('form').ajaxSubmit({ // jQuery form plugin
-                success: function (data) {
-                    modal.find('.modal-body').html(data);
-                }
-            });
-        });
 }
