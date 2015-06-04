@@ -9,10 +9,10 @@
     "homepage": "https://github.com/basarevych/zf2-skeleton",
     "minimum-stability": "alpha",
     "require": {
-        "php": ">=5.4.8",
+        "php": ">=5.5",
         "ext-pdo": "*",
         "ext-mongo": "*",
-        "zendframework/zendframework": "^2.4",
+        "zendframework/zendframework": "^2.5",
         "doctrine/doctrine-orm-module": "^0.9.0",
         "doctrine/doctrine-mongo-odm-module": "^0.8.2"
     },

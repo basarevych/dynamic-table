@@ -14,6 +14,7 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Console\Adapter\AdapterInterface;
 use Zend\Http\Request as HttpRequest;
+use Zend\I18n\Translator\Resources;
 
 /**
  * Main module boostrap class
@@ -55,6 +56,12 @@ class Module
         if ($locale) {
             $translator->setLocale($locale);
             $translator->setFallbackLocale($fallback);
+            $translator->addTranslationFilePattern(
+                'phpArray',
+                Resources::getBasePath(),
+                Resources::getPatternForValidator()
+            );
+
             locale_set_default($locale);
             setlocale(LC_ALL, $locale . '.UTF-8');
             \Zend\Validator\AbstractValidator::setDefaultTranslator($translator);

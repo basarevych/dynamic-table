@@ -33,9 +33,6 @@ return [
     // Csrf validator
     'The form submitted did not originate from the expected site' => 'The form submitted did not originate from the expected site',
 
-    // NotEmpty validator
-    'Value is required and can\'t be empty' => 'Value is required and can\'t be empty',
-
     // EntityNotExists validator
     'Value is already in the database' => 'Value is already in the database',
 
@@ -44,10 +41,6 @@ return [
 
     // Integer validator
     'Value is not an integer number' => 'Value is not an integer number',
-
-    // Date validator
-    'The input does not appear to be a valid date' => 'The input does not appear to be a valid date',
-    'The input does not fit the date format \'%format%\'' => 'The input does not fit the date format \'%format%\'',
 
     // ValuesMatch validator
     'The two values do not match' => 'The two values do not match',
