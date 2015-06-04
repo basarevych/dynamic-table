@@ -3,8 +3,8 @@
 return [
     // Layouts
     'APP_TITLE' => 'ZF2 Skeleton',
-    'en_US' => 'English (en_US)',
-    'ru_RU' => 'Русский (ru_RU)',
+    'en' => 'en - English',
+    'ru' => 'ru - Русский',
     'Autodetect' => 'Автоопределение',
 
     // Errors
@@ -62,12 +62,6 @@ return [
     'Save changes' => 'Сохранить изменения',
     'Delete' => 'Удалить',
 
-    // Csrf validator
-    'The form submitted did not originate from the expected site' => 'Форма была отправлена из неизвестного источника',
-
-    // NotEmpty validator
-    'Value is required and can\'t be empty' => 'Значение обязательно и не может быть пустым',
-
     // EntityNotExists validator
     'Value is already in the database' => 'Значение уже присутствует в базе данных',
 
@@ -76,10 +70,6 @@ return [
 
     // Integer validator
     'Value is not an integer number' => 'Значение не является натуральным числом',
-
-    // Date validator
-    'The input does not appear to be a valid date' => 'Введенные данные не являются корректной датой',
-    'The input does not fit the date format \'%format%\'' => 'Введенные данные не соответствуют формату \'%format%\'',
 
     // ValuesMatch validator
     'The two values do not match' => 'Два введенных значения не совпадают',

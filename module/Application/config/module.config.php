@@ -61,8 +61,8 @@ return [
     ],
 
     'translator' => [
-        'locales' => [ 'en_US', 'ru_RU' ],
-        'default' => 'en_US',
+        'locales' => [ 'en', 'ru' ],
+        'default' => 'en',
         'translation_file_patterns' => [
             [
                 'type'     => 'phpArray',
