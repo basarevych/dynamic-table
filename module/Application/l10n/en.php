@@ -30,9 +30,6 @@ return [
     'Save changes' => 'Save changes',
     'Delete' => 'Delete',
 
-    // Csrf validator
-    'The form submitted did not originate from the expected site' => 'The form submitted did not originate from the expected site',
-
     // EntityNotExists validator
     'Value is already in the database' => 'Value is already in the database',
 
