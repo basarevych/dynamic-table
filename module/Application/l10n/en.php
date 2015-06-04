@@ -3,7 +3,7 @@
 return [
     // Layouts
     'APP_TITLE' => 'ZF2 Skeleton',
-    'en_US' => 'English (en_US)',
+    'en' => 'en - English',
     'Autodetect' => 'Autodetect',
 
     // Errors
