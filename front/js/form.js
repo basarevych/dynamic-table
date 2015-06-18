@@ -68,7 +68,7 @@ function setFormFocus(form) {
     The following will validate the field and display errors in the help-block div:
     validateFormField($('#my-input'));
         
-    Validation request is sent as GET to form 'action' address with the following data:
+    Validation request is sent as POST to form 'action' address with the following data:
     {
         query: 'validate',
         field: 'my-input',
@@ -116,6 +116,7 @@ function validateFormField(element) {
 
     $.ajax({
         url: form.attr('action'),
+        method: 'POST',
         data: {
             query: 'validate',
             field: name,
