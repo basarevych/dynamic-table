@@ -19,9 +19,5 @@
     "qunit": ">=1.15.0",
     "angular": ">=1.2.28",
     "angular-mocks": ">=1.2.28"
-  },
-  "resolutions": {
-    "moment": "~2.10.6",
-    "eonasdan-bootstrap-datetimepicker": "~4.15.35"
   }
 }
