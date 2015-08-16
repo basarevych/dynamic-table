@@ -11,10 +11,10 @@
   "version": "0.0.1",
   "devDependencies": {
     "jquery": "~2.1.4",
+    "moment": "~2.10.6",
+    "bootstrap": "~3.3.5",
+    "eonasdan-bootstrap-datetimepicker": "~4.15.35",
     "jquery-form": "~3.46.0",
-    "jquery.cookie": "~1.4.1",
-    "moment": "~2.10.3",
-    "bootstrap": "~3.3.4",
-    "eonasdan-bootstrap-datetimepicker": "~4.7.14"
+    "jquery.cookie": "~1.4.1"
   }
 }
