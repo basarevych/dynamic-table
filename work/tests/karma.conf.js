@@ -1,14 +1,14 @@
 module.exports = function(config){
     config.set({
 
-        basePath : '.',
+        basePath : '..',
 
         frameworks: ['jasmine'],
 
-        browsers : ['PhantomJS'],
+        browsers : ['Firefox'],
 
         plugins : [
-            'karma-phantomjs-launcher',
+            'karma-firefox-launcher',
             'karma-jasmine'
         ],
 

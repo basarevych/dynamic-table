@@ -1,9 +1,14 @@
 <?php
 
+namespace DynamicTable;
+
 require '../../php/DynamicTable/Table.php';
 require '../../php/DynamicTable/Adapter/AbstractAdapter.php';
 require '../../php/DynamicTable/Adapter/ArrayAdapter.php';
+require '../../php/DynamicTable/Adapter/GenericDBAdapter.php';
+require '../../php/DynamicTable/Adapter/PDOAdapter.php';
 
+/*
 $data = [];
 $dt = new \DateTime("2010-05-11 13:00:00");
 for ($i = 1; $i <= 100; $i++) {
@@ -12,85 +17,93 @@ for ($i = 1; $i <= 100; $i++) {
     if ($i == 3) {
         $data[] = [
             'id' => $i,
-            'string' => null,
-            'integer' => null,
-            'float' => null,
-            'boolean' => null,
-            'datetime' => null,
+            'name' => null,
+            'email' => null,
+            'created_at' => null,
+            'is_admin' => null,
         ];
     } else {
         $data[] = [
             'id' => $i,
-            'string' => "string $i",
-            'integer' => $i,
-            'float' => $i / 100,
-            'boolean' => ($i % 2 == 0),
-            'datetime' => clone $dt,
+            'name' => "User $i",
+            'email' => "user$i@example.com",
+            'created_at' => clone $dt,
+            'is_admin' => ($i % 2 == 0),
         ];
     }
 }
 
-$adapter = new DynamicTable\Adapter\ArrayAdapter();
+$adapter = new Adapter\ArrayAdapter();
 $adapter->setData($data);
+*/
 
-$table = new \DynamicTable\Table();
+$dsn = 'pgsql:dbname=pean;host=127.0.0.1';
+$user = 'pean';
+$password = 'pean';
+
+$dbh = new \PDO($dsn, $user, $password);
+
+$adapter = new Adapter\PDOAdapter();
+$adapter->setPdo($dbh);
+$adapter->setSelect('*');             // SELECT * FROM users WHERE id > 50
+$adapter->setFrom('users');
+// $adapter->setWhere("id > :id");       // use named parameters
+$adapter->setWhere("");
+// $adapter->setParams([ ':id' => 50 ]);
+$adapter->setParams([]);
+
+$table = new Table();
 $table->setColumns([
     'id' => [
-        'title'     => 'ID',
-        'sql_id'    => 's.id',
-        'type'      => \DynamicTable\Table::TYPE_INTEGER,
-        'filters'   => [ \DynamicTable\Table::FILTER_EQUAL ],
-        'sortable'  => false,
-        'visible'   => false,
+        'title' => 'ID',
+        'sql_id' => 'id',
+        'type' => Table::TYPE_INTEGER,
+        'filters' => [ Table::FILTER_EQUAL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'string' => [
-        'title'     => 'String',
-        'sql_id'    => 's.value_string',
-        'type'      => \DynamicTable\Table::TYPE_STRING,
-        'filters'   => [ \DynamicTable\Table::FILTER_LIKE, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'name' => [
+        'title' => 'Name',
+        'sql_id' => 'name',
+        'type' => Table::TYPE_STRING,
+        'filters' => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'integer' => [
-        'title'     => 'Integer',
-        'sql_id'    => 's.value_integer',
-        'type'      => \DynamicTable\Table::TYPE_INTEGER,
-        'filters'   => [ \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'email' => [
+        'title' => 'Email',
+        'sql_id' => 'email',
+        'type' => Table::TYPE_STRING,
+        'filters' => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'float' => [
-        'title'     => 'Float',
-        'sql_id'    => 's.value_float',
-        'type'      => \DynamicTable\Table::TYPE_FLOAT,
-        'filters'   => [ \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'created_at' => [
+        'title' => 'Created at',
+        'sql_id' => 'created_at',
+        'type' => Table::TYPE_DATETIME,
+        'filters' => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'boolean' => [
-        'title'     => 'Boolean',
-        'sql_id'    => 's.value_boolean',
-        'type'      => \DynamicTable\Table::TYPE_BOOLEAN,
-        'filters'   => [ \DynamicTable\Table::FILTER_EQUAL, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
-    ],
-    'datetime' => [
-        'title'     => 'DateTime',
-        'sql_id'    => 's.value_datetime',
-        'type'      => \DynamicTable\Table::TYPE_DATETIME,
-        'filters'   => [ \DynamicTable\Table::FILTER_BETWEEN, \DynamicTable\Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'is_admin' => [
+        'title' => 'Is admin',
+        'sql_id' => 'is_admin',
+        'type' => Table::TYPE_BOOLEAN,
+        'filters' => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
 ]);
 $table->setMapper(function ($row) {
     $result = $row;
 
-    $result['string'] = htmlentities($row['string']);
+    $result['email'] = htmlentities($row['email']);
 
-    if ($row['datetime'] !== null)
-        $result['datetime'] = $row['datetime']->getTimestamp();
+    if ($row['created_at'] !== null) {
+        $dt = new \DateTime($row['created_at'], new \DateTimezone('Europe/Kiev'));
+        $result['created_at'] = $dt->getTimestamp();
+    }
 
     return $result;
 });

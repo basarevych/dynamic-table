@@ -1,16 +1,16 @@
 Requirements
 ------------
 
-**NOTE**: DynamicTable contains both PHP files and JS/CSS files which should match each other.
-          Because of this DynamicTable is distributed via composer only (and not via bower).
+**NOTE**: DynamicTable contains both backend and frontend files which should match each other.
+          Because of this DynamicTable is distributed via server-side tools only (Composer or NPM) and not via bower.
 
-This project does not add any depency, but your must include this:
+This project does not add any depency, but your project must include this:
 
-1. Server-side dependencies (composer)
+1. PHP: Server-side dependencies (composer)
 
   ```
     "require": {
-        "basarevych/dynamic-table": "0.1.*"
+        "basarevych/dynamic-table": "0.2.*"
     }
   ```
 
@@ -21,28 +21,39 @@ This project does not add any depency, but your must include this:
 
   ```
     "require": {
-        "doctrine/doctrine-orm-module": "0.8.*"
+        "doctrine/doctrine-orm-module": "0.9.*"
     }
   ```
 
   For Zend Framework 2 and Doctrine Mongo ODM add:
 
   ```
-    "minimum-stability": "alpha",
     "require": {
-        "doctrine/doctrine-mongo-odm-module": "0.8.*"
+        "doctrine/doctrine-mongo-odm-module": "0.9.*"
     }
   ```
 
-  Note: If you get deprecated error for "Symfony\Component\Console\Helper\DialogHelper", add:
+2. NodeJS: Server-side dependencies (npm)
+
+  If you need MySQL support add to your package.json:
 
   ```
-    "require": {
-        "symfony/console": "<2.7.0"
+    "dependencies": {
+      "mysql": "~2.8.0",
     }
   ```
 
-2. Front-side dependencies:
+  If you need PostgreSQL support add:
+
+  ```
+    "dependencies": {
+      "pg": "~4.4.1",
+    }
+  ```
+
+3. Front-side dependencies (bower):
+
+  You will need in your project:
 
   * jQuery
   * moment.js
@@ -53,18 +64,30 @@ This project does not add any depency, but your must include this:
 
   ```
     "devDependencies": {
-        "jquery": "~2.1.3",
-        "moment": "~2.10.2",
-        "bootstrap": "~3.3.4",
-        "eonasdan-bootstrap-datetimepicker": "~4.7.14"
+        "jquery": "~2.1.4",
+        "moment": "~2.10.6",
+        "bootstrap": "~3.3.5",
+        "eonasdan-bootstrap-datetimepicker": "~4.15.35"
     }
   ```
 
-  And the page should include the js and css files of DynamicTable:
+  And your HTML page should include the JS and CSS files of DynamicTable:
 
-  * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.js
-  * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.css
+  * If your backend is PHP include these files:
 
-  Include AngularJS wrapper (if you use Angular) in addition to the above:
+    * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.js
+    * vendor/basarevych/dynamic-table/dist/jquery.dynamic-table.min.css
+
+  * Or NodeJS, include the following:
+
+    * node_modules/dynamic-table/dist/jquery.dynamic-table.min.js
+    * node_modules/dynamic-table/dist/jquery.dynamic-table.min.css
+
+  You should also include AngularJS wrapper (if you use Angular) in addition to the above:
 
   * vendor/basarevych/dynamic-table/dist/angularjs.dynamic-table.min.js
+
+  Or:
+
+  * node_modules/dynamic-table/dist/angularjs.dynamic-table.min.js
+

@@ -3,7 +3,7 @@
  * DynamicTable
  *
  * @link        https://github.com/basarevych/dynamic-table
- * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @copyright   Copyright (c) 2014-2015 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
@@ -28,6 +28,20 @@ class DoctrineORMAdapter extends AbstractAdapter
      * @var QueryBuilder
      */
     protected $qb = null;
+
+    /**
+     * SQL WHERE as an array of ORs
+     *
+     * @var array
+     */
+    protected $sqlWhere = [];
+
+    /**
+     * Bound SQL parameters
+     *
+     * @var array
+     */
+    protected $sqlParams = [];
 
     /**
      * QueryBuilder setter
@@ -64,6 +78,9 @@ class DoctrineORMAdapter extends AbstractAdapter
                 throw new \Exception("No 'sql_id' param for ID $id");
         }
 
+        $backupSqlWhere = $this->sqlWhere;
+        $backupSqlParams = $this->sqlParams;
+
         $columns = $table->getColumns();
         $successfulFilters = [];
         foreach ($table->getFilters() as $column => $filters) {
@@ -76,6 +93,9 @@ class DoctrineORMAdapter extends AbstractAdapter
                 $successfulFilters[$column] = $successfulNames;
         }
         $table->setFilters($successfulFilters);
+
+        $this->sqlWhere = $backupSqlWhere;
+        $this->sqlParams = $backupSqlParams;
     }
 
     /**
@@ -185,7 +205,7 @@ class DoctrineORMAdapter extends AbstractAdapter
         if (strlen($type) == 0)
             throw new \Exception("Empty 'type'");
 
-        $paramBaseName = str_replace('.', '_', $field);
+        $paramBaseName = 'dt_' . str_replace('.', '_', $field);
 
         if ($type == Table::TYPE_DATETIME) {
             if ($filter == Table::FILTER_BETWEEN

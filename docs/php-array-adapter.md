@@ -1,23 +1,23 @@
-Array Adapter
--------------
+PHP Array Adapter
+-----------------
 
-Imagine this is our data:
+Imagine the following data source (array):
 
 ```php
 $data = [
-    [ 1, "string 1", 111, 10.01, true,  new \DateTime('2010-05-10 13:00:00') ],
-    [ 2, "string 2", 222, 45.45, false, new \DateTime('2015-01-01 17:00:00') ],
+    [ 1, "string 1", 111, 10.01, true,  new \DateTime('2010-05-10 13:00:00') ],     // first row
+    [ 2, "string 2", 222, 45.45, false, new \DateTime('2015-01-01 17:00:00') ],     // second row
     // ... and so on
 ];
 ```
 
-We created a table for it:
+Table definition for this data source:
 
 ```php
 $table = new Table();
 
 $table->setColumns([
-    'id' => [
+    'id' => [                   // item key is the name of the column
         'title'     => 'ID',
         'type'      => Table::TYPE_INTEGER,
         'filters'   => [ Table::FILTER_EQUAL ],
@@ -73,37 +73,10 @@ $adapter = new ArrayAdapter();
 $adapter->setData($data);       // <-- Feed our array to the adapter
 ```
 
-The last step is to create a mapper of source data row to resulting array row. Output format is [ 'column-id' => $cell_value, ... ].
-
-```php
-$mapper = function ($row) {
-    return [
-        'id'        => $row[0],
-        'string'    => htmlentities($row[1]),       // We should escape strings!
-        'integer'   => $row[2],
-        'float'     => $row[3],
-        'boolean'   => $row[4],
-        'datetime'  => $row[5]->getTimestamp(),     // Transmit DateTime cell as UNIX timestamp
-    ];
-};
-```
-
-For example, for the first row of our data, we will get this out of our mapper:
-
-```php
-[
-    'id'        => 1,
-    'string'    => "string 1",
-    'integer'   => 111,
-    'float'     => 10.01
-    'boolean'   => true,
-    'datetime'  => 1273496400,
-]
-```
-
 Connect data to the table:
 
 ```php
 $table->setAdapter($adapter);
-$table->setMapper($mapper);
 ```
+
+... continue with the table

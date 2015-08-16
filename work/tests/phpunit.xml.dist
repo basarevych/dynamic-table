@@ -3,7 +3,7 @@
 <phpunit bootstrap="Bootstrap.php">
     <testsuites>
         <testsuite name="dynamic-table">
-            <directory>./phpunit/DynamicTableTest</directory>
+            <directory>./php/DynamicTableTest</directory>
         </testsuite>
     </testsuites>
 </phpunit>

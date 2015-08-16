@@ -3,7 +3,7 @@
  * DynamicTable
  *
  * @link        https://github.com/basarevych/dynamic-table
- * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @copyright   Copyright (c) 2014-2015 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
@@ -437,6 +437,8 @@ class Table
             $this->totalPages = 1;
         if ($this->pageNumber > $this->totalPages)
             $this->pageNumber = $this->totalPages;
+
+        return $this;
     }
 
     /**
@@ -463,7 +465,9 @@ class Table
     }
 
     /**
-     * Fetch data and feed id to front-end
+     * Fetch data and feed it to front-end
+     *
+     * @return array
      */
     public function fetch()
     {

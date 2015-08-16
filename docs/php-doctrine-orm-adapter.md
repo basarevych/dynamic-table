@@ -1,5 +1,5 @@
-Doctrine Adapter
-----------------
+PHP Doctrine Adapter
+--------------------
 
 The entity we will create DynamicTable for: [Application\Entity\Sample](https://github.com/basarevych/dynamic-table/blob/demo-zf2/module/Application/src/Application/Entity/Sample.php)
 
@@ -78,29 +78,10 @@ $adapter = new DoctrineORMAdapter();
 $adapter->setQueryBuilder($qb);
 ```
 
-The last step is to create a mapper of source data row to resulting array row. Output format is [ 'column-id' => $cell_value, ... ].
-
-```php
-$mapper = function ($row) { // $row in this case is Query result item,
-                            // i.e. Sample entity instance
-    $datetime = $row->getValueDatetime();
-    if ($datetime !== null)
-        $datetime = $datetime->getTimestamp();
-
-    return [
-        'id'        => $row->getId(),
-        'string'    => htmlentities($row->getValueString()), // We must escape strings!
-        'integer'   => $row->getValueInteger(),
-        'float'     => $row->getValueFloat(),
-        'boolean'   => $row->getValueBoolean(),
-        'datetime'  => $datetime,   // Transmit DateTime object as UNIX timestamp
-    ];
-};
-```
-
 Connect data to the table:
 
 ```php
 $table->setAdapter($adapter);
-$table->setMapper($mapper);
 ```
+
+... continue with the table

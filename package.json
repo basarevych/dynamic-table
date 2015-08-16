@@ -1,0 +1,26 @@
+{
+  "name": "dynamic-table",
+  "version": "0.2.0",
+  "description": "Dynamic HTML grid",
+  "main": "node/index.js",
+  "keywords": [
+    "php",
+    "nodejs",
+    "mysql",
+    "postgresql",
+    "mongodb",
+    "jquery",
+    "angularjs",
+    "grid"
+  ],
+  "author": "Ross Basarevych",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https:/github.com/basarevych/dynamic-table.git"
+  },
+  "dependencies": {
+    "clone": "^1.0.2",
+    "q": "^1.4.1"
+  }
+}

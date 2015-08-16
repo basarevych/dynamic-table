@@ -184,18 +184,18 @@ class DoctrineORMAdapterTest extends PHPUnit_Framework_TestCase
         $this->adapter->filter($this->table);
 
         $this->assertEquals(
-            "((s.id = :s_id_equal))"
-            ." AND ((s.value_string LIKE :s_value_string_like))"
-            ." AND ((s.value_integer >= :s_value_integer_begin AND s.value_integer <= :s_value_integer_end) OR (s.value_integer IS NULL))",
+            "((s.id = :dt_s_id_equal))"
+            ." AND ((s.value_string LIKE :dt_s_value_string_like))"
+            ." AND ((s.value_integer >= :dt_s_value_integer_begin AND s.value_integer <= :dt_s_value_integer_end) OR (s.value_integer IS NULL))",
             $resultWhere,
             "SQL WHERE is incorrect"
         );
         $this->assertEquals(
             [
-                "s_id_equal" => 123,
-                "s_value_string_like" => "%abc%",
-                "s_value_integer_begin" => 10,
-                "s_value_integer_end" => 20,
+                "dt_s_id_equal" => 123,
+                "dt_s_value_string_like" => "%abc%",
+                "dt_s_value_integer_begin" => 10,
+                "dt_s_value_integer_end" => 20,
             ],
             $resultParams,
             "SQL parameters are wrong"

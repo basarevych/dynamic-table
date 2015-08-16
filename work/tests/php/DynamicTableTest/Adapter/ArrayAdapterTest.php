@@ -19,7 +19,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
         $this->table->setColumns([
             'id' => [
                 'title'     => 'ID',
-                'sql_id'    => 's.id',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_EQUAL ],
                 'sortable'  => true,
@@ -27,7 +26,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
             ],
             'string' => [
                 'title'     => 'String',
-                'sql_id'    => 's.value_string',
                 'type'      => Table::TYPE_STRING,
                 'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
                 'sortable'  => true,
@@ -35,7 +33,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
             ],
             'integer' => [
                 'title'     => 'Integer',
-                'sql_id'    => 's.value_integer',
                 'type'      => Table::TYPE_INTEGER,
                 'filters'   => [ Table::FILTER_BETWEEN ],
                 'sortable'  => true,
@@ -43,7 +40,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
             ],
             'float' => [
                 'title'     => 'Float',
-                'sql_id'    => 's.value_float',
                 'type'      => Table::TYPE_FLOAT,
                 'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,
@@ -51,7 +47,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
             ],
             'boolean' => [
                 'title'     => 'Boolean',
-                'sql_id'    => 's.value_boolean',
                 'type'      => Table::TYPE_BOOLEAN,
                 'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
                 'sortable'  => true,
@@ -59,7 +54,6 @@ class ArrayAdapterTest extends PHPUnit_Framework_TestCase
             ],
             'datetime' => [
                 'title'     => 'DateTime',
-                'sql_id'    => 's.value_datetime',
                 'type'      => Table::TYPE_DATETIME,
                 'filters'   => [ Table::FILTER_NULL ],
                 'sortable'  => true,

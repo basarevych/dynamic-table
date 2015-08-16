@@ -3,7 +3,7 @@
  * DynamicTable
  *
  * @link        https://github.com/basarevych/dynamic-table
- * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @copyright   Copyright (c) 2014-2015 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 

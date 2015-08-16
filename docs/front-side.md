@@ -65,7 +65,7 @@ Front side is a jQuery plugin.
                 + '"></span>';
         }
         if (row['datetime'] != null) {  // DateTime is transmitted as UNIX timestamp
-                                        // convert it to string here
+                                        // convert it to string of browser timezone here
             var m = moment.unix(row['datetime']).local();
             row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
         }
@@ -76,6 +76,7 @@ Front side is a jQuery plugin.
     var table1 = $('#table1').dynamicTable({
         url: '/path/to/table-backend.php',
         row_id_column: 'id',
+        sort_column: 'id',
         mapper: mapper,
     });
 </script>
@@ -282,7 +283,7 @@ Front-side - AngularJS wrapper for the plugin
 1. Include 'dynamicTable' dependency to your app:
 
   ```js
-  var app = angular.module('app', [ 'dynamicTable' ]);
+    var app = angular.module('app', [ 'dynamicTable' ]);
   ```
 
 2. Configure the service (optional):
@@ -329,12 +330,13 @@ Front-side - AngularJS wrapper for the plugin
 3. Instantiate table controller with the help of the **dynamicTable** service:
 
   ```js
-    app.controller('ctrl',
+    app.controller('angularCtrlName',
         ['$scope', 'dynamicTable',
         function($scope, dynamicTable) {
             $scope.tableCtrl = dynamicTable({
-                url: 'table.php',
+                url: '/table.php',
                 row_id_column: 'id',
+                sort_column: 'id',
                 mapper: function (row) {
                     if (row['boolean'] != null) {
                         row['boolean'] = '<i class="glyphicon '
@@ -342,8 +344,8 @@ Front-side - AngularJS wrapper for the plugin
                             + '"></i>';
                     }
                     if (row['datetime'] != null) {
-                        var m = momenti.unix(row['datetime']).local();
-                        row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
+                        var m = momenti.unix(row['datetime']).local();      // convert from UTC UNIX timestamp
+                        row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');  // to browser timezone string
                     }
 
                     return row;
@@ -356,7 +358,7 @@ Front-side - AngularJS wrapper for the plugin
 4. Use **dynamic-table** directive in your template:
 
   ```html
-  <div id="my-table" dynamic-table="tableCtrl"></div>
+    <div id="my-table" dynamic-table="tableCtrl"></div>
   ```
 
 5. Watch for plugin events if you need to:

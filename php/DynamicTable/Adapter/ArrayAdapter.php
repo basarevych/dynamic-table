@@ -3,7 +3,7 @@
  * DynamicTable
  *
  * @link        https://github.com/basarevych/dynamic-table
- * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @copyright   Copyright (c) 2014-2015 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
@@ -185,6 +185,14 @@ class ArrayAdapter extends AbstractAdapter
         return $result;
     }
 
+    /**
+     * Check and apply filter
+     *
+     * @param string $filter
+     * @param string $type
+     * @param mixed $test
+     * @param mixed $real
+     */
     protected function checkFilter($filter, $type, $test, $real)
     {
         if ($type == Table::TYPE_DATETIME) {

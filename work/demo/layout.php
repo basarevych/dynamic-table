@@ -68,15 +68,16 @@
         url: 'table.php',
         locale: 'ru',
         row_id_column: 'id',
+        sort_column: 'id',
         mapper: function (row) {
-            if (row['boolean'] != null) {
-                row['boolean'] = '<i class="glyphicon '
-                    + (row['boolean'] ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger')
+            if (row['is_admin'] != null) {
+                row['is_admin'] = '<i class="glyphicon '
+                    + (row['is_admin'] ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger')
                     + '"></i>';
             }
-            if (row['datetime'] != null) {
-                var m = moment(row['datetime'] * 1000);
-                row['datetime'] = m.format('YYYY-MM-DD HH:mm:ss');
+            if (row['created_at'] != null) {
+                var m = moment.unix(row['created_at']).local();
+                row['created_at'] = m.format('YYYY-MM-DD HH:mm:ss');
             }
 
             return row;

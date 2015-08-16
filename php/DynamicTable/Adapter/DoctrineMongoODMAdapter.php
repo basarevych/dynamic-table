@@ -3,7 +3,7 @@
  * DynamicTable
  *
  * @link        https://github.com/basarevych/dynamic-table
- * @copyright   Copyright (c) 2014 basarevych@gmail.com
+ * @copyright   Copyright (c) 2014-2015 basarevych@gmail.com
  * @license     http://choosealicense.com/licenses/mit/ MIT
  */
 
@@ -72,6 +72,8 @@ class DoctrineMongoOdmAdapter extends AbstractAdapter
                 throw new \Exception("No 'field_name' param for ID $id");
         }
 
+        $backupAndOps = $this->andOps;
+
         $columns = $table->getColumns();
         $successfulFilters = [];
         foreach ($table->getFilters() as $column => $filters) {
@@ -84,6 +86,8 @@ class DoctrineMongoOdmAdapter extends AbstractAdapter
                 $successfulFilters[$column] = $successfulNames;
         }
         $table->setFilters($successfulFilters);
+
+        $this->andOps = $backupAndOps;
     }
 
     /**

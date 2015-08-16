@@ -116,17 +116,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testFetch()
     {
         $adapter = $this->getMockBuilder('DynamicTable\Adapter\AbstractAdapter')
-                        ->setMethods([ 'sortData', 'filterData', 'getData' ])
                         ->getMockForAbstractClass();
-        $adapter->expects($this->any())
-            ->method('sortData')
-            ->will($this->returnValue(null));
-        $adapter->expects($this->any())
-            ->method('filterData')
-            ->will($this->returnValue(null));
-        $adapter->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue(null));
 
         $this->table->setAdapter($adapter);
         $data = $this->table->fetch();

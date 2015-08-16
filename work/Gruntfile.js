@@ -56,12 +56,12 @@ module.exports = function(grunt) {
         },
 
         qunit: {
-            files: ['qunit/**/*.html']
+            files: ['tests/jquery-plugin/**/*.html']
         },
 
         karma: {
             unit: {
-                configFile: 'karma.conf.js',
+                configFile: 'tests/karma.conf.js',
                 singleRun: true,
                 autoWatch: false,
                 options: {
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                         'bower_components/angular-mocks/angular-mocks.js',
                         '../src/jquery.<%= pkg.name %>.js',
                         '../src/angularjs.<%= pkg.name %>.js',
-                        'karma/**/*.js',
+                        'tests/angular-wrapper/**/*.js',
                     ],
                 }
             }
@@ -89,5 +89,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-karma');
 
     // Default task.
-    grunt.registerTask('default', ['qunit', 'karma', 'copy', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['copy', 'uglify', 'cssmin']);
 };

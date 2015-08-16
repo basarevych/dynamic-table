@@ -466,13 +466,9 @@
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
-                    span.attr('class', 'input-group-btn')
-                        .appendTo(inputGroup);
-
-                    $('<button></button>')
-                        .attr('class', 'btn btn-default')
+                    span.attr('class', 'input-group-addon')
                         .html('<span class="glyphicon glyphicon-calendar"></span>')
-                        .appendTo(span);
+                        .appendTo(inputGroup);
 
                     var dtPicker = inputGroup.datetimepicker({
                         locale: plugin.options.locale,
@@ -515,13 +511,9 @@
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
-                    span.attr('class', 'input-group-btn')
-                        .appendTo(inputGroup);
-
-                    $('<button></button>')
-                        .attr('class', 'btn btn-default')
+                    span.attr('class', 'input-group-addon')
                         .html('<span class="glyphicon glyphicon-calendar"></span>')
-                        .appendTo(span);
+                        .appendTo(inputGroup);
 
                     var dtPicker1 = inputGroup.datetimepicker({
                         locale: plugin.options.locale,
@@ -546,13 +538,9 @@
                          .appendTo(inputGroup);
 
                     var span = $('<span></span>');
-                    span.attr('class', 'input-group-btn')
-                        .appendTo(inputGroup);
-
-                    $('<button></button>')
-                        .attr('class', 'btn btn-default')
+                    span.attr('class', 'input-group-addon')
                         .html('<span class="glyphicon glyphicon-calendar"></span>')
-                        .appendTo(span);
+                        .appendTo(inputGroup);
 
                     var dtPicker2 = inputGroup.datetimepicker({
                         locale: plugin.options.locale,

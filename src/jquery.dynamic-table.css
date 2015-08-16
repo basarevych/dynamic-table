@@ -46,7 +46,7 @@
     font-style: italic;
 }
 .dynamic-table .pagination-input {
-    width: 4em;
+    width: 4em !important;
     text-align: center;
 }
 .dynamic-table .dropdown {
