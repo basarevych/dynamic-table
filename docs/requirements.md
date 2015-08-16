@@ -3,6 +3,8 @@ Requirements
 
 **NOTE**: DynamicTable contains both backend and frontend files which should match each other.
           Because of this DynamicTable is distributed via server-side tools only (Composer or NPM) and not via bower.
+          But this project does have bower dependencies, which you should include in your bower.json by hand
+          (listed bellow).
 
 This project does not add any depency, but your project must include this:
 
