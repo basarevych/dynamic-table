@@ -14,4 +14,6 @@ Dynamic Table consists of two parts - backend and frontend:
  * Backend
    * [server-side PHP](docs/php.md) - set of PHP classes for PHP arrays, PDO, Doctrine ORM and Doctrine MongoDB ODM support
    * or [server-side NodeJS](docs/nodejs.md) - set of JavaScript classes for arrays, MySQL and PostgreSQL databases
- * and [front-side](docs/front-side.md) - jQuery plugin and AngularJS wrapper for the plugin
+ * Frontend
+   * [jQuery plugin](docs/front-side-plugin.md) - jQuery plugin
+   * and, if you need it, [AngularJS wrapper](docs/front-side-wrapper.md) for the plugin
