@@ -957,10 +957,12 @@
         var pos = tbody.position();
         $.each([ '.overlay-back', '.overlay-loader' ], function (index, value) {
             var overlay = plugin.element.find(value);
+            if (pos) {
+                overlay.css('top', pos.top)
+                       .css('left', pos.left);
+            }
             overlay.width(tbody.width())
                    .height(tbody.height())
-                   .css('top', pos.top)
-                   .css('left', pos.left)
                    .css('display', enable ? 'block' : 'none');
         });
     };

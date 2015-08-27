@@ -10,6 +10,8 @@ This project does not add any depency, but your project must include this:
 
 1. PHP: Server-side dependencies (composer)
 
+  Add to composer.json:
+
   ```
     "require": {
         "basarevych/dynamic-table": "0.2.*"
@@ -37,11 +39,15 @@ This project does not add any depency, but your project must include this:
 
 2. NodeJS: Server-side dependencies (npm)
 
+  Add to package.json:
+
   ```
-    > npm install dynamic-table --save
+    "dependencies": {
+      "dynamic-table": "~0.2.2"
+    }
   ```
 
-  If you need MySQL support add to your package.json:
+  If you need MySQL support add:
 
   ```
     "dependencies": {
