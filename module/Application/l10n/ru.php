@@ -35,6 +35,7 @@ return [
     // DynamicTable
     'DT_BANNER_LOADING' => 'Загружается... Пожалуйста, подождите',
     'DT_BANNER_EMPTY' => 'Ничего не найдено',
+    'DT_BANNER_ERROR' => 'Ошибка загрузки таблицы',
     'DT_BUTTON_PAGE_SIZE' => 'Размер страницы',
     'DT_BUTTON_COLUMNS' => 'Колонки',
     'DT_BUTTON_REFRESH' => 'Обновить',

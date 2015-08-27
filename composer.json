@@ -15,7 +15,7 @@
         "zendframework/zendframework": "^2.5",
         "doctrine/doctrine-orm-module": "^0.9.1",
         "doctrine/doctrine-mongo-odm-module": "^0.9.1",
-        "basarevych/dynamic-table": "^0.2.0"
+        "basarevych/dynamic-table": "^0.2.1"
     },
     "require-dev": {
         "webfactory/doctrine-orm-test-infrastructure": "^1.2",

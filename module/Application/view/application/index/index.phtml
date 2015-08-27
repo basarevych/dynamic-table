@@ -81,6 +81,7 @@
     var strings = {
         DT_BANNER_LOADING: '<?= $this->translate('DT_BANNER_LOADING') ?>',
         DT_BANNER_EMPTY: '<?= $this->translate('DT_BANNER_EMPTY') ?>',
+        DT_BANNER_ERROR: '<?= $this->translate('DT_BANNER_ERROR') ?>',
         DT_BUTTON_PAGE_SIZE: '<?= $this->translate('DT_BUTTON_PAGE_SIZE') ?>',
         DT_BUTTON_COLUMNS: '<?= $this->translate('DT_BUTTON_COLUMNS') ?>',
         DT_BUTTON_REFRESH: '<?= $this->translate('DT_BUTTON_REFRESH') ?>',
@@ -168,6 +169,9 @@
     $('#table1').on('dt.deselected', function (e) {
         $('#event1').text('Deselected');
     });
+    $('#table1').on('dt.http-error', function (e, params) {
+        $('#event1').text('HTTP Error ' + params.status);
+    });
 
     $('#table2').on('dt.loading', function (e) {
         $('#event2').text('Loading');
@@ -181,6 +185,9 @@
     $('#table2').on('dt.deselected', function (e) {
         $('#event2').text('Deselected');
     });
+    $('#table2').on('dt.http-error', function (e, params) {
+        $('#event2').text('HTTP Error ' + params.status);
+    });
 
     $('#table3').on('dt.loading', function (e) {
         $('#event3').text('Loading');
@@ -193,5 +200,8 @@
     });
     $('#table3').on('dt.deselected', function (e) {
         $('#event3').text('Deselected');
+    });
+    $('#table3').on('dt.http-error', function (e, params) {
+        $('#event3').text('HTTP Error ' + params.status);
     });
 </script>

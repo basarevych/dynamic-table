@@ -36,6 +36,7 @@ return [
     // DynamicTable
     'DT_BANNER_LOADING' => 'Loading... Please wait',
     'DT_BANNER_EMPTY' => 'Nothing found',
+    'DT_BANNER_ERROR' => 'Error loading table',
     'DT_BUTTON_PAGE_SIZE' => 'Page size',
     'DT_BUTTON_COLUMNS' => 'Columns',
     'DT_BUTTON_REFRESH' => 'Refresh',
