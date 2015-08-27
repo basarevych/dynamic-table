@@ -37,11 +37,15 @@ This project does not add any depency, but your project must include this:
 
 2. NodeJS: Server-side dependencies (npm)
 
+  ```
+    > npm install dynamic-table --save
+  ```
+
   If you need MySQL support add to your package.json:
 
   ```
     "dependencies": {
-      "mysql": "~2.8.0",
+      "mysql": "~2.8.0"
     }
   ```
 
@@ -49,7 +53,7 @@ This project does not add any depency, but your project must include this:
 
   ```
     "dependencies": {
-      "pg": "~4.4.1",
+      "pg": "~4.4.1"
     }
   ```
 

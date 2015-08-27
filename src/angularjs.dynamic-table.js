@@ -17,6 +17,7 @@ dtModule.provider('dynamicTable', function () {
         strings: {
             DT_BANNER_LOADING: 'Loading... Please wait',
             DT_BANNER_EMPTY: 'Nothing found',
+            DT_BANNER_ERROR: 'Error loading table',
             DT_BUTTON_PAGE_SIZE: 'Page size',
             DT_BUTTON_COLUMNS: 'Columns',
             DT_BUTTON_REFRESH: 'Refresh',
@@ -51,6 +52,7 @@ dtModule.provider('dynamicTable', function () {
             this.element = null,
             this.plugin = null,
             this.event = null,
+            this.statusCode = null;
             this.options = options;
 
             this.init = function (element) {
@@ -69,13 +71,16 @@ dtModule.provider('dynamicTable', function () {
                     $timeout(function () { service.event = 'loading'; });
                 });
                 this.element.on('dt.loaded', function (e) {
-                    $timeout(function () { service.event = 'loaded'; });
+                    $timeout(function () { service.event = 'loaded'; service.statusCode = 200; });
                 });
                 this.element.on('dt.selected', function (e) {
                     $timeout(function () { service.event = 'selected'; });
                 });
                 this.element.on('dt.deselected', function (e) {
                     $timeout(function () { service.event = 'deselected'; });
+                });
+                this.element.on('dt.http-error', function (e, params) {
+                    $timeout(function () { service.event = 'http-error'; service.statusCode = params.status; });
                 });
             };
         };

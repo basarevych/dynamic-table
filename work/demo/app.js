@@ -44,6 +44,7 @@ app.controller('ctrl',
                 case 'loaded': $scope.event2 = 'Loaded'; break;
                 case 'selected': $scope.event2 = 'Selected'; break;
                 case 'deselected': $scope.event2 = 'Deselected'; break;
+                case 'http-error': $scope.event2 = 'HTTP Error: ' + $scope.table2Ctrl.statusCode; break;
             }
         });
     }]

@@ -2,19 +2,19 @@ module(
     "Tests",
     {
         setup: function (assert) {
-            jQuery.getJSON = function (url, data, callback) {
-                if (data['query'] === 'describe') {
-                    callback($description);
-                } else if (data['query'] === 'data') {
+            jQuery.ajax = function (params) {
+                if (params.data['query'] === 'describe') {
+                    params.success($description);
+                } else if (params.data['query'] === 'data') {
                     switch ($showData) {
                         case 'first':
-                            callback($dataFirstPage);
+                            params.success($dataFirstPage);
                             break;
                         case 'middle':
-                            callback($dataMiddlePage);
+                            params.success($dataMiddlePage);
                             break;
                         case 'last':
-                            callback($dataLastPage);
+                            params.success($dataLastPage);
                             break;
                         default:
                             assert.ok(false, 'Which data page?');

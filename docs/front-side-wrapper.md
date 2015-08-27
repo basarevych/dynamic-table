@@ -27,6 +27,7 @@ Front-side - AngularJS wrapper for the plugin
   ```json
     "DT_BANNER_LOADING": "Loading... Please wait",
     "DT_BANNER_EMPTY": "Nothing found",
+    "DT_BANNER_ERROR": "Error loading table",
     "DT_BUTTON_PAGE_SIZE": "Page size",
     "DT_BUTTON_COLUMNS": "Columns",
     "DT_BUTTON_REFRESH": "Refresh",
@@ -91,6 +92,7 @@ Front-side - AngularJS wrapper for the plugin
             case 'loaded':      console.log('Table has been loaded'); break;
             case 'selected':    console.log('Row selected'); break;
             case 'deselected':  console.log('Row deselected'); break;
+            case 'http-error':  console.log('HTTP Error: ' + $scope.tableCtrl.statusCode); break;
         }
     });
   ```

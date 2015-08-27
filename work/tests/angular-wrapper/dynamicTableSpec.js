@@ -26,9 +26,9 @@ describe('dynamicTable', function () {
 
     beforeEach(inject(function (_dynamicTable_) {
         dynamicTable = _dynamicTable_;
-        jQuery.getJSON = function (url, params, success) {
-            calledUrl = url;
-            success({});
+        jQuery.ajax = function (params) {
+            calledUrl = params.url;
+            params.success({});
         };
     }));
 

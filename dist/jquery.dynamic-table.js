@@ -21,6 +21,7 @@
             strings: {
                 DT_BANNER_LOADING: 'Loading... Please wait',
                 DT_BANNER_EMPTY: 'Nothing found',
+                DT_BANNER_ERROR: 'Error loading table',
                 DT_BUTTON_PAGE_SIZE: 'Page size',
                 DT_BUTTON_COLUMNS: 'Columns',
                 DT_BUTTON_REFRESH: 'Refresh',
@@ -67,18 +68,22 @@
             _createTable(this);
 
             var plugin = this;
-            $.getJSON(
-                this.options.url,
-                { query: 'describe' },
-                function (data) {
+            $.ajax({
+                dataType: 'json',
+                url: this.options.url,
+                data: { query: 'describe' },
+                success: function (data) {
                     if (data.success !== true)
                         return;
                     
                     plugin.columns = data.columns;
                     _initTable(plugin);
                     plugin.refresh();
-                }
-            );
+                },
+                error: function (jqXHR) {
+                    _showError(plugin, jqXHR.status);
+                },
+            });
         },
 
         refresh: function (params) {
@@ -102,28 +107,36 @@
 
             var selected = this.element.find('tbody td.selector input:checked');
 
-            $.getJSON(this.options.url, data, function (data) {
-                if (data.success !== true) {
+            $.ajax({
+                dataType: 'json',
+                url: this.options.url,
+                data: data,
+                success: function (data) {
+                    if (data.success !== true) {
+                        plugin.enable(true);
+                        return;
+                    }
+
+                    plugin.sortColumn = data.sort_column;
+                    plugin.sortDir = data.sort_dir;
+                    plugin.pageNumber = data.page_number;
+                    plugin.pageSize = data.page_size;
+                    plugin.totalPages = data.total_pages;
+                    plugin.filters = data.filters;
+                    plugin.rows = data.rows;
+
+                    _showData(plugin);
+
+                    $.each(selected, function (index, element) {
+                        plugin.toggleSelected($(element).val());
+                    });
+
                     plugin.enable(true);
-                    return;
-                }
-
-                plugin.sortColumn = data.sort_column;
-                plugin.sortDir = data.sort_dir;
-                plugin.pageNumber = data.page_number;
-                plugin.pageSize = data.page_size;
-                plugin.totalPages = data.total_pages;
-                plugin.filters = data.filters;
-                plugin.rows = data.rows;
-
-                _showData(plugin);
-
-                $.each(selected, function (index, element) {
-                    plugin.toggleSelected($(element).val());
-                });
-
-                plugin.enable(true);
-                plugin.element.trigger('dt.loaded');
+                    plugin.element.trigger('dt.loaded');
+                },
+                error: function (jqXHR) {
+                    _showError(plugin, jqXHR.status);
+                },
             });
         },
 
@@ -239,10 +252,10 @@
         plugin.element.empty()
                       .addClass('dynamic-table');
 
-        var table = $('<table></table>');
-        table.attr('class', plugin.options.table_class)
-             .css('display', 'none')
-             .appendTo(plugin.element);
+        $('<table></table>')
+            .attr('class', plugin.options.table_class)
+            .css('display', 'none')
+            .appendTo(plugin.element);
 
         $('<div></div>')
             .attr('class', 'overlay-back')
@@ -259,6 +272,17 @@
               .text(plugin.options.strings.DT_BANNER_LOADING)
               .html(loader.html() + '<br><img src="' + plugin.options.loader_image + '"><br>')
               .appendTo(plugin.element);
+
+        var errorReset = $('<button type="button" class="btn btn-default error-reset-button"></button>');
+        errorReset.text(plugin.options.strings.DT_BUTTON_REFRESH);
+        errorReset.on('click', function () { plugin.init(); });
+
+        var error = $('<div></div>');
+        error.attr('class', 'ajax-error')
+             .text(plugin.options.strings.DT_BANNER_ERROR)
+             .append('<br>')
+             .append(errorReset)
+             .appendTo(plugin.element);
     };
 
     var _initTable = function (plugin) {
@@ -1105,6 +1129,16 @@
         plugin.element.find('tbody.empty').css('display', 'none');
         plugin.element.find('tbody.data').replaceWith(tbodyData)
                                          .css('display', 'table-row-group');
+    };
+
+    var _showError = function (plugin, status) {
+        plugin.element.find('.table-loader').remove();
+        plugin.element.find('table').css('display', 'none');
+        _enableOverlay(plugin, false);
+
+        plugin.element.trigger('dt.http-error', { status: status });
+
+        plugin.element.find('.ajax-error').css('display', 'block');
     };
 
 }(jQuery, window, document));

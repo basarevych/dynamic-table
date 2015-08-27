@@ -136,6 +136,7 @@ Full list of options
     var strings = {
         DT_BANNER_LOADING: 'Loading... Please wait',
         DT_BANNER_EMPTY: 'Nothing found',
+        DT_BANNER_ERROR: 'Error loading table',
         DT_BUTTON_PAGE_SIZE: 'Page size',
         DT_BUTTON_COLUMNS: 'Columns',
         DT_BUTTON_REFRESH: 'Refresh',
@@ -275,3 +276,7 @@ Events
 * **dt.deselected**
 
   Triggered when user deselects a row.
+
+* **dt.http-error**
+
+  Triggered if HTTP request failed. Parameter is object: { status: httpStatusCode }

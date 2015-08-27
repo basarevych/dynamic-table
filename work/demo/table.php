@@ -8,7 +8,6 @@ require '../../php/DynamicTable/Adapter/ArrayAdapter.php';
 require '../../php/DynamicTable/Adapter/GenericDBAdapter.php';
 require '../../php/DynamicTable/Adapter/PDOAdapter.php';
 
-/*
 $data = [];
 $dt = new \DateTime("2010-05-11 13:00:00");
 for ($i = 1; $i <= 100; $i++) {
@@ -35,8 +34,8 @@ for ($i = 1; $i <= 100; $i++) {
 
 $adapter = new Adapter\ArrayAdapter();
 $adapter->setData($data);
-*/
 
+/*
 $dsn = 'pgsql:dbname=pean;host=127.0.0.1';
 $user = 'pean';
 $password = 'pean';
@@ -51,6 +50,7 @@ $adapter->setFrom('users');
 $adapter->setWhere("");
 // $adapter->setParams([ ':id' => 50 ]);
 $adapter->setParams([]);
+*/
 
 $table = new Table();
 $table->setColumns([
@@ -101,8 +101,7 @@ $table->setMapper(function ($row) {
     $result['email'] = htmlentities($row['email']);
 
     if ($row['created_at'] !== null) {
-        $dt = new \DateTime($row['created_at'], new \DateTimezone('Europe/Kiev'));
-        $result['created_at'] = $dt->getTimestamp();
+        $result['created_at'] = $row['created_at']->getTimestamp();
     }
 
     return $result;
@@ -117,6 +116,7 @@ case 'describe':
     $data = $table->describe();
     break;
 case 'data':
+//    return header("HTTP/1.1 500 Internal Server Error");
     $data = $table->setPageParams($_GET)->fetch();
     break;
 default:

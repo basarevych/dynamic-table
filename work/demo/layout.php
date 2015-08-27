@@ -96,6 +96,9 @@
     $('#table').on('dt.deselected', function (e) {
         $('#event1').text('Deselected');
     });
+    $('#table').on('dt.http-error', function (e, params) {
+        $('#event1').text('HTTP Error: ' + params.status);
+    });
 
     function getSelected() {
         var s = table.getSelected();
