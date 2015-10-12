@@ -87,7 +87,13 @@ Front-side - AngularJS wrapper for the plugin
 
   ```js
     $scope.$watch('tableCtrl.event', function () {
-        switch ($scope.tableCtrl.event) {
+        if (!$scope.tableCtrl.event)
+            return;
+
+        var event = $scope.tableCtrl.event;
+        $scope.tableCtrl.event = null;
+
+        switch (event) {
             case 'loading':     console.log('Table is loading'); break;
             case 'loaded':      console.log('Table has been loaded'); break;
             case 'selected':    console.log('Row selected'); break;
