@@ -79,7 +79,7 @@ This project does not add any depency, but your project must include this:
         "jquery": "~2.1.4",
         "moment": "~2.10.6",
         "bootstrap": "~3.3.5",
-        "eonasdan-bootstrap-datetimepicker": "~4.15.35"
+        "eonasdan-bootstrap-datetimepicker": "~4.17.37"
     }
   ```
 

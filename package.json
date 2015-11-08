@@ -1,6 +1,6 @@
 {
   "name": "dynamic-table",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Dynamic HTML grid",
   "main": "node/index.js",
   "keywords": [
