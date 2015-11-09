@@ -496,7 +496,8 @@
 
                     var dtPicker = inputGroup.datetimepicker({
                         locale: plugin.options.locale,
-                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT,
+                        timeZone: null,
                     });
                 } else {
                     var group = $('<div></div>');
@@ -541,7 +542,8 @@
 
                     var dtPicker1 = inputGroup.datetimepicker({
                         locale: plugin.options.locale,
-                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT,
+                        timeZone: null,
                     });
 
                     var group = $('<div></div>');
@@ -568,7 +570,8 @@
 
                     var dtPicker2 = inputGroup.datetimepicker({
                         locale: plugin.options.locale,
-                        format: plugin.options.strings.DT_DATE_TIME_FORMAT
+                        format: plugin.options.strings.DT_DATE_TIME_FORMAT,
+                        timeZone: null,
                     });
                 } else {
                     var group = $('<div></div>');
