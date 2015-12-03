@@ -29,6 +29,7 @@
                 DT_BUTTON_CLEAR: 'Clear',
                 DT_BUTTON_CANCEL: 'Cancel',
                 DT_TITLE_FILTER_WINDOW: 'Filter',
+                DT_LABEL_ALL_ENTRIES: 'All',
                 DT_LABEL_CURRENT_PAGE: 'Current page',
                 DT_LABEL_ALL_PAGES: 'All pages',
                 DT_LABEL_PAGE_OF_1: 'Page',
@@ -908,7 +909,7 @@
                 .attr('tabindex', '-1')
                 .attr('href', 'javascript:void(0)')
                 .attr('data-size', value)
-                .text(value == 0 ? 'All' : value)
+                .text(value == 0 ? plugin.options.strings.DT_LABEL_ALL_ENTRIES : value)
                 .on('click', function() {
                     var el = $(this);
                     el.closest('ul')

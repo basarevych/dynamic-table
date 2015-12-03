@@ -43,7 +43,7 @@ This project does not add any depency, but your project must include this:
 
   ```
     "dependencies": {
-      "dynamic-table": "~0.2.2"
+      "dynamic-table": "~0.2.6"
     }
   ```
 
@@ -78,7 +78,7 @@ This project does not add any depency, but your project must include this:
     "devDependencies": {
         "jquery": "~2.1.4",
         "moment": "~2.10.6",
-        "bootstrap": "~3.3.5",
+        "bootstrap": "~3.3.6",
         "eonasdan-bootstrap-datetimepicker": "~4.17.37"
     }
   ```

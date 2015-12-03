@@ -12,12 +12,12 @@
   "dependencies": {
     "jquery": "~2.1.4",
     "moment": "~2.10.6",
-    "bootstrap": "~3.3.5",
+    "bootstrap": "~3.3.6",
     "eonasdan-bootstrap-datetimepicker": "~4.17.37"
   },
   "devDependencies": {
-    "qunit": ">=1.15.0",
-    "angular": ">=1.2.28",
-    "angular-mocks": ">=1.2.28"
+    "qunit": ">=1.20.0",
+    "angular": ">=1.4.8",
+    "angular-mocks": ">=1.4.8"
   }
 }
