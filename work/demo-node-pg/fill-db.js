@@ -8,8 +8,7 @@ CREATE TABLE "users" (
     "email" character varying(255) NULL,
     "created_at" timestamp NULL,
     "is_admin" boolean NULL,
-    CONSTRAINT "users_pk" PRIMARY KEY ("id"),
-    CONSTRAINT "users_unique_email" UNIQUE ("email")
+    CONSTRAINT "users_pk" PRIMARY KEY ("id")
 );
 */
 
