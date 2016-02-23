@@ -91,7 +91,20 @@ class ArrayAdapter extends AbstractAdapter
             foreach ($filters as $id => $filterData) {
                 $passedOrs = false;
                 foreach ($filterData as $name => $value) {
-                    $test = $this->checkFilter($name, $columns[$id]['type'], $value, $row[$id]);
+                    $real = $row[$id];
+                    if ($real && $columns[$id]['type'] == Table::TYPE_DATETIME) {
+                        if (is_string($real)) {
+                            if ($this->getDbTimezone())
+                                $real = new \DateTime($real, new \DateTimeZone($this->getDbTimezone()));
+                            else
+                                $real = new \DateTime($real);
+                        } else if (is_int($real)) {
+                            $real = new \DateTime('@' . $real);
+                        }
+                        if (date_default_timezone_get())
+                            $real->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+                    }
+                    $test = $this->checkFilter($name, $columns[$id]['type'], $value, $real);
                     if ($test === true)
                         $passedOrs = true;
                 }
@@ -175,12 +188,32 @@ class ArrayAdapter extends AbstractAdapter
         }
 
         $mapper = $table->getMapper();
-        if (!$mapper)
-            return $data;
-
         $result = [];
-        foreach ($data as $row)
-            $result[] = $mapper($row);
+        foreach ($data as $row) {
+            foreach ($table->getColumns() as $columnId => $columnParams) {
+                $value = $row[$columnId];
+                if ($value === null)
+                    continue;
+
+                if ($columnParams['type'] == Table::TYPE_DATETIME) {
+                    if (is_string($value)) {
+                        if ($this->getDbTimezone())
+                            $dt = new \DateTime($value, new \DateTimeZone($this->getDbTimezone()));
+                        else
+                            $dt = new \DateTime($value);
+                    } else if (is_int($value)) {
+                        $dt = new \DateTime('@' . $value);
+                    } else {
+                        $dt = $value;
+                    }
+                    if (date_default_timezone_get())
+                        $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+                    $row[$columnId] = $dt;
+                }
+            }
+
+            $result[] = $mapper ? $mapper($row) : $row;
+        }
 
         return $result;
     }
@@ -202,9 +235,15 @@ class ArrayAdapter extends AbstractAdapter
                     $test[0] ? new \DateTime('@' . $test[0]) : null,
                     $test[1] ? new \DateTime('@' . $test[1]) : null,
                 ];
+                if ($test[0] && $this->getDbTimezone())
+                    $test[0]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
+                if ($test[1] && $this->getDbTimezone())
+                    $test[1]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else if ($filter != Table::FILTER_BETWEEN
                     && is_scalar($test)) {
                 $test = new \DateTime('@' . $test);
+                if ($this->getDbTimezone())
+                    $test->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else {
                 return null;
             }

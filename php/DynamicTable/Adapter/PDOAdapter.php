@@ -67,7 +67,7 @@ class PDOAdapter extends GenericDBAdapter
             if (count($ands))
                 $where .= ' AND (' . join(') AND (', $ands) . ')';
         } else if (count($ands)) {
-            $where = ' WHERE (' + join(') AND (', $ands) + ')';
+            $where = ' WHERE (' . join(') AND (', $ands) . ')';
         }
 
         $preparedParams = [];
@@ -108,8 +108,31 @@ class PDOAdapter extends GenericDBAdapter
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
         $data = [];
-        for ($i = 0; $i < count($result); $i++)
-            $data[] = $mapper($result[$i]);
+        foreach ($result as $row) {
+            foreach ($table->getColumns() as $columnId => $columnParams) {
+                $value = $row[$columnId];
+                if ($value === null)
+                    continue;
+
+                if ($columnParams['type'] == Table::TYPE_DATETIME) {
+                    if (is_string($value)) {
+                        if ($this->getDbTimezone())
+                            $dt = new \DateTime($value, new \DateTimeZone($this->getDbTimezone()));
+                        else
+                            $dt = new \DateTime($value);
+                    } else if (is_int($value)) {
+                        $dt = new \DateTime('@' . $value);
+                    } else {
+                        $dt = $value;
+                    }
+                    if (date_default_timezone_get())
+                        $dt->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+                    $row[$columnId] = $dt;
+                }
+            }
+
+            $data[] = $mapper ? $mapper($row) : $row;
+        }
 
         return $data;
     }
@@ -137,9 +160,15 @@ class PDOAdapter extends GenericDBAdapter
                     $value[0] ? new \DateTime('@' . $value[0]) : null,
                     $value[1] ? new \DateTime('@' . $value[1]) : null,
                 ];
+                if ($value[0] && $this->getDbTimezone())
+                    $value[0]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
+                if ($value[1] && $this->getDbTimezone())
+                    $value[1]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else if ($filter != Table::FILTER_BETWEEN
                     && !is_array($value)) {
                 $value = new \DateTime('@' . $value);
+                if ($this->getDbTimezone())
+                    $value->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else {
                 return false;
             }

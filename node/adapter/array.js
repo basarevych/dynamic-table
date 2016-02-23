@@ -5,6 +5,7 @@
 'use strict';
 
 var q = require('q');
+var moment = require('moment-timezone');
 var Table = require('../table');
 var BaseAdapter = require('./base');
 
@@ -81,6 +82,7 @@ ArrayAdapter.prototype.filter = function (table) {
 
     var columns = table.getColumns();
     var result = [];
+    var me = this;
     this.data.forEach(function (row) {
         var passedAnds = true;
         for (var id in filters) {
@@ -94,7 +96,25 @@ ArrayAdapter.prototype.filter = function (table) {
                     continue;
 
                 var value = filterData[name];
-                var test = checkFilter(name, columns[id]['type'], value, row[id]);
+
+                var real = row[id];
+                if (columns[id]['type'] == Table.TYPE_DATETIME && real) {
+                    var m;
+                    if (me.getDbTimezone()) {
+                        if (typeof real == 'number')
+                            m = moment.unix(real);
+                        else
+                            m = moment.tz(real, me.getDbTimezone());
+                    } else {
+                        if (typeof real == 'number')
+                            m = moment.unix(real);
+                        else
+                            m = moment(real);
+                    }
+                    real = m.local();
+                }
+            
+                var test = checkFilter(name, columns[id]['type'], value, real);
                 if (test === true)
                     passedOrs = true;
             }
@@ -176,12 +196,31 @@ ArrayAdapter.prototype.paginate = function (table) {
     }
 
     var mapper = table.getMapper();
-    if (!mapper)
-        return data;
 
     var result = [];
+    var me = this;
     data.forEach(function (row) {
-        result.push(mapper(row));
+        var columns = table.getColumns();
+        for (var columnId in columns) {
+            var column = columns[columnId];
+            if (column.type == Table.TYPE_DATETIME && row[columnId]) {
+                var m;
+                if (me.getDbTimezone()) {
+                    if (typeof row[columnId] == 'number')
+                        m = moment.unix(row[columnId]);
+                    else
+                        m = moment.tz(row[columnId], me.getDbTimezone());
+                } else {
+                    if (typeof row[columnId] == 'number')
+                        m = moment.unix(row[columnId]);
+                    else
+                        m = moment(row[columnId]);
+                }
+                row[columnId] = m.local();
+            }
+        }
+
+        result.push(mapper ? mapper(row) : row);
     });
 
     var defer = q.defer();
@@ -204,11 +243,11 @@ function checkFilter(filter, type, test, real) {
         if (filter == Table.FILTER_BETWEEN
                 && Array.isArray(test) && test.length == 2) {
             test = [
-                test[0] ? new Date(test[0] * 1000) : null,
-                test[1] ? new Date(test[1] * 1000) : null,
+                test[0] ? moment.unix(test[0]) : null,
+                test[1] ? moment.unix(test[1]) : null,
             ];
         } else if (filter != Table.FILTER_BETWEEN) {
-            test = new Date(test * 1000);
+            test = moment.unix(test);
         } else {
             return null;
         }

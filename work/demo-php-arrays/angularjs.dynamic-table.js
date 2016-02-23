@@ -1,0 +1,1 @@
+../../dist/angularjs.dynamic-table.js

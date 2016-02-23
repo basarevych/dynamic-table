@@ -144,10 +144,14 @@ class PDOAdapterTest extends PHPUnit_Framework_TestCase
                 $executedParams[] = $params;
             }));
 
+        $queryCounter = 0;
         $sth->expects($this->any())
             ->method('fetchAll')
-            ->will($this->returnCallback(function () {
-                return [ [ 'count' => 6 ] ];
+            ->will($this->returnCallback(function () use (&$queryCounter) {
+                if ($queryCounter++)
+                    return [ ];
+                else
+                    return [ [ 'count' => 6 ] ];
             }));
 
         $dbh = $this->getMockBuilder('PDO')
@@ -164,22 +168,6 @@ class PDOAdapterTest extends PHPUnit_Framework_TestCase
             }));
 
         $this->adapter->setPdo($dbh);
-
-/*
-        var queryCounter = 0;
-        connection.query = function (query, params, cb) {
-            query = query.replace(/\s{2,}/g, " ");
-            if (++queryCounter == 1) {
-                expect(query).toBe("SELECT COUNT(*) AS count FROM users ");
-                expect(params).toEqual([]);
-                cb(null, [ { count: 6 } ]);
-            } else {
-                expect(query).toBe("SELECT * FROM users ORDER BY LIMIT 2 OFFSET 2 ");
-                expect(params).toEqual([]);
-                cb(null, [ ]);
-            }
-        };
-*/
 
         $this->table->setPageSize(2);
         $this->table->setPageNumber(2);

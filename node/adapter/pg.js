@@ -5,6 +5,7 @@
 'use strict';
 
 var q = require('q');
+var moment = require('moment-timezone');
 var Table = require('../table');
 var GenericDbAdapter = require('./genericdb');
 
@@ -110,8 +111,30 @@ PgAdapter.prototype.paginate = function (table) {
                         db.end();
 
                         var rows = [];
-                        for (var i = 0; i < result.rows.length; i++)
+                        for (var i = 0; i < result.rows.length; i++) {
+                            var columns = table.getColumns();
+                            for (var columnId in columns) {
+                                var column = columns[columnId];
+                                if (column.type == Table.TYPE_DATETIME && result.rows[i][columnId]) {
+                                    var m;
+                                    if (me.getDbTimezone()) {
+                                        if (typeof result.rows[i][columnId] == 'number') {
+                                            m = moment.unix(result.rows[i][columnId]);
+                                        } else {
+                                            var tmp = moment(result.rows[i][columnId]);
+                                            m = moment.tz(tmp.format("YYYY-MM-DD HH:mm:ss"), me.getDbTimezone());
+                                        }
+                                    } else {
+                                        if (typeof result.rows[i][columnId] == 'number')
+                                            m = moment.unix(result.rows[i][columnId]);
+                                        else
+                                            m = moment(result.rows[i][columnId]);
+                                    }
+                                    result.rows[i][columnId] = m.local();
+                                }
+                            }
                             rows.push(mapper(result.rows[i]));
+                        }
 
                         defer.resolve(rows);
                     }
@@ -142,12 +165,25 @@ PgAdapter.prototype.buildFilter = function (field, type, filter, value) {
         if (filter == Table.FILTER_BETWEEN
                 && Array.isArray(value) && value.length == 2) {
             value = [
-                value[0] ? new Date(value[0] * 1000) : null,
-                value[1] ? new Date(value[1] * 1000) : null,
+                value[0] ? moment.unix(value[0]) : null,
+                value[1] ? moment.unix(value[1]) : null,
             ];
+            if (value[0]) {
+                if (this.getDbTimezone())
+                    value[0].tz(this.getDbTimezone());
+                value[0] = value[0].format("YYYY-MM-DD HH:mm:ss");
+            }
+            if (value[1]) {
+                if (this.getDbTimezone())
+                    value[1].tz(this.getDbTimezone());
+                value[1] = value[1].format("YYYY-MM-DD HH:mm:ss");
+            }
         } else if (filter != Table.FILTER_BETWEEN
                 && !Array.isArray(value)) {
-            value = new Date(value * 1000);
+            value = moment.unix(value);
+            if (this.getDbTimezone())
+                value.tz(this.getDbTimezone());
+            value = value.format("YYYY-MM-DD HH:mm:ss");
         } else {
             return false;
         }

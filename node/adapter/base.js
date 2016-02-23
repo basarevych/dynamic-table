@@ -5,7 +5,28 @@
 'use strict';
 
 function Base() {
+    this.dbTimezone = null;     // Data source timezone
 }
+
+/**
+ * DB timezone setter
+ *
+ * @param {string} timezone     New timezone
+ * @retrurn {object}            Returns self
+ */
+Base.prototype.setDbTimezone = function (timezone) {
+    this.dbTimezone = timezone;
+    return this;
+};
+
+/**
+ * DB timezone getter
+ *
+ * @return {string|null}        Returns current timezone or null
+ */
+Base.prototype.getDbTimezone = function () {
+    return this.dbTimezone;
+};
 
 /**
  * Check table and data

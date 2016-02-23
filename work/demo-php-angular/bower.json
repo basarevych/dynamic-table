@@ -1,0 +1,19 @@
+{
+  "name": "dynamic-table",
+  "description": "Dynamic HTML grid",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ross Basarevych",
+      "email": "basarevych@gmail.com"
+    }
+  ],
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "moment": "~2.10.6",
+    "bootstrap": "~3.3.6",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "angular": ">=1.4.8"
+  }
+}

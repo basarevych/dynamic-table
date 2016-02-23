@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <title>Dynamic Table</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="jquery.dynamic-table.css">
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/moment/min/moment-with-locales.min.js"></script>
+        <script src="bower_components/moment-timezone/builds/moment-timezone-with-data.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+        <script src="jquery.dynamic-table.js"></script>
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>jQuery Dynamic Table</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <button class="btn btn-default" onclick="getSelected()">
+                        Get selected
+                    </button>
+                    <pre id="selected1">&nbsp;</pre>
+                </div>
+                <div class="col-lg-6">
+                    <div>Last Event:</div>
+                    <pre id="event1">&nbsp;</pre>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="table"></div>
+                </div>
+            </div>
+
+            <script>
+                var table = $('#table').dynamicTable({
+                    url: 'table',
+                    row_id_column: 'id',
+                    sort_column: 'id',
+                    mapper: function (row) {
+                        if (row['is_admin'] != null) {
+                            row['is_admin'] = '<i class="glyphicon '
+                                + (row['is_admin'] ? 'glyphicon-ok text-success' : 'glyphicon-remove text-danger')
+                                + '"></i>';
+                        }
+                        if (row['created_at'] != null) {
+                            var m = moment.unix(row['created_at']).local();         // we received date is Epoch timestamp
+                            row['created_at'] = m.format('YYYY-MM-DD HH:mm:ss');    // convert it to a string in this browser timezone
+                        }
+
+                        return row;
+                    },
+                });
+
+                $('#table').on('dt.loading', function (e) {
+                    $('#event1').text('Loading');
+                });
+                $('#table').on('dt.loaded', function (e) {
+                    $('#event1').text('Loaded');
+                });
+                $('#table').on('dt.selected', function (e) {
+                    $('#event1').text('Selected');
+                });
+                $('#table').on('dt.deselected', function (e) {
+                    $('#event1').text('Deselected');
+                });
+                $('#table').on('dt.http-error', function (e, params) {
+                    $('#event1').text('HTTP Error: ' + params.status);
+                });
+
+                function getSelected() {
+                    var s = table.getSelected();
+                    if (s === 'all') {
+                        $('#selected1').text('All records on all the pages');
+                        return;
+                    }
+                    if (s.length)
+                        $('#selected1').text('Selected: ' + s.join(', '));
+                    else
+                        $('#selected1').text('Nothing selected');
+                }
+            </script>
+        </div>
+
+    </body>
+</html>

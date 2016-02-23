@@ -214,9 +214,14 @@ class DoctrineORMAdapter extends AbstractAdapter
                     $value[0] ? new \DateTime('@' . $value[0]) : null,
                     $value[1] ? new \DateTime('@' . $value[1]) : null,
                 ];
+                if ($value[0])
+                    $value[0]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
+                if ($value[1])
+                    $value[1]->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else if ($filter != Table::FILTER_BETWEEN
                     && is_scalar($value)) {
                 $value = new \DateTime('@' . $value);
+                $value->setTimezone(new \DateTimeZone($this->getDbTimezone()));
             } else {
                 return false;
             }

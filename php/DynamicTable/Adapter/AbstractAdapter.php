@@ -20,6 +20,42 @@ use DynamicTable\Table;
 abstract class AbstractAdapter
 {
     /**
+     * Data source timezone
+     *
+     * @var string
+     */
+    protected $dbTimezone = null;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->dbTimezone = date_default_timezone_get();
+    }
+
+    /**
+     * DB timezone setter
+     *
+     * @param string $timezone
+     * @return Table
+     */
+    public function setDbTimezone($timezone)
+    {
+        $this->dbTimezone = $timezone;
+    }
+
+    /**
+     * DB timezone getter
+     *
+     * @return string
+     */
+    public function getDbTimezone()
+    {
+        return $this->dbTimezone;
+    }
+
+    /**
      * Check table and data
      *
      * @param Table $table
