@@ -5,8 +5,8 @@ Imagine the following data source (array):
 
 ```php
 $data = [
-    [ 1, "string 1", 111, 10.01, true,  new \DateTime('2010-05-10 13:00:00') ],     // first row
-    [ 2, "string 2", 222, 45.45, false, new \DateTime('2015-01-01 17:00:00') ],     // second row
+    [ 1, "string 1", 111, 10.01, true,  '2010-05-10 13:00:00' ],     // first row
+    [ 2, "string 2", 222, 45.45, false, '2015-01-01 17:00:00' ],     // second row
     // ... and so on
 ];
 ```
@@ -70,7 +70,8 @@ use DynamicTable\Adapter\ArrayAdapter;
 // ...
 
 $adapter = new ArrayAdapter();
-$adapter->setData($data);       // <-- Feed our array to the adapter
+$adapter->setData($data);           // <-- Feed our array to the adapter
+// $adapter->setDbTimezone('UTC');  // Data source could be in different timezone
 ```
 
 Connect data to the table:
