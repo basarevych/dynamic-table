@@ -76,6 +76,19 @@ $table->setColumns([
 ]);
 ```
 
+Example of data mapper for this table:
+
+```php
+$table->setMapper(function ($row) {
+    $row['email'] = htmlentities($row['email']);                    // escape strings
+
+    if ($row['created_at'] !== null)
+        $row['created_at'] = $row['created_at']->getTimestamp();    // transmit as Epoch timestamp
+
+    return $row;
+});
+```
+
 Let's create ArrayAdapter for it:
 
 ```php
