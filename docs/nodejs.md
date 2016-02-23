@@ -83,20 +83,18 @@ var validator = require('validator');       // we will use 'validator' npm packa
 // ...
 
 table.setMapper(function (row) {
-    var result = row;
+    if (row['email'])
+        row['email'] = validator.escape(row['email']);  // we must escape strings
 
-    result['email'] = validator.escape(row['email']);  // we must escape strings
+    if (row['created_at'])                              // convert moment.js object to something that could
+        row['created_at'] = row['created_at'].unix();   // be sent over the net, i.e. UNIX timestamp
 
-    // convert javascript Date object to UNIX epoch (number of seconds):
-    if (row['created_at'] && typeof row['created_at'].getTime == 'function')
-        result['created_at'] = row['created_at'].getTime() / 1000;
-
-    return result;
+    return row;
 });
 ```
 
 The data mapper is a function that accepts source data row and returns this row in a form suitable for our jQuery plugin.
-You should at least convert JavaScript Date objects into UNIX epoch values and optionally escape HTML strings.
+You should at least convert moment.js Date objects into UNIX epoch values and optionally escape HTML strings.
 The resulting data is then transmitted over the network to the client as JSON object.
 
 Now that we have a table it's time to connect it with the data. You do this by creating a *data adapter*. At the moment there are three available:
