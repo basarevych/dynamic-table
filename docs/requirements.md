@@ -14,7 +14,7 @@ This project does not add any depency, but your project must include this:
 
   ```
     "require": {
-        "basarevych/dynamic-table": "0.2.*"
+        "basarevych/dynamic-table": "1.0.*"
     }
   ```
 
@@ -43,7 +43,7 @@ This project does not add any depency, but your project must include this:
 
   ```
     "dependencies": {
-      "dynamic-table": "~0.2.6"
+      "dynamic-table": "~1.0.0"
     }
   ```
 
