@@ -20,3 +20,10 @@ Dynamic Table consists of two parts - backend and frontend:
  * Frontend
    * [jQuery plugin](docs/front-side-plugin.md) - the main plugin
    * and, if you need it, [AngularJS wrapper](docs/front-side-wrapper.md) for the plugin
+
+Changelog
+---------
+
+**1.0.0**
+ * Backend data mapper now receives values of TYPE_DATETIME type columns as DateTime (PHP) or moment.js (NodeJS) objects.
+ * Adapters now have optional setDbTimezone() method, which specify the time zone of data source
