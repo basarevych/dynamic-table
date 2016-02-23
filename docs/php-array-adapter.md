@@ -38,47 +38,40 @@ Table definition for this data source:
 $table = new Table();
 
 $table->setColumns([
-    'id' => [                   // item key is the name of the column
-        'title'     => 'ID',
-        'type'      => Table::TYPE_INTEGER,
-        'filters'   => [ Table::FILTER_EQUAL ],
-        'sortable'  => true,
-        'visible'   => false,
+    'id' => [
+        'title' => 'ID',
+        'type' => Table::TYPE_INTEGER,
+        'filters' => [ Table::FILTER_EQUAL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'string' => [
-        'title'     => 'String',
-        'type'      => Table::TYPE_STRING,
-        'filters'   => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'name' => [
+        'title' => 'Name',
+        'type' => Table::TYPE_STRING,
+        'filters' => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'integer' => [
-        'title'     => 'Integer',
-        'type'      => Table::TYPE_INTEGER,
-        'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'email' => [
+        'title' => 'Email',
+        'type' => Table::TYPE_STRING,
+        'filters' => [ Table::FILTER_LIKE, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'float' => [
-        'title'     => 'Float',
-        'type'      => Table::TYPE_FLOAT,
-        'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'created_at' => [
+        'title' => 'Created at',
+        'type' => Table::TYPE_DATETIME,
+        'filters' => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
-    'boolean' => [
-        'title'     => 'Boolean',
-        'type'      => Table::TYPE_BOOLEAN,
-        'filters'   => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
-    ],
-    'datetime' => [
-        'title'     => 'DateTime',
-        'type'      => Table::TYPE_DATETIME,
-        'filters'   => [ Table::FILTER_BETWEEN, Table::FILTER_NULL ],
-        'sortable'  => true,
-        'visible'   => true,
+    'is_admin' => [
+        'title' => 'Is admin',
+        'type' => Table::TYPE_BOOLEAN,
+        'filters' => [ Table::FILTER_EQUAL, Table::FILTER_NULL ],
+        'sortable' => true,
+        'visible' => true,
     ],
 ]);
 ```
