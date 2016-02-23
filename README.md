@@ -1,9 +1,12 @@
 Dynamic HTML grid for PHP and NodeJS
 ====================================
 
-The idea is to feed an array of data (or some other data source, like PDO or Doctrine query) to PHP/NodeJS class and to have instantly a grid with server-side sorting, filtering and pagination.
+The idea is to feed an array of data or a database query to PHP/NodeJS class and to have instantly a grid with server-side sorting, filtering and pagination.
 
-The demo version is available [here](http://demo.daemon-notes.com/dynamic-table/).
+Online demo is available [here](http://demo.daemon-notes.com/dynamic-table/).
+
+Look at [work/](work/) subdirectory for demo projects
+
 
 Configuration
 -------------
