@@ -94,6 +94,9 @@ table.setMapper(function (row) {
 ```
 
 The data mapper is a function that accepts source data row and returns this row in a form suitable for our jQuery plugin.
+
+**NOTE**: Columns of type TYPE_DATETIME are converted to moment.js date/time objects before being passed to the mapper.
+
 You should at least convert moment.js Date objects into UNIX epoch values and optionally escape HTML strings.
 The resulting data is then transmitted over the network to the client as JSON object.
 
