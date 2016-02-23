@@ -78,15 +78,12 @@ The second step is to create a data mapper:
 
 ```php
 $table->setMapper(function ($row) {
-    $result = $row;
+    $row['email'] = htmlentities($row['email']);                    // escape strings
 
-    $result['email'] = htmlentities($row['email']);     // we must escape strings
+    if ($row['created_at'] !== null)                                // convert DateTime object to something that could
+        $row['created_at'] = $row['created_at']->getTimestamp();    // be sent over the net, i.e. UNIX timestamp
 
-    // convert PHP DateTime object to UNIX epoch (number of seconds):
-    if ($row['created_at'] !== null)
-        $result['created_at'] = $row['created_at']->getTimestamp();
-
-    return $result;
+    return $row;
 });
 ```
 
