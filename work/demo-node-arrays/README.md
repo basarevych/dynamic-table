@@ -8,6 +8,6 @@ Run:
 
 ### Web server
 
-Edit server.js (put database credentials) and run:
+Run:
 
     node server.js
