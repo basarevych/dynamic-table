@@ -26,4 +26,4 @@ Changelog
 
 **1.0.0**
  * Backend data mapper now receives values of TYPE_DATETIME type columns as DateTime (PHP) or moment.js (NodeJS) objects.
- * Adapters now have optional setDbTimezone() method, which specify the time zone of data source
+ * Adapters now have optional setDbTimezone() method, which specifies the time zone of data source
