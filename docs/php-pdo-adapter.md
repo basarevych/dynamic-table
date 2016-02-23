@@ -1,18 +1,16 @@
 PHP PDO adapter
 ---------------
 
-SQL table for our DynamicTable:
+MySQL table for our DynamicTable:
 
 ```sql
-CREATE TABLE "users" (
-    "id" serial NOT NULL,
-    "name" character varying(255) NULL,
-    "email" character varying(255) NOT NULL,
-    "password" character varying(255) NOT NULL,
-    "created_at" timestamp NULL,
-    "is_admin" boolean NULL,
-    CONSTRAINT "users_pk" PRIMARY KEY ("id"),
-    CONSTRAINT "users_unique_email" UNIQUE ("email")
+CREATE TABLE users (
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255) NULL,
+    email varchar(255) NULL,
+    created_at timestamp NULL,
+    is_admin tinyint(1) NULL,
+    PRIMARY KEY(id)
 );
 ```
 
@@ -23,7 +21,7 @@ use DynamicTable\Adapter\PDOAdapter;
 
 // ...
 
-$dsn = 'pgsql:dbname=db_name_here;host=127.0.0.1';
+$dsn = 'mysql:dbname=db_name_here;host=127.0.0.1';
 $user = 'db_user_here';
 $password = 'db_password_here';
 
@@ -31,34 +29,35 @@ $dbh = new \PDO($dsn, $user, $password);
 
 $adapter = new PDOAdapter();
 $adapter->setPdo($dbh);
+
+// if you do not need to set initial WHERE:
+$adapter->setSelect('*');             // SELECT * FROM users
+$adapter->setFrom('users');
+$adapter->setWhere("");
+$adapter->setParams([]);
+
+// if you need a modified query
 $adapter->setSelect('*');             // SELECT * FROM users WHERE id > 50
 $adapter->setFrom('users');
 $adapter->setWhere("id > :id");       // use named parameters
 $adapter->setParams([ ':id' => 50 ]);
 
-// if you do not need to set initial WHERE:
-$adapter = new PDOAdapter();
-$adapter->setPdo($dbh);
-$adapter->setSelect('*');             // SELECT * FROM users
-$adapter->setFrom('users');
-$adapter->setWhere("");
-$adapter->setParams([]);
+// $adapter->setDbTimezone('UTC');      // Data source could be in defferent timezone
 ```
 
 Example of data mapper for PDO row:
 
 ```php
 $table->setMapper(function ($row) {
-    $result = $row;
+    $row['email'] = htmlentities($row['email']);                    // escape strings
 
-    $result['email'] = htmlentities($row['email']);
+    if ($row['created_at'] !== null)
+        $row['created_at'] = $row['created_at']->getTimestamp();    // transmit as Epoch timestamp
 
-    if ($row['created_at'] !== null) { // convert string to timestamp
-        $dt = new \DateTime($row['created_at'], new \DateTimezone('Europe/Kiev')); // db timezone
-        $result['created_at'] = $dt->getTimestamp(); // unix timestamp (always in UTC)
-    }
+    if ($row['is_admin'] !== null)
+        $row['is_admin'] = ($row['is_admin'] == 1);                 // convert to boolean
 
-    return $result;
+    return $row;
 });
 ```
 
