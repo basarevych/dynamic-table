@@ -1,4 +1,4 @@
-Dynamic HTML grid for PHP and NodeJS
+(Abandoned) Dynamic HTML grid for PHP and NodeJS
 ====================================
 
 The idea is to feed an array of data or a database query to PHP/NodeJS class and to have instantly a grid with server-side sorting, filtering and pagination.
